@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.yu.zz.debug.ui.DebugActivity">
+    <item android:id="@+id/action_ticker"
+          android:title="@string/action_ticker"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/action_interface"
+          android:title="@string/action_interface_message"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/action_more"
+          android:title="@string/text_show_more_fun"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+</menu>

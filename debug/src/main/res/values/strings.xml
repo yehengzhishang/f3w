@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">debug</string>
+    <string name="action_ticker">Ticker</string>
+    <string name="action_interface_message">Interface Message</string>
+    <string name="text_show_change_account">切换帐号</string>
+    <string name="text_show_env">Env</string>
+    <string name="text_show_more_fun">更多功能</string>
+    <string name="text_show_more_dev">更多功能，期待中</string>
+</resources>
