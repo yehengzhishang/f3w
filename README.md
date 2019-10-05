@@ -5,7 +5,7 @@
 
 AndroidX
 
-Koltin
+Kotlin
 
 Debug功能相关
 
