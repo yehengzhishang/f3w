@@ -24,3 +24,14 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    sdk_target = 29
+    sdk_min = 21
+
+    version_androidx_appcompat = "1.1.0"
+    version_androidx_material = "1.0.0"
+    version_kotlin = ext.kotlin_version
+    version_core_ktx = "1.1.0"
+    version_androidx_constraintlayout = "1.1.3"
+}
