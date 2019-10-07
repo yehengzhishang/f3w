@@ -5,11 +5,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion sdk_version_base
     defaultConfig {
         applicationId "com.yu.zz.debug.app"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion sdk_min
+        targetSdkVersion sdk_version_base
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -24,6 +24,5 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation project(":debug")
 }
