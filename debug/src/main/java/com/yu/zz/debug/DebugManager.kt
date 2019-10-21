@@ -3,9 +3,17 @@ package com.yu.zz.debug
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener2
+import androidx.annotation.StyleRes
 import kotlin.math.sqrt
 
-class DebugManager private constructor()
+class DebugManager private constructor() {
+    @StyleRes
+    var themeId: Int = R.style.Theme_AppCompat
+
+    companion object {
+        val INSTANCE: DebugManager = DebugManager()
+    }
+}
 
 /**
  * 摇一摇帮助类
@@ -63,4 +71,3 @@ private class ShakeHelper(private val mShakeCallBack: ShakeCallBack) : SensorEve
 interface ShakeCallBack {
     fun shake()
 }
-

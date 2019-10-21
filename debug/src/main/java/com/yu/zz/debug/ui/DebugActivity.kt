@@ -8,27 +8,15 @@ import androidx.core.view.GravityCompat
 import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.debug.DebugManager
 import com.yu.zz.debug.R
-import com.yu.zz.debug.UserData
-import com.yu.zz.debug.UserUpdateListener
 import kotlinx.android.synthetic.main.activity_debug.*
 
 class DebugActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(DebugManager.INSTANCE.themeId)
         setContentView(R.layout.activity_debug)
         setSupportActionBar(barDebug)
-        DebugManager.registerUserUpdateListener(object : UserUpdateListener {
-            override fun update(userData: UserData?) {
-                tvUserName.text = userData?.name()
-                tvVip.text = userData?.vipState()
-            }
-        })
         btnMore.setOnClickListener { openOptionsMenu() }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        DebugManager.unregisterUserUpdaterListener()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -53,7 +41,7 @@ class DebugActivity : AppCompatActivity() {
                 openInterfaceMessage()
                 true
             }
-            R.id.action_more ->{
+            R.id.action_more -> {
                 dlRoot.openDrawer(GravityCompat.START)
                 true
             }
