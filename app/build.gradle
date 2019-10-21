@@ -6,8 +6,9 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion sdk_version_base
+    buildToolsVersion sdk_tools
     defaultConfig {
-        applicationId "com.yu.zz.debug.app"
+        applicationId "com.yu.zz.fwww"
         minSdkVersion sdk_min
         targetSdkVersion sdk_version_base
         versionCode 1

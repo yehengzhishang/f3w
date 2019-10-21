@@ -27,6 +27,7 @@ task clean(type: Delete) {
 
 ext {
     sdk_version_base = 29
+    sdk_tools= "29.0.2"
     sdk_min = 21
 
     version_androidx_appcompat = "1.1.0"
@@ -35,5 +36,4 @@ ext {
 
     version_kotlin = ext.kotlin_version
     version_core_ktx = "1.1.0"
-
 }
