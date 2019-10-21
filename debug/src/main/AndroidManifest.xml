@@ -1,14 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.yu.zz.debug">
+    package="com.yu.zz.debug">
+
     <application>
         <activity
-                android:name=".ui.DebugActivity"
-                android:label="OurDebug"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:launchMode="singleInstance"
-                android:windowNoTitle="true">
-        </activity>
+            android:name=".ui.DebugActivity"
+            android:label="OurDebug"
+            android:launchMode="singleInstance"
+            android:windowNoTitle="true" />
     </application>
 </manifest>
-
-
