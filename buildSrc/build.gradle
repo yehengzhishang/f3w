@@ -1,9 +1,21 @@
 apply plugin: 'groovy'
+// maven plugin 跟下面的uploadArchives 绑定
+apply plugin: 'maven'
 
 dependencies {
     implementation gradleApi()//gradle sdk
     implementation localGroovy()//groovy sdk
     implementation 'com.android.tools.build:gradle:3.5.1'
+}
+
+//此TASK 需要 apply plugin: 'maven'
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: uri('../repo'))
+        pom.groupId = 'com.yu.zz'
+        pom.artifactId = 'demoplugin'
+        pom.version = '0.0.1'
+    }
 }
 
 repositories {
