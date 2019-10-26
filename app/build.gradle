@@ -1,12 +1,9 @@
-import com.yu.zz.plugin.DemoPlugin
-
-apply plugin: 'com.android.application'
-
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-
-apply plugin: DemoPlugin
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'zz-api'
+}
 
 android {
     compileSdkVersion sdk_version_base
