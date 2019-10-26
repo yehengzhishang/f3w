@@ -21,5 +21,5 @@ Gradle Tools 3.5.1
 Kotlin 1.3.50
 
 # Hardware
-Computer : MacBook pro 13-inch Early 2015 (MF840),OS : MacOS 10.15 "Catalina"
+Computer : MacBook pro 13-inch Early 2015 (MF840),OS : MacOS 10.15 "Catalina"  
 PHONE : SAMSUNG Galaxy s10, OnPlus 5
