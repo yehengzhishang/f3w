@@ -1,8 +1,12 @@
+import com.yu.zz.plugin.DemoPlugin
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+
+apply plugin: DemoPlugin
 
 android {
     compileSdkVersion sdk_version_base
