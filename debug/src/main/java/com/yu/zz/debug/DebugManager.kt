@@ -1,17 +1,37 @@
 package com.yu.zz.debug
 
+import android.app.Application
+import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener2
+import android.hardware.SensorManager
 import androidx.annotation.StyleRes
+import com.yu.zz.debug.ui.DebugActivity
 import kotlin.math.sqrt
 
-class DebugManager private constructor() {
+class DebugManager private constructor() : ShakeCallBack {
+    private lateinit var app: Application
+    override fun shake() {
+        app.startActivity(Intent(app, DebugActivity::class.java)
+                .apply { addFlags(FLAG_ACTIVITY_NEW_TASK) })
+    }
+
     @StyleRes
     var themeId: Int = R.style.Theme_AppCompat
 
     companion object {
         val INSTANCE: DebugManager = DebugManager()
+    }
+
+    fun init(app: Application) {
+        this.app = app
+        val sensorManger = app.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        //传感器管理器
+        val sensor = sensorManger.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensorManger.registerListener(ShakeHelper(this), sensor, SensorManager.SENSOR_DELAY_GAME)
     }
 }
 
