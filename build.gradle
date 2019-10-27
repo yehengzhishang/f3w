@@ -1,8 +1,9 @@
 buildscript {
     ext.kotlin_version = '1.3.50'
+    ext.isPluginJar = false
     repositories {
         maven {
-            url uri('repo') //里面内容为 buildsrc gradle所选位置
+            url uri('repo') //里面内容为 buildSrc gradle所选位置
         }
         google()
         jcenter()
@@ -10,14 +11,16 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.yu.zz:demoplugin:0.0.1'
+        if (isPluginJar) {
+            classpath 'com.yu.zz:demoplugin:0.0.1'
+        }
     }
 }
 
 allprojects {
     repositories {
         maven {
-            url uri('repo') //里面内容为 buildsrc gradle所选位置
+            url uri('repo') //里面内容为 buildSrc gradle所选位置
         }
         google()
         jcenter()
