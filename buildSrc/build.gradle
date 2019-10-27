@@ -6,6 +6,7 @@ dependencies {
     implementation gradleApi()//gradle sdk
     implementation localGroovy()//groovy sdk
     implementation 'com.android.tools.build:gradle:3.5.1'
+    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50"
 }
 
 //此TASK 需要 apply plugin: 'maven'
