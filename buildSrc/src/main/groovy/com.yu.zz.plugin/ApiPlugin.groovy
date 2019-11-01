@@ -27,7 +27,6 @@ class ApiPlugin implements Plugin<Project> {
         return bean
     }
 
-
 }
 
 class Judge {
@@ -64,12 +63,12 @@ class ProjectUtils {
     }
 
     static String getApiApt(Project project) {
-        if (!Judge.isAndroidProject project) {
+        if (!Judge.isAndroidProject(project)) {
             throw new RuntimeException("not android project ")
         }
         String targetApt = "annotationProcessor"
-        if (Judge.isKotlin project) {
-            if (!Judge.isHasKapt project) {
+        if (Judge.isKotlin(project)) {
+            if (!Judge.isHasKapt(project)) {
                 println("android project is apply kotlin ,but no has apply kapt")
                 applyPlugin project, "kotlin-kapt"
 
