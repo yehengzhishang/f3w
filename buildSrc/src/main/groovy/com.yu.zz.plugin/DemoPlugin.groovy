@@ -12,7 +12,6 @@ class DemoPlugin implements Plugin<Project> {
     void apply(Project project) {
         println("apply start ")
         bean(project)
-
         println("apply end")
     }
 
@@ -26,17 +25,48 @@ class DemoPlugin implements Plugin<Project> {
         return bean
     }
 
-    static String getApiApt(boolean isAndroid, boolean isKotlin) {
-        if (!isAndroid) {
+    static String getApiApt(Project project) {
+        if (!Judge.isAndroidProject(project)) {
             throw new RuntimeException("not android project ")
         }
-
-        if (isKotlin) {
-
+        String defaultApt = "annotationProcessor"
+        if (Judge.isKotlin(project)) {
+            if (!Judge.isHasKapt(project)) {
+                println("android project is apply kotlin ,but no has apply kapt")
+            }
+            return "kapt"
         }
         return "annotationProcessor"
     }
 }
+
+class Judge {
+    private Judge() {
+
+    }
+
+    public static boolean isAndroidProject(Project project) {
+        // 其实还有几个 plugin 是android 项目用的，不常用，这里就没有写，看官自己看需求加就可以了
+        return isApp(project) || isLibrary(project)
+    }
+
+    public static boolean isApp(Project project) {
+        return project.plugins.hasPlugin(AppPlugin)
+    }
+
+    public static boolean isLibrary(Project project) {
+        return project.plugins.hasPlugin(LibraryPlugin)
+    }
+
+    public static boolean isKotlin(Project project) {
+        return project.plugins.hasPlugin(KotlinAndroidPluginWrapper)
+    }
+
+    public static boolean isHasKapt(Project project) {
+        return project.plugins.hasPlugin(Kapt3GradleSubplugin)
+    }
+}
+
 
 class ProjectUtils {
     private ProjectUtils() {
@@ -45,6 +75,9 @@ class ProjectUtils {
 
 }
 
+/**
+ * 这个类没有什么用，只是为了toString 方便
+ */
 class ProjectBean {
     // 是否 Application
     boolean isApp
@@ -52,20 +85,16 @@ class ProjectBean {
     boolean isLibrary
     // 是否支持 kotlin
     boolean isKotlin
-
     // 是否 已支持apt
     boolean isKapt
 
-    boolean isAndroid() {
-        return isApp || isLibrary
-    }
-
     @Override
-    String toString() {
+    public String toString() {
         return "ProjectBean{" +
                 "isApp=" + isApp +
                 ", isLibrary=" + isLibrary +
                 ", isKotlin=" + isKotlin +
+                ", isKapt=" + isKapt +
                 '}'
     }
 }
