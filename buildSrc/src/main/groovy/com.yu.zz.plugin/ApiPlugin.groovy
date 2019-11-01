@@ -11,36 +11,23 @@ class ApiPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         println("apply start ")
+        String apt = ProjectUtils.getApiApt(project)
+        println(apt)
         bean(project)
         println("apply end")
     }
 
     static ProjectBean bean(Project project) {
         ProjectBean bean = new ProjectBean()
-        bean.isApp = project.plugins.hasPlugin(AppPlugin)
-        bean.isLibrary = project.plugins.hasPlugin(LibraryPlugin)
-        bean.isKotlin = project.plugins.hasPlugin(KotlinAndroidPluginWrapper)
-        bean.isKapt = project.plugins.hasPlugin(Kapt3GradleSubplugin)
+        bean.isApp = Judge.isApp project
+        bean.isLibrary = Judge.isLibrary project
+        bean.isKotlin = Judge.isKotlin project
+        bean.isKapt = Judge.isHasKapt project
         println(bean.toString())
         return bean
     }
 
-    static String getApiApt(Project project) {
-        if (!Judge.isAndroidProject(project)) {
-            throw new RuntimeException("not android project ")
-        }
-        String defaultApt = "annotationProcessor"
-        if (Judge.isKotlin(project)) {
-            if (!Judge.isHasKapt(project)) {
-                println("android project is apply kotlin ,but no has apply kapt")
-                project.apply {
-                    plugin "kotlin-kapt"
-                }
-            }
-            defaultApt = "kapt"
-        }
-        return defaultApt
-    }
+
 }
 
 class Judge {
@@ -76,6 +63,27 @@ class ProjectUtils {
 
     }
 
+    static String getApiApt(Project project) {
+        if (!Judge.isAndroidProject(project)) {
+            throw new RuntimeException("not android project ")
+        }
+        String defaultApt = "annotationProcessor"
+        if (Judge.isKotlin(project)) {
+            if (!Judge.isHasKapt(project)) {
+                println("android project is apply kotlin ,but no has apply kapt")
+                applyPlugin project, "kotlin-kapt"
+
+            }
+            defaultApt = "kapt"
+        }
+        return defaultApt
+    }
+
+    static void applyPlugin(Project project, String pluginId) {
+        project.apply {
+            plugin pluginId
+        }
+    }
 }
 
 /**
