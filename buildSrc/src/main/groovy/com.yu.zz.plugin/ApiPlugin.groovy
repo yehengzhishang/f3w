@@ -64,19 +64,19 @@ class ProjectUtils {
     }
 
     static String getApiApt(Project project) {
-        if (!Judge.isAndroidProject(project)) {
+        if (!Judge.isAndroidProject project) {
             throw new RuntimeException("not android project ")
         }
-        String defaultApt = "annotationProcessor"
-        if (Judge.isKotlin(project)) {
-            if (!Judge.isHasKapt(project)) {
+        String targetApt = "annotationProcessor"
+        if (Judge.isKotlin project) {
+            if (!Judge.isHasKapt project) {
                 println("android project is apply kotlin ,but no has apply kapt")
                 applyPlugin project, "kotlin-kapt"
 
             }
-            defaultApt = "kapt"
+            targetApt = "kapt"
         }
-        return defaultApt
+        return targetApt
     }
 
     static void applyPlugin(Project project, String pluginId) {
