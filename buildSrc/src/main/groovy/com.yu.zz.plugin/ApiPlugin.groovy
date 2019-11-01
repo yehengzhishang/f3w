@@ -7,7 +7,7 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 
-class DemoPlugin implements Plugin<Project> {
+class ApiPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         println("apply start ")
