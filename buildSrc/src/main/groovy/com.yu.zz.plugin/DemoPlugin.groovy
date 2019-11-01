@@ -33,10 +33,13 @@ class DemoPlugin implements Plugin<Project> {
         if (Judge.isKotlin(project)) {
             if (!Judge.isHasKapt(project)) {
                 println("android project is apply kotlin ,but no has apply kapt")
+                project.apply {
+                    plugin "kotlin-kapt"
+                }
             }
-            return "kapt"
+            defaultApt = "kapt"
         }
-        return "annotationProcessor"
+        return defaultApt
     }
 }
 
