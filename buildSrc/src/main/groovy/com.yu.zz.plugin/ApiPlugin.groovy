@@ -62,6 +62,15 @@ class ProjectUtils {
 
     }
 
+    /**
+     * 根据 {@link Project#getPlugins}判断应该用哪一个方法
+     * apt相关plugin 从我已知，大概经历了三个阶段
+     *   android-apt：民间提供，不再维护，也不本方法考虑的范围之内
+     *   annotationProcessor：android-apt 官方版本
+     *   kapt : annotationProcessor 的 kotlin 版本，坑挺多，更新中
+     * @param project 项目不解释
+     * @return kapt or annotationProcessor
+     */
     static String getApiApt(Project project) {
         if (!Judge.isAndroidProject(project)) {
             throw new RuntimeException("not android project ")
@@ -78,10 +87,17 @@ class ProjectUtils {
         return targetApt
     }
 
+    /**
+     * eg. apply plugin: 'com.android.library'
+     */
     static void applyPlugin(Project project, String pluginId) {
         project.apply {
             plugin pluginId
         }
+        // 新版本推荐 plugins, 当前版本不支持写在脚本里。新版本有可能会解禁
+//        project.plugins {
+//            id pluginId
+//        }
     }
 }
 
