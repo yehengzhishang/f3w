@@ -1,115 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/dlRoot"
-        tools:context=".ui.DebugActivity"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dlRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.DebugActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:background="#e0e0e0"
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e0e0e0"
+        android:orientation="vertical">
+
         <androidx.appcompat.widget.Toolbar
-                android:id="@+id/barDebug"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_width="match_parent"
-                android:background="?attr/colorPrimary"
-                android:layout_height="64dp"/>
+            android:id="@+id/barDebug"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="?attr/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/barDebug">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/barDebug">
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                android:orientation="vertical">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:background="@android:color/white"
-                        android:layout_height="160dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="@android:color/white">
+
                     <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/ivHead"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"/>
+                        android:id="@+id/ivHead"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <androidx.appcompat.widget.AppCompatButton
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintBottom_toBottomOf="@id/ivHead"
-                            android:text="@string/text_show_change_account"
-                            android:layout_width="wrap_content"
-                            android:background="@android:color/white"/>
-                    <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvUserName"
-                            app:layout_constraintLeft_toLeftOf="@id/ivHead"
-                            app:layout_constraintTop_toBottomOf="@id/ivHead"
-                            android:layout_width="wrap_content"
-                            tools:text="小夜呆呆"
-                            android:textSize="16sp"
-                            android:layout_marginTop="8dp"
-                            android:layout_height="wrap_content"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:background="@android:color/white"
+                        android:text="@string/text_show_change_account"
+                        app:layout_constraintBottom_toBottomOf="@id/ivHead"
+                        app:layout_constraintRight_toRightOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvVip"
-                            android:layout_width="wrap_content"
-                            tools:text="年度大会员"
-                            app:layout_constraintLeft_toLeftOf="@id/tvUserName"
-                            android:background="?attr/colorPrimary"
-                            android:textColor="@android:color/white"
-                            android:padding="4dp"
-                            android:layout_marginTop="8dp"
-                            android:textSize="12sp"
-                            app:layout_constraintTop_toBottomOf="@id/tvUserName"
-                            android:layout_height="wrap_content"/>
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textSize="16sp"
+                        app:layout_constraintLeft_toLeftOf="@id/ivHead"
+                        app:layout_constraintTop_toBottomOf="@id/ivHead"
+                        tools:text="小夜呆呆" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvVip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="?attr/colorPrimary"
+                        android:padding="4dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintLeft_toLeftOf="@id/tvUserName"
+                        app:layout_constraintTop_toBottomOf="@id/tvUserName"
+                        tools:text="年度大会员" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <androidx.cardview.widget.CardView
-                        android:layout_marginTop="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16sp"
-                        android:background="@android:color/white">
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginStart="16sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/white">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_marginTop="8dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_width="wrap_content"
-                            android:text="@string/text_show_env"
-                            android:textSize="18sp"
-                            android:layout_marginBottom="4dp"
-                            android:textColor="@android:color/black"
-                            android:layout_height="wrap_content"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="@string/text_show_env"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnMore"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="32dp"
-                        android:background="@android:color/white"
-                        android:text="@string/text_show_more_fun"/>
+                    android:id="@+id/btnMore"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@android:color/white"
+                    android:text="@string/text_show_more_fun" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-            android:layout_width="320dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:text="@string/text_show_more_dev"
-            android:gravity="center"
-            android:layout_gravity="start"/>
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="@string/text_show_more_dev" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
