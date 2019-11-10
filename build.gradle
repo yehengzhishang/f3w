@@ -42,4 +42,8 @@ ext {
 
     version_kotlin = ext.kotlin_version
     version_core_ktx = "1.1.0"
+
+    version_retrofit = "2.6.2"
+    version_rx = "2.2.14"
+    version_rx_android = "2.2.14"
 }
