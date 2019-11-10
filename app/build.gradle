@@ -28,6 +28,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":debug")
     implementation "com.squareup.retrofit2:retrofit:${version_retrofit}"
+    implementation "com.squareup.retrofit2:adapter-rxjava:${version_retrofit_adapter}"
+    implementation "com.squareup.retrofit2:converter-gson:${version_retrofit_convert}"
     implementation "io.reactivex.rxjava2:rxjava:${version_rx}"
     implementation "io.reactivex.rxjava2:rxandroid:${version_rx_android}"
 }
