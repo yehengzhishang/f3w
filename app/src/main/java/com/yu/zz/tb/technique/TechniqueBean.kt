@@ -20,3 +20,14 @@ class TechniqueBean {
     @SerializedName("likeTotal")
     var likeTotal: Int? = null
 }
+
+class DataBean {
+    @SerializedName("start")
+    var start: Int? = null
+    @SerializedName("limit")
+    var limit: Int? = null
+    @SerializedName("total")
+    var total: Int? = null
+    @SerializedName("items")
+    var items: MutableList<TechniqueBean>? = null
+}
