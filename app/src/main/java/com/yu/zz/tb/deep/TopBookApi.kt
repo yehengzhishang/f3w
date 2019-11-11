@@ -16,6 +16,6 @@ class TopBookApi private constructor() {
             .build()
 
     companion object {
-
+        val INSTANCE = TopBookApi()
     }
 }
