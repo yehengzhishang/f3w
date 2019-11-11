@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import retrofit2.http.Query
+import com.yu.zz.tb.technique.TechniqueBean
 
 class MainTopBookActivity : AppCompatActivity() {
 
@@ -17,11 +17,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun getDataTechnique(): LiveData<TechniqueBean> = mDataTechnique
 
     fun getTechnique(start: Int, limit: Int) {
+
     }
 }
-
-interface TopBookServices {
-    fun getTechnique(@Query("start") start: String, @Query("limit") limit: Int)
-}
-
-class TechniqueBean
