@@ -32,4 +32,5 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:${version_retrofit_convert}"
     implementation "io.reactivex.rxjava2:rxjava:${version_rx}"
     implementation "io.reactivex.rxjava2:rxandroid:${version_rx_android}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${version_androidx_lifecycle}"
 }
