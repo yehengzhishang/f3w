@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class TopBookApi private constructor() {
     private val clint = OkHttpClient.Builder()
             .build()
-    val retrofit = Retrofit.Builder()
+    val retrofit: Retrofit = Retrofit.Builder()
             .client(clint)
             .baseUrl(TOPBOOK_URL_BASE)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
