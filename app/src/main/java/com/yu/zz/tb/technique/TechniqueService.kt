@@ -6,7 +6,7 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface TopBookService {
+interface TechniqueService {
     @GET(TOPBOOK_URL_TECHNIQUE)
-    fun getTechnique(@Query("start") start: String, @Query("limit") limit: Int): Observable<TopBookBean<DataBean>>
+    fun getTechnique(@Query("start") start: String, @Query("limit") limit: String): Observable<TopBookBean<DataBean>>
 }
