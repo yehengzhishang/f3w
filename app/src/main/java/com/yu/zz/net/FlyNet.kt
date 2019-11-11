@@ -2,7 +2,7 @@ package com.yu.zz.net
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class FlyNet private constructor() {
@@ -10,7 +10,7 @@ class FlyNet private constructor() {
             .build()
     val retrofit = Retrofit.Builder()
             .client(clint)
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
