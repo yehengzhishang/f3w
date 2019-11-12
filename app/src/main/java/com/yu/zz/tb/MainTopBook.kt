@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.gson.GsonBuilder
 import com.yu.zz.fwww.R
 import com.yu.zz.tb.arrange.goToThreadMain
+import com.yu.zz.tb.deep.TOPBOOK_INDEX_TECHNIQUE
 import com.yu.zz.tb.deep.TopBookApi
-import com.yu.zz.tb.deep.TopBookBean
-import com.yu.zz.tb.technique.DataBean
-import com.yu.zz.tb.technique.TechniqueService
+import com.yu.zz.tb.deep.TopBookResponseBean
+import com.yu.zz.tb.deep.TopBookService
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_topbook_main.*
@@ -40,22 +40,22 @@ class MainTopBookActivity : AppCompatActivity() {
 }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
-    private val mDataTechnique: MutableLiveData<TopBookBean<DataBean>> by lazy { MutableLiveData<TopBookBean<DataBean>>() }
+    private val mDataTechnique: MutableLiveData<TopBookResponseBean> by lazy { MutableLiveData<TopBookResponseBean>() }
 
-    fun getDataTechnique(): LiveData<TopBookBean<DataBean>> = mDataTechnique
+    fun getDataTechnique(): LiveData<TopBookResponseBean> = mDataTechnique
 
     fun getTechnique(start: Int = 0, limit: Int = 8) {
-        TopBookApi.INSTANCE.retrofit.create(TechniqueService::class.java)
-                .getTechnique(start.toString(), limit.toString())
+        TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
+                .getTopBookList(TOPBOOK_INDEX_TECHNIQUE.toString(), start.toString(), limit.toString())
                 .goToThreadMain()
-                .subscribe(object : Observer<TopBookBean<DataBean>> {
+                .subscribe(object : Observer<TopBookResponseBean> {
                     override fun onComplete() {
                     }
 
                     override fun onSubscribe(d: Disposable) {
                     }
 
-                    override fun onNext(t: TopBookBean<DataBean>) {
+                    override fun onNext(t: TopBookResponseBean) {
                         mDataTechnique.value = t
                     }
 
