@@ -8,4 +8,7 @@ import retrofit2.http.Query
 interface TopBookService {
     @GET(TOPBOOK_URL_PATH_PREFIX)
     fun getTopBookList(@Path("index") index: String, @Query("start") start: String, @Query("limit") limit: String): Observable<TopBookResponseBean>
+
+    @GET(TOPBOOK_URL_PAGE)
+    fun getPageConfig(@Query("start") start: String, @Query("limit") limit: String): Observable<TopBookPageResponseBean>
 }
