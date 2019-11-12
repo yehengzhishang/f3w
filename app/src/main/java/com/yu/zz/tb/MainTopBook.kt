@@ -7,19 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer as OB
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.GsonBuilder
 import com.yu.zz.fwww.R
+import com.yu.zz.tb.arrange.goToThreadMain
 import com.yu.zz.tb.deep.TopBookApi
 import com.yu.zz.tb.deep.TopBookBean
 import com.yu.zz.tb.technique.DataBean
 import com.yu.zz.tb.technique.TechniqueService
 import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_topbook_main.*
+import androidx.lifecycle.Observer as OB
 
 class MainTopBookActivity : AppCompatActivity() {
     private val mViewModel by lazy {
@@ -48,8 +47,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun getTechnique(start: Int = 0, limit: Int = 8) {
         TopBookApi.INSTANCE.retrofit.create(TechniqueService::class.java)
                 .getTechnique(start.toString(), limit.toString())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .goToThreadMain()
                 .subscribe(object : Observer<TopBookBean<DataBean>> {
                     override fun onComplete() {
                     }
