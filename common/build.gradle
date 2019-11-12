@@ -34,5 +34,7 @@ dependencies {
     api "androidx.appcompat:appcompat:${version_androidx_appcompat}"
     api "androidx.core:core-ktx:${version_core_ktx}"
 
+    //
+    implementation "io.reactivex.rxjava2:rxjava:${version_rx}"
 }
 
