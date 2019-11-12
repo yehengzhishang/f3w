@@ -5,20 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.GsonBuilder
 import com.yu.zz.fwww.R
 import com.yu.zz.tb.arrange.goToThreadMain
-import com.yu.zz.tb.deep.TOPBOOK_INDEX_TECHNIQUE
-import com.yu.zz.tb.deep.TopBookApi
-import com.yu.zz.tb.deep.TopBookResponseBean
-import com.yu.zz.tb.deep.TopBookService
+import com.yu.zz.tb.deep.*
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_topbook_main.*
-import androidx.lifecycle.Observer as OB
 
 class MainTopBookActivity : AppCompatActivity() {
     private val mViewModel by lazy {
@@ -28,25 +21,58 @@ class MainTopBookActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topbook_main)
-        mViewModel.getDataTechnique().observe(this, OB {
-            if (it == null) {
-                return@OB
-            }
-            val content = GsonBuilder().setPrettyPrinting().create().toJson(it)
-            tvContent.text = content
-        })
-        mViewModel.getTechnique()
+        mViewModel.getPage()
     }
 }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
-    private val mDataTechnique: MutableLiveData<TopBookResponseBean> by lazy { MutableLiveData<TopBookResponseBean>() }
-
-    fun getDataTechnique(): LiveData<TopBookResponseBean> = mDataTechnique
-
-    fun getTechnique(start: Int = 0, limit: Int = 8) {
+    fun getPage(start: Int = 0, limit: Int = 20) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
-                .getTopBookList(TOPBOOK_INDEX_TECHNIQUE.toString(), start.toString(), limit.toString())
+                .getPageConfig(start.toString(), limit.toString())
+                .goToThreadMain()
+                .subscribe(object : Observer<TopBookPageResponseBean> {
+                    override fun onComplete() {
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+                    }
+
+                    override fun onNext(t: TopBookPageResponseBean) {
+                        getItems(t)
+                    }
+
+                    override fun onError(e: Throwable) {
+                    }
+                })
+    }
+
+    private fun getItems(bean: TopBookPageResponseBean) {
+        if (!bean.isSuccess()) {
+            return
+        }
+        if (bean.data == null) {
+            return
+        }
+        val listBean: TopBookListBean<TopBookPageBean> = bean.data!!
+        if (listBean.items == null) {
+            return
+        }
+        val list: MutableList<TopBookPageBean?> = listBean.items!!
+        for (itemBean in list) {
+            if (itemBean == null) {
+                continue
+            }
+            if (itemBean.categoryId == null) {
+                return
+            }
+            val itemId: String = itemBean.categoryId!!.toString()
+            getItem(itemId)
+        }
+    }
+
+    private fun getItem(itemId: String, start: Int = 0, limit: Int = 8) {
+        TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
+                .getTopBookList(itemId, start.toString(), limit.toString())
                 .goToThreadMain()
                 .subscribe(object : Observer<TopBookResponseBean> {
                     override fun onComplete() {
@@ -56,7 +82,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     }
 
                     override fun onNext(t: TopBookResponseBean) {
-                        mDataTechnique.value = t
+                        val reuslt = GsonBuilder().setPrettyPrinting().create().toJson(t)
+                        Log.e("Rain", reuslt)
                     }
 
                     override fun onError(e: Throwable) {
