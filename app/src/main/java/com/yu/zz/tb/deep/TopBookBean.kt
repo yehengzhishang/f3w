@@ -42,3 +42,19 @@ class TopBookDataBean {
 }
 
 class TopBookResponseBean : TopBookBean<TopBookListBean<TopBookDataBean>>()
+
+
+class TopBookPageBean {
+    @SerializedName("categoryId")
+    var categoryId: String? = null
+    @SerializedName("name")
+    var name: String? = null
+    @SerializedName("priority")
+    var priority: Int? = null
+    @SerializedName("createTime")
+    var createTime: String? = null
+    @SerializedName("updateTime")
+    var updateTime: String? = null
+}
+
+class TopBookPageResponseBean : TopBookBean<TopBookListBean<TopBookPageBean>>()
