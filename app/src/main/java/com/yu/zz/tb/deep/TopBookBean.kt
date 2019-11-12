@@ -46,7 +46,7 @@ class TopBookResponseBean : TopBookBean<TopBookListBean<TopBookDataBean>>()
 
 class TopBookPageBean {
     @SerializedName("categoryId")
-    var categoryId: String? = null
+    var categoryId: Int? = null
     @SerializedName("name")
     var name: String? = null
     @SerializedName("priority")
