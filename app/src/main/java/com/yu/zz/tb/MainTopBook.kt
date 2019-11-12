@@ -82,8 +82,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     }
 
                     override fun onNext(t: TopBookResponseBean) {
-                        val reuslt = GsonBuilder().setPrettyPrinting().create().toJson(t)
-                        Log.e("Rain", reuslt)
+                        val result = GsonBuilder().setPrettyPrinting().create().toJson(t)
+                        Log.e("Rain", result)
                     }
 
                     override fun onError(e: Throwable) {
