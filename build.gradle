@@ -3,6 +3,9 @@ buildscript {
     ext.isPluginJar = false
     repositories {
         maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+        }
+        maven {
             url uri('repo') //里面内容为 buildSrc gradle所选位置
         }
         google()
@@ -19,6 +22,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+        }
         maven {
             url uri('repo') //里面内容为 buildSrc gradle所选位置
         }
