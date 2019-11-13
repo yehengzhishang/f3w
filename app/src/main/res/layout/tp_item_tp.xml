@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/ivPic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -17,7 +17,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:lines="2" />
 
         <FrameLayout
             android:layout_width="match_parent"
