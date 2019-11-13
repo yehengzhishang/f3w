@@ -54,24 +54,24 @@ class MainTopBookActivity : AppCompatActivity() {
 }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
-    private val mMapCategory = HashMap<String, TopBookPageBean>()
+    private val mMapCategory = HashMap<String, PageTopBookBean>()
     private val mMapTp = HashMap<String, MutableList<DataTopBookBean>>()
-    private val mListCategory = mutableListOf<TopBookPageBean>()
-    private val mDataCategory by lazy { MutableLiveData<List<TopBookPageBean>>() }
+    private val mListCategory = mutableListOf<PageTopBookBean>()
+    private val mDataCategory by lazy { MutableLiveData<List<PageTopBookBean>>() }
     private val mDataTp by lazy { MutableLiveData<List<DataTopBookBean>>() }
 
     fun getPage(start: Int = 0, limit: Int = 20) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getPageConfig(start.toString(), limit.toString())
                 .goToThreadMain()
-                .subscribe(object : Observer<TopBookPageResponseBean> {
+                .subscribe(object : Observer<PageResponseTopBookBean> {
                     override fun onComplete() {
                     }
 
                     override fun onSubscribe(d: Disposable) {
                     }
 
-                    override fun onNext(t: TopBookPageResponseBean) {
+                    override fun onNext(t: PageResponseTopBookBean) {
                         getItems(t)
                     }
 
@@ -80,7 +80,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 })
     }
 
-    fun getDataCategory(): LiveData<List<TopBookPageBean>> {
+    fun getDataCategory(): LiveData<List<PageTopBookBean>> {
         return mDataCategory
     }
 
@@ -88,8 +88,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return mDataTp
     }
 
-    private fun getItems(bean: TopBookPageResponseBean) {
-        Observable.just(bean)
+    private fun getItems(topBookBean: PageResponseTopBookBean) {
+        Observable.just(topBookBean)
                 .filter { it.isSuccess() && it.data != null }
                 .map { it.data!! }
                 .filter { it.items != null }
@@ -100,7 +100,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 .map { it.categoryId!! }
                 .flatMap { getObsItem(it.toString()) }
                 .goToThreadMain()
-                .subscribe(object : Observer<TopBookResponseBean> {
+                .subscribe(object : Observer<ResponseTopBookBean> {
                     override fun onComplete() {
                         refreshData()
                     }
@@ -108,7 +108,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     override fun onSubscribe(d: Disposable) {
                     }
 
-                    override fun onNext(t: TopBookResponseBean) {
+                    override fun onNext(t: ResponseTopBookBean) {
                         val itemId = itemId(t) ?: return
                         if (!mMapCategory.keys.contains(itemId)) {
                             return
@@ -142,23 +142,23 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         mDataTp.postValue(listAll)
     }
 
-    private fun addCategory(bean: TopBookPageBean) {
-        mMapCategory[bean.categoryId!!.toString()] = bean
-        mListCategory.add(bean)
+    private fun addCategory(topBookBean: PageTopBookBean) {
+        mMapCategory[topBookBean.categoryId!!.toString()] = topBookBean
+        mListCategory.add(topBookBean)
     }
 
 
-    private fun itemId(t: TopBookResponseBean): String? {
+    private fun itemId(t: ResponseTopBookBean): String? {
         if (!t.isSuccess()) return null
         return t.data?.items?.getOrNull(0)?.categoryId?.toString()
     }
 
-    private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 8): Observable<TopBookResponseBean> {
+    private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 8): Observable<ResponseTopBookBean> {
         return TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getTopBookList(itemId, start.toString(), limit.toString())
     }
 
-    private fun addItem(itemId: String, bean: TopBookResponseBean) {
+    private fun addItem(itemId: String, topBookBean: ResponseTopBookBean) {
 
     }
 }

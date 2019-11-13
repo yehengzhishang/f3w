@@ -41,10 +41,10 @@ class DataTopBookBean {
     var likeTotal: Int? = null
 }
 
-class TopBookResponseBean : TopBookBean<ListTopBookBean<DataTopBookBean>>()
+class ResponseTopBookBean : TopBookBean<ListTopBookBean<DataTopBookBean>>()
 
 
-class TopBookPageBean {
+class PageTopBookBean {
     @SerializedName("categoryId")
     var categoryId: Int? = null
     @SerializedName("name")
@@ -57,4 +57,4 @@ class TopBookPageBean {
     var updateTime: String? = null
 }
 
-class TopBookPageResponseBean : TopBookBean<ListTopBookBean<TopBookPageBean>>()
+class PageResponseTopBookBean : TopBookBean<ListTopBookBean<PageTopBookBean>>()
