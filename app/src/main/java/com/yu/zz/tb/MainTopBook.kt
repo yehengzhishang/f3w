@@ -3,11 +3,14 @@ package com.yu.zz.tb
 import android.app.Application
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.yu.zz.fwww.R
 import com.yu.zz.tb.arrange.goToThreadMain
@@ -116,3 +119,17 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     }
 }
+
+class TopBookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val mListBean = mutableListOf<Any>()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        
+    }
+
+    override fun getItemCount(): Int = mListBean.size
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    }
+}
+
+class TopBookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
