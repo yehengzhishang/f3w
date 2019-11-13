@@ -55,10 +55,10 @@ class MainTopBookActivity : AppCompatActivity() {
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val mMapCategory = HashMap<String, TopBookPageBean>()
-    private val mMapTp = HashMap<String, MutableList<TopBookDataBean>>()
+    private val mMapTp = HashMap<String, MutableList<DataTopBookBean>>()
     private val mListCategory = mutableListOf<TopBookPageBean>()
     private val mDataCategory by lazy { MutableLiveData<List<TopBookPageBean>>() }
-    private val mDataTp by lazy { MutableLiveData<List<TopBookDataBean>>() }
+    private val mDataTp by lazy { MutableLiveData<List<DataTopBookBean>>() }
 
     fun getPage(start: Int = 0, limit: Int = 20) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
@@ -84,7 +84,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return mDataCategory
     }
 
-    fun getDataTp(): LiveData<List<TopBookDataBean>> {
+    fun getDataTp(): LiveData<List<DataTopBookBean>> {
         return mDataTp
     }
 
@@ -133,9 +133,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private fun refreshData() {
         mListCategory.sortBy { it.categoryId }
         mDataCategory.postValue(mListCategory)
-        val listAll = mutableListOf<TopBookDataBean>()
+        val listAll = mutableListOf<DataTopBookBean>()
         for (category in mListCategory) {
-            val list: MutableList<TopBookDataBean>? = mMapTp[category.categoryId!!.toString()]
+            val list: MutableList<DataTopBookBean>? = mMapTp[category.categoryId!!.toString()]
                     ?: continue
             listAll.addAll(list!!)
         }
@@ -164,7 +164,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 }
 
 class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder>() {
-    private val mListBean = mutableListOf<TopBookDataBean>()
+    private val mListBean = mutableListOf<DataTopBookBean>()
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -183,7 +183,7 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder>() {
         })
     }
 
-    fun add(list: List<TopBookDataBean>) {
+    fun add(list: List<DataTopBookBean>) {
         mListBean.addAll(list)
         notifyDataSetChanged()
     }
@@ -205,10 +205,10 @@ class TopBookViewHolder private constructor(itemView: View) : RecyclerView.ViewH
 
     constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.tp_item_tp, parent, false))
 
-    fun bind(bean: TopBookDataBean) {
-        Glide.with(ivPic).load(bean.cover).into(ivPic)
-        tvTitle.text = bean.title
-        tvTime.text = bean.createTime
-        tvLike.text = bean.likeTotal?.toString()
+    fun bind(topBookBean: DataTopBookBean) {
+        Glide.with(ivPic).load(topBookBean.cover).into(ivPic)
+        tvTitle.text = topBookBean.title
+        tvTime.text = topBookBean.createTime
+        tvLike.text = topBookBean.likeTotal?.toString()
     }
 }

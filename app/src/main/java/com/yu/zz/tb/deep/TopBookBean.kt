@@ -11,7 +11,7 @@ open class TopBookBean<T> {
     fun isSuccess(): Boolean = success ?: false
 }
 
-class TopBookListBean<T> {
+class ListTopBookBean<T> {
     @SerializedName("start")
     var start: Int? = null
     @SerializedName("limit")
@@ -22,7 +22,7 @@ class TopBookListBean<T> {
     var items: MutableList<T?>? = null
 }
 
-class TopBookDataBean {
+class DataTopBookBean {
     @SerializedName("articleId")
     var articleId: Int? = null
     @SerializedName("categoryId")
@@ -41,7 +41,7 @@ class TopBookDataBean {
     var likeTotal: Int? = null
 }
 
-class TopBookResponseBean : TopBookBean<TopBookListBean<TopBookDataBean>>()
+class TopBookResponseBean : TopBookBean<ListTopBookBean<DataTopBookBean>>()
 
 
 class TopBookPageBean {
@@ -57,4 +57,4 @@ class TopBookPageBean {
     var updateTime: String? = null
 }
 
-class TopBookPageResponseBean : TopBookBean<TopBookListBean<TopBookPageBean>>()
+class TopBookPageResponseBean : TopBookBean<ListTopBookBean<TopBookPageBean>>()
