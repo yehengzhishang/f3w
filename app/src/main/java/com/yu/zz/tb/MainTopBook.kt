@@ -165,11 +165,11 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder>() {
                 val position = parent.getChildLayoutPosition(view)
                 outRect.top = view.context.dp2px(8)
                 if (position % 2 == 0) {
-                    outRect.left = view.context.dp2px(16)
+                    outRect.left = view.context.dp2px(12)
                     outRect.right = view.context.dp2px(4)
                 } else {
                     outRect.left = view.context.dp2px(4)
-                    outRect.right = view.context.dp2px(16)
+                    outRect.right = view.context.dp2px(12)
                 }
             }
         })
