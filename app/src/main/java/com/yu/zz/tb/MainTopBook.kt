@@ -28,6 +28,7 @@ class MainTopBookActivity : AppCompatActivity() {
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val mMapCategory = HashMap<String, TopBookPageBean>()
+    private val mListCategory = mutableListOf<TopBookPageBean>()
     fun getPage(start: Int = 0, limit: Int = 20) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getPageConfig(start.toString(), limit.toString())
@@ -56,7 +57,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 .map { it.items!! }
                 .flatMap { Observable.fromIterable(it) }
                 .filter { it.categoryId != null }
-                .doOnNext { mMapCategory[it!!.categoryId!!.toString()] = it }
+                .doOnNext { addCategory(it!!) }
                 .map { it.categoryId!! }
                 .flatMap { getObsItem(it.toString()) }
                 .goToThreadMain()
@@ -80,15 +81,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 })
     }
 
+    private fun addCategory(bean: TopBookPageBean) {
+        mMapCategory[bean.categoryId!!.toString()] = bean
+        mListCategory.add(bean)
+    }
+
 
     private fun itemId(t: TopBookResponseBean): String? {
-        //todo 优化写法
-        return if (t.isSuccess() && t.data != null && t.data!!.items != null
-                && t.data!!.items!!.isNotEmpty()) {
-            t.data!!.items!![0]!!.categoryId!!.toString()
-        } else {
-            null
-        }
+        if (!t.isSuccess()) return null
+        return t.data?.items?.getOrNull(0)?.categoryId?.toString()
     }
 
     private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 8): Observable<TopBookResponseBean> {
