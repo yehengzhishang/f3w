@@ -56,4 +56,8 @@ ext {
 
     version_rx = "2.2.14"
     version_rx_android = "2.1.1"
+
+    version_glide = "4.10.0"
+    version_gif="1.2.19"
+
 }
