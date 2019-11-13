@@ -2,9 +2,11 @@ package com.yu.zz.tb
 
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.GsonBuilder
 import com.yu.zz.fwww.R
 import com.yu.zz.tb.arrange.goToThreadMain
 import com.yu.zz.tb.deep.*
@@ -70,7 +72,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                         if (!mMapCategory.keys.contains(itemId)) {
                             return
                         }
-                        
+                        Log.e("rain", GsonBuilder().setPrettyPrinting().create().toJson(t))
                     }
 
                     override fun onError(e: Throwable) {
@@ -78,10 +80,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 })
     }
 
+
     private fun itemId(t: TopBookResponseBean): String? {
+        //todo 优化写法
         return if (t.isSuccess() && t.data != null && t.data!!.items != null
                 && t.data!!.items!!.isNotEmpty()) {
-            t.data!!.items!![0]?.toString()
+            t.data!!.items!![0]!!.categoryId!!.toString()
         } else {
             null
         }
