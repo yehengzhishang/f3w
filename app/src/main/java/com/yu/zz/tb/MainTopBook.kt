@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.GsonBuilder
 import com.yu.zz.fwww.R
@@ -29,6 +31,8 @@ class MainTopBookActivity : AppCompatActivity() {
 class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val mMapCategory = HashMap<String, TopBookPageBean>()
     private val mListCategory = mutableListOf<TopBookPageBean>()
+    private val mDataCategory by lazy { MutableLiveData<List<TopBookPageBean>>() }
+
     fun getPage(start: Int = 0, limit: Int = 20) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getPageConfig(start.toString(), limit.toString())
@@ -49,6 +53,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 })
     }
 
+    fun getDataCategory(): LiveData<List<TopBookPageBean>> {
+        return mDataCategory
+    }
+
     private fun getItems(bean: TopBookPageResponseBean) {
         Observable.just(bean)
                 .filter { it.isSuccess() && it.data != null }
@@ -63,6 +71,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 .goToThreadMain()
                 .subscribe(object : Observer<TopBookResponseBean> {
                     override fun onComplete() {
+                        refreshData()
                     }
 
                     override fun onSubscribe(d: Disposable) {
@@ -77,8 +86,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     }
 
                     override fun onError(e: Throwable) {
+
                     }
                 })
+    }
+
+    private fun refreshData() {
+        mListCategory.sortBy { it.categoryId }
+        mDataCategory.postValue(mListCategory)
     }
 
     private fun addCategory(bean: TopBookPageBean) {
