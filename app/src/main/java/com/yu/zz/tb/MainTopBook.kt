@@ -45,10 +45,6 @@ class MainTopBookActivity : AppCompatActivity() {
             }
             mAdapter.add(it)
         })
-    }
-
-    override fun onStart() {
-        super.onStart()
         mViewModel.getPage()
     }
 }
@@ -113,7 +109,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                         if (!mMapCategory.keys.contains(itemId)) {
                             return
                         }
-                        var list = mMapTp.getOrPut(itemId, { mutableListOf() })
+                        val list = mMapTp.getOrPut(itemId, { mutableListOf() })
                         val listSource = t.data?.items!!
                         for (sourceBean in listSource) {
                             if (sourceBean == null) {
@@ -156,10 +152,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 8): Observable<ResponseTopBookBean> {
         return TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getTopBookList(itemId, start.toString(), limit.toString())
-    }
-
-    private fun addItem(itemId: String, topBookBean: ResponseTopBookBean) {
-
     }
 }
 
