@@ -27,6 +27,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":debug")
+    implementation project(":common")
     implementation "com.squareup.retrofit2:retrofit:${version_retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${version_retrofit_adapter}"
     implementation "com.squareup.retrofit2:converter-gson:${version_retrofit_convert}"
