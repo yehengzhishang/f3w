@@ -25,7 +25,7 @@ import com.yu.zz.tb.deep.*
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_topbook_main.*
+import kotlinx.android.synthetic.main.topbook_activity_main.*
 import pl.droidsonroids.gif.GifImageView
 import androidx.lifecycle.Observer as OB
 
@@ -37,7 +37,7 @@ class MainTopBookActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_topbook_main)
+        setContentView(R.layout.topbook_activity_main)
         rv.adapter = mAdapter
         rv.layoutManager = GridLayoutManager(this, 2)
         mViewModel.getDataTp().observe(this, OB {
