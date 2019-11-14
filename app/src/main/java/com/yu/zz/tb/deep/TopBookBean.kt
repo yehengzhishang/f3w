@@ -44,7 +44,7 @@ class ArticleTopBookBean {
 class ArticleResponseTopBookBean : TopBookBean<ListTopBookBean<ArticleTopBookBean>>()
 
 
-class PageTopBookBean {
+class CategoryTopBookBean {
     @SerializedName("categoryId")
     var categoryId: Int? = null
     @SerializedName("name")
@@ -57,4 +57,4 @@ class PageTopBookBean {
     var updateTime: String? = null
 }
 
-class PageResponseTopBookBean : TopBookBean<ListTopBookBean<PageTopBookBean>>()
+class PageResponseTopBookBean : TopBookBean<ListTopBookBean<CategoryTopBookBean>>()

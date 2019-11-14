@@ -51,10 +51,10 @@ class MainTopBookActivity : AppCompatActivity() {
 }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
-    private val mMapCategory = HashMap<String, PageTopBookBean>()
+    private val mMapCategory = HashMap<String, CategoryTopBookBean>()
     private val mMapTp = HashMap<String, MutableList<ArticleTopBookBean>>()
-    private val mListCategory = mutableListOf<PageTopBookBean>()
-    private val mDataCategory by lazy { MutableLiveData<List<PageTopBookBean>>() }
+    private val mListCategory = mutableListOf<CategoryTopBookBean>()
+    private val mDataCategory by lazy { MutableLiveData<List<CategoryTopBookBean>>() }
     private val mDataTp by lazy { MutableLiveData<List<ArticleTopBookBean>>() }
 
     fun getPage(start: Int = 0, limit: Int = 20) {
@@ -77,7 +77,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 })
     }
 
-    fun getDataCategory(): LiveData<List<PageTopBookBean>> {
+    fun getDataCategory(): LiveData<List<CategoryTopBookBean>> {
         return mDataCategory
     }
 
@@ -139,7 +139,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         mDataTp.postValue(listAll)
     }
 
-    private fun addCategory(topBookBean: PageTopBookBean) {
+    private fun addCategory(topBookBean: CategoryTopBookBean) {
         mMapCategory[topBookBean.categoryId!!.toString()] = topBookBean
         mListCategory.add(topBookBean)
     }
@@ -212,8 +212,8 @@ class TitleTopBookViewHolder private constructor(itemView: View) : RecyclerView.
 
     constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.item_topbook_title, parent, false))
 
-    fun bind(pageBean: PageTopBookBean) {
-        tvTitleName.text = pageBean.name
+    fun bind(categoryBean: CategoryTopBookBean) {
+        tvTitleName.text = categoryBean.name
         tvMore.setOnClickListener {
             Snackbar.make(tvMore, "都闪开！我要跳转了！！！", Snackbar.LENGTH_SHORT).show()
         }
