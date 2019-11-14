@@ -196,7 +196,7 @@ class TopBookViewHolder private constructor(itemView: View) : RecyclerView.ViewH
     private val tvTime = itemView.findViewById<TextView>(R.id.tvTime)
     private val tvLike = itemView.findViewById<TextView>(R.id.tvLike)
 
-    constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.tp_item_tp, parent, false))
+    constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.topbook_item_article, parent, false))
 
     fun bind(topBookBean: ArticleTopBookBean) {
         Glide.with(ivPic).load(topBookBean.cover).into(ivPic)
