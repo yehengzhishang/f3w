@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.fwww.R
@@ -202,5 +203,19 @@ class TopBookViewHolder private constructor(itemView: View) : RecyclerView.ViewH
         tvTitle.text = topBookBean.title
         tvTime.text = topBookBean.createTime
         tvLike.text = topBookBean.likeTotal?.toString()
+    }
+}
+
+class TitleTopBookViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val tvTitleName = itemView.findViewById<TextView>(R.id.tvName)
+    private val tvMore = itemView.findViewById<TextView>(R.id.btnMore)
+
+    constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.item_topbook_title, parent, false))
+
+    fun bind(pageBean: PageTopBookBean) {
+        tvTitleName.text = pageBean.name
+        tvMore.setOnClickListener {
+            Snackbar.make(tvMore, "都闪开！我要跳转了！！！", Snackbar.LENGTH_SHORT).show()
+        }
     }
 }
