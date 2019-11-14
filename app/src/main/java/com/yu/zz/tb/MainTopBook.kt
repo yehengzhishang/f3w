@@ -97,7 +97,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 .map { it.categoryId!! }
                 .flatMap { getObsItem(it.toString()) }
                 .goToThreadMain()
-                .subscribe(object : Observer<ResponseTopBookBean> {
+                .subscribe(object : Observer<ArticleResponseTopBookBean> {
                     override fun onComplete() {
                         refreshData()
                     }
@@ -105,7 +105,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     override fun onSubscribe(d: Disposable) {
                     }
 
-                    override fun onNext(t: ResponseTopBookBean) {
+                    override fun onNext(t: ArticleResponseTopBookBean) {
                         val itemId = itemId(t) ?: return
                         if (!mMapCategory.keys.contains(itemId)) {
                             return
@@ -145,12 +145,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
 
-    private fun itemId(t: ResponseTopBookBean): String? {
+    private fun itemId(t: ArticleResponseTopBookBean): String? {
         if (!t.isSuccess()) return null
         return t.data?.items?.getOrNull(0)?.categoryId?.toString()
     }
 
-    private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 8): Observable<ResponseTopBookBean> {
+    private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 8): Observable<ArticleResponseTopBookBean> {
         return TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getTopBookList(itemId, start.toString(), limit.toString())
     }

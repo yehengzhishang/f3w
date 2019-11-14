@@ -41,7 +41,7 @@ class ArticleTopBookBean {
     var likeTotal: Int? = null
 }
 
-class ResponseTopBookBean : TopBookBean<ListTopBookBean<ArticleTopBookBean>>()
+class ArticleResponseTopBookBean : TopBookBean<ListTopBookBean<ArticleTopBookBean>>()
 
 
 class PageTopBookBean {
