@@ -61,14 +61,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getPageConfig(start.toString(), limit.toString())
                 .goToThreadMain()
-                .subscribe(object : Observer<PageResponseTopBookBean> {
+                .subscribe(object : Observer<CategoryResponseTopBookBean> {
                     override fun onComplete() {
                     }
 
                     override fun onSubscribe(d: Disposable) {
                     }
 
-                    override fun onNext(t: PageResponseTopBookBean) {
+                    override fun onNext(t: CategoryResponseTopBookBean) {
                         getItems(t)
                     }
 
@@ -85,7 +85,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return mDataTp
     }
 
-    private fun getItems(topBookBean: PageResponseTopBookBean) {
+    private fun getItems(topBookBean: CategoryResponseTopBookBean) {
         Observable.just(topBookBean)
                 .filter { it.isSuccess() && it.data != null }
                 .map { it.data!! }

@@ -57,4 +57,4 @@ class CategoryTopBookBean {
     var updateTime: String? = null
 }
 
-class PageResponseTopBookBean : TopBookBean<ListTopBookBean<CategoryTopBookBean>>()
+class CategoryResponseTopBookBean : TopBookBean<ListTopBookBean<CategoryTopBookBean>>()

@@ -10,5 +10,5 @@ interface TopBookService {
     fun getTopBookList(@Path("index") index: String, @Query("start") start: String, @Query("limit") limit: String): Observable<ArticleResponseTopBookBean>
 
     @GET(TOPBOOK_URL_PAGE)
-    fun getPageConfig(@Query("start") start: String, @Query("limit") limit: String): Observable<PageResponseTopBookBean>
+    fun getPageConfig(@Query("start") start: String, @Query("limit") limit: String): Observable<CategoryResponseTopBookBean>
 }
