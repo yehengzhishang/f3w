@@ -186,12 +186,15 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
     override fun getItemCount(): Int = mListBean.size
 
     override fun onBindViewHolder(holder: TopBookViewHolder<*>, position: Int) {
+        holder.click = { _, _ ->
+            Snackbar.make(holder.itemView, "点击稍后", Snackbar.LENGTH_SHORT).show()
+        }
         holder.bindAny(mListBean[position], position)
     }
 }
 
 
-class ArticleTopBookViewHolder private constructor(parent: ViewGroup, layoutId: Int) : MixTopBookViewHolder<ArticleTopBookBean>(parent, layoutId) {
+class ArticleTopBookViewHolder private constructor(parent: ViewGroup, layoutId: Int) : TopBookViewHolder<ArticleTopBookBean>(parent, layoutId) {
     private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
     private val ivPic = itemView.findViewById<GifImageView>(R.id.ivPic)
     private val tvTime = itemView.findViewById<TextView>(R.id.tvTime)
@@ -200,11 +203,8 @@ class ArticleTopBookViewHolder private constructor(parent: ViewGroup, layoutId: 
     constructor(parent: ViewGroup) : this(parent, R.layout.topbook_item_article)
 
     override fun bind(bean: ArticleTopBookBean, position: Int) {
-        clickWrapper.c = { _, _ ->
-
-        }
         itemView.setOnClickListener {
-            clickWrapper.c?.invoke(bean, position)
+            click?.invoke(bean, position)
         }
         Glide.with(ivPic).load(bean.cover).into(ivPic)
         tvTitle.text = bean.title
