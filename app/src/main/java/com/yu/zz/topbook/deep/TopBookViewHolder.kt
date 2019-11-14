@@ -9,9 +9,9 @@ abstract class TopBookViewHolder<Bean> private constructor(itemView: View) : Rec
     constructor(parent: ViewGroup, layoutId: Int) : this(LayoutInflater.from(parent.context).inflate(layoutId, parent, false))
 
     @Suppress("UNCHECKED_CAST")
-    fun bind(obj: Any) {
-        bindInner(obj as Bean)
+    open fun bindAny(obj: Any) {
+        bind(obj as Bean)
     }
 
-    abstract fun bindInner(bean: Bean)
+    abstract fun bind(bean: Bean)
 }
