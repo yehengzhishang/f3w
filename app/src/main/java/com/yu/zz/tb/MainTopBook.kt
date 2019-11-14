@@ -210,7 +210,7 @@ class TitleTopBookViewHolder private constructor(itemView: View) : RecyclerView.
     private val tvTitleName = itemView.findViewById<TextView>(R.id.tvName)
     private val tvMore = itemView.findViewById<TextView>(R.id.btnMore)
 
-    constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.item_topbook_title, parent, false))
+    constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.topbook_item_title, parent, false))
 
     fun bind(categoryBean: CategoryTopBookBean) {
         tvTitleName.text = categoryBean.name
