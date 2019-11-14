@@ -19,8 +19,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.yu.zz.common.arrange.dp2px
+import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.fwww.R
-import com.yu.zz.tb.arrange.goToThreadMain
 import com.yu.zz.tb.deep.*
 import io.reactivex.Observable
 import io.reactivex.Observer
