@@ -2,8 +2,6 @@ package com.yu.zz.topbook.deep
 
 const val TOPBOOK_URL_BASE = "https://topbook.cc/"
 
-const val TOPBOOK_INDEX_TECHNIQUE = 9
-
 const val TOPBOOK_URL_PATH_PREFIX = "webapi/content/article/{index}/page"
 
 const val TOPBOOK_URL_PAGE = "webapi/content/category/page"
