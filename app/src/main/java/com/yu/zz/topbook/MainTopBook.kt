@@ -156,7 +156,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 }
 
-class TopBookAdapter : RecyclerView.Adapter<ArticleTopBookViewHolder>() {
+class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
     private val mListBean = mutableListOf<ArticleTopBookBean>()
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -181,33 +181,30 @@ class TopBookAdapter : RecyclerView.Adapter<ArticleTopBookViewHolder>() {
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleTopBookViewHolder = ArticleTopBookViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopBookViewHolder<*> = ArticleTopBookViewHolder(parent)
 
     override fun getItemCount(): Int = mListBean.size
 
-    override fun onBindViewHolder(holder: ArticleTopBookViewHolder, position: Int) {
-        holder.bind(mListBean[position])
+    override fun onBindViewHolder(holder: TopBookViewHolder<*>, position: Int) {
+        holder.bindAny(mListBean[position])
     }
 }
 
-abstract class AbsTopBookViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-}
-
-class ArticleTopBookViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ArticleTopBookViewHolder private constructor(parent: ViewGroup, layoutId: Int) : TopBookViewHolder<ArticleTopBookBean>(parent, layoutId) {
     private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
     private val ivPic = itemView.findViewById<GifImageView>(R.id.ivPic)
     private val tvTime = itemView.findViewById<TextView>(R.id.tvTime)
     private val tvLike = itemView.findViewById<TextView>(R.id.tvLike)
 
-    constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.topbook_item_article, parent, false))
+    constructor(parent: ViewGroup) : this(parent, R.layout.topbook_item_article)
 
-    fun bind(topBookBean: ArticleTopBookBean) {
+    override fun bind(bean: ArticleTopBookBean) {
         itemView.setOnClickListener { }
-        Glide.with(ivPic).load(topBookBean.cover).into(ivPic)
-        tvTitle.text = topBookBean.title
-        tvTime.text = topBookBean.createTime
-        tvLike.text = topBookBean.likeTotal?.toString()
+        Glide.with(ivPic).load(bean.cover).into(ivPic)
+        tvTitle.text = bean.title
+        tvTime.text = bean.createTime
+        tvLike.text = bean.likeTotal?.toString()
     }
 }
 
