@@ -162,6 +162,7 @@ private const val VIEW_TYPE_P = 2
 
 class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
     private val mListBean = mutableListOf<Any>()
+    private val mMapPosition = HashMap<Any, Int>()
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         val layoutManager = recyclerView.layoutManager as GridLayoutManager
@@ -172,8 +173,12 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 super.getItemOffsets(outRect, view, parent, state)
                 val position = parent.getChildLayoutPosition(view)
+                if (mListBean[position] is CategoryTopBookBean) {
+                    return
+                }
                 outRect.top = view.context.dp2px(8)
-                if (position % 2 == 0) {
+                val leftPosition = mMapPosition[mListBean[position]] ?: return
+                if (leftPosition % 2 == 0) {
                     outRect.left = view.context.dp2px(12)
                     outRect.right = view.context.dp2px(4)
                 } else {
@@ -186,6 +191,15 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
 
     fun add(list: List<Any>) {
         mListBean.addAll(list)
+        var type = -1
+        for (an in mListBean) {
+            if (an is CategoryTopBookBean) {
+                type = -1
+                continue
+            }
+            type++
+            mMapPosition[an] = type % 2
+        }
         notifyDataSetChanged()
     }
 
