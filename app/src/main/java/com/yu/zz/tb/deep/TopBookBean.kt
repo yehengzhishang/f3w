@@ -22,7 +22,7 @@ class ListTopBookBean<T> {
     var items: MutableList<T?>? = null
 }
 
-class DataTopBookBean {
+class ArticleTopBookBean {
     @SerializedName("articleId")
     var articleId: Int? = null
     @SerializedName("categoryId")
@@ -41,7 +41,7 @@ class DataTopBookBean {
     var likeTotal: Int? = null
 }
 
-class ResponseTopBookBean : TopBookBean<ListTopBookBean<DataTopBookBean>>()
+class ResponseTopBookBean : TopBookBean<ListTopBookBean<ArticleTopBookBean>>()
 
 
 class PageTopBookBean {
