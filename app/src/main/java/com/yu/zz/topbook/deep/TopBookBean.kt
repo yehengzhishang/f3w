@@ -1,4 +1,4 @@
-package com.yu.zz.tb.deep
+package com.yu.zz.topbook.deep
 
 import com.google.gson.annotations.SerializedName
 

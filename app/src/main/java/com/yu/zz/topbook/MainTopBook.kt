@@ -1,4 +1,4 @@
-package com.yu.zz.tb
+package com.yu.zz.topbook
 
 import android.app.Application
 import android.graphics.Rect
@@ -21,7 +21,7 @@ import com.google.gson.GsonBuilder
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.fwww.R
-import com.yu.zz.tb.deep.*
+import com.yu.zz.topbook.deep.*
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable

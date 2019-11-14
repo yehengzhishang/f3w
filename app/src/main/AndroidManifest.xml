@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.yu.zz.tb.MainTopBookActivity" />
+        <activity android:name="com.yu.zz.topbook.MainTopBookActivity" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.yu.zz.tb.deep
+package com.yu.zz.topbook.deep
 
 const val TOPBOOK_URL_BASE = "https://topbook.cc/"
 
