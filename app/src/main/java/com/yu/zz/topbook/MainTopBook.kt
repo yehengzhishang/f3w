@@ -63,7 +63,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun getPage(start: Int = 0, limit: Int = 20) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
-                .getPageConfig(start.toString(), limit.toString())
+                .getListCategory(start.toString(), limit.toString())
                 .goToThreadMain()
                 .subscribe(object : Observer<CategoryResponseTopBookBean> {
                     override fun onComplete() {
