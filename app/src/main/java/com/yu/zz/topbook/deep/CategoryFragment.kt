@@ -27,9 +27,9 @@ class CategoryFragment : Fragment() {
 }
 
 class CategoryViewModel(app: Application) : AndroidViewModel(app) {
-    fun requestArticleWithCategoryId(catetoryId: String, start: Int, limit: Int) {
+    fun requestArticleWithCategoryId(categoryId: String, start: Int, limit: Int) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
-                .getTopBookList(catetoryId, start = start.toString(), limit = limit.toString())
+                .getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
     }
 }
 

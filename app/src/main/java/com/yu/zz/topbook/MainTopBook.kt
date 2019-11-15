@@ -157,7 +157,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 8): Observable<ArticleResponseTopBookBean> {
         return TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
-                .getTopBookList(itemId, start.toString(), limit.toString())
+                .getArticleWithCategoryId(itemId, start.toString(), limit.toString())
     }
 }
 
