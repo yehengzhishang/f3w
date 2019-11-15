@@ -38,15 +38,19 @@ class MainTopBookActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.topbook_activity_main)
+        title = "Topbook"
         rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mAdapter
         mViewModel.getDataTp().observe(this, OB {
             if (it == null) {
                 return@OB
             }
+            srl.isRefreshing = false
+            srl.isEnabled = false
             mAdapter.add(it)
         })
         mViewModel.getPage()
+        srl.isRefreshing = true
     }
 }
 
@@ -128,7 +132,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun refreshData() {
-        mListCategory.sortBy { it.categoryId }
+        mListCategory.sortByDescending { it.categoryId }
         mDataCategory.postValue(mListCategory)
         val listAll = mutableListOf<Any>()
         for (category in mListCategory) {
