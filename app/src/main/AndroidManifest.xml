@@ -25,8 +25,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.yu.zz.topbook.MainTopBookActivity" />
-        <activity android:name="com.yu.zz.topbook.AssistTopBookActivity" />
+        <activity
+            android:name="com.yu.zz.topbook.MainTopBookActivity"
+            android:label="TopBook" />
+        <activity
+            android:name="com.yu.zz.topbook.AssistTopBookActivity"
+            android:label="TopBook Assist" />
     </application>
 
 </manifest>
