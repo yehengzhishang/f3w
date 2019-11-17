@@ -1,9 +1,12 @@
 package com.yu.zz.topbook
 
 import android.app.Application
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -38,7 +41,6 @@ class MainTopBookActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.topbook_activity_main)
-        title = "Topbook"
         rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mAdapter
         mViewModel.getDataTp().observe(this, OB {
@@ -51,6 +53,24 @@ class MainTopBookActivity : AppCompatActivity() {
         })
         mViewModel.getPage()
         srl.isRefreshing = true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.topboob_menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_change -> changeAssist()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun changeAssist(): Boolean {
+        startActivity(Intent(this, AssistTopBookActivity::class.java))
+        finish()
+        return true
     }
 }
 

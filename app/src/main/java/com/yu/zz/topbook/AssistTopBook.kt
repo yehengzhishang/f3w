@@ -1,7 +1,10 @@
 package com.yu.zz.topbook
 
 import android.app.Application
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -65,6 +68,24 @@ class AssistTopBookActivity : AppCompatActivity() {
             }
         })
         mViewModel.requestCategoryList()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.topboob_menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_change -> changeMain()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun changeMain(): Boolean {
+        startActivity(Intent(this, MainTopBookActivity::class.java))
+        finish()
+        return true
     }
 }
 
