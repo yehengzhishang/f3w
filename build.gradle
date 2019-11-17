@@ -61,4 +61,5 @@ ext {
     version_glide = "4.10.0"
     version_gif = "1.2.19"
 
+    version_lottie = "3.2.0"
 }

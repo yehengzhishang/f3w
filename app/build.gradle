@@ -39,4 +39,5 @@ dependencies {
 
     implementation "pl.droidsonroids.gif:android-gif-drawable:${version_gif}"
     implementation "com.github.bumptech.glide:glide:${version_glide}"
+    implementation "com.airbnb.android:lottie:$version_lottie"
 }
