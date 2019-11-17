@@ -26,6 +26,7 @@
         </activity>
 
         <activity android:name="com.yu.zz.topbook.MainTopBookActivity" />
+        <activity android:name="com.yu.zz.topbook.AssistTopBookActivity" />
     </application>
 
 </manifest>
