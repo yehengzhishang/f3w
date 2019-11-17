@@ -1,6 +1,8 @@
 package com.yu.zz.topbook.deep
 
 import com.google.gson.annotations.SerializedName
+import com.yu.zz.common.arrange.ListFilter
+import com.yu.zz.common.arrange.ifRemoveAndReturn
 
 open class TopBookBean<T> {
     @SerializedName("success")
@@ -20,6 +22,19 @@ class ListTopBookBean<T> {
     var total: Int? = null
     @SerializedName("items")
     var items: MutableList<T?>? = null
+
+    fun getList(): MutableList<T> {
+        val list = items ?: return mutableListOf()
+        return list.ifRemoveAndReturn(ListFilter<T>().filterNull)
+    }
+
+    fun hasMore(): Boolean {
+        val limit = this.limit ?: return false
+        val start = this.start ?: return false
+        val total = this.total ?: return false
+        return start + limit < total
+    }
+
 }
 
 class ArticleTopBookBean {
