@@ -54,6 +54,7 @@ class CategorySingleFragment : Fragment() {
                 srl.isEnabled = false
             }
             mAdapter.addBean(result.getList())
+            mAdapter.notifyDataSetChanged()
         })
         mViewModel.requestArticleWithCategoryId(mCategoryID, start = mAdapter.itemCount, limit = LIMIT)
     }
