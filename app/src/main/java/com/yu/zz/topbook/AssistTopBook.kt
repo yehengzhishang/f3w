@@ -24,29 +24,32 @@ class AssistTopBookActivity : AppCompatActivity() {
     private val mAdapter: CategoryAdapter by lazy {
         CategoryAdapter(supportFragmentManager, lifecycle)
     }
+    private val tabChange: TabLayout.OnTabSelectedListener =
+            object : TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    vp.setCurrentItem(tab.position, false)
+                }
+            }
+    private val pageChange: ViewPager2.OnPageChangeCallback =
+            object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    tl.setScrollPosition(position, 0F, true)
+                }
+            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.topbook_activity_assist)
         vp.adapter = mAdapter
-        tl.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab) {
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                vp.setCurrentItem(tab.position, false)
-            }
-
-        })
-        vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                tl.setScrollPosition(position, 0F, true)
-            }
-        })
+        tl.addOnTabSelectedListener(tabChange)
+        vp.registerOnPageChangeCallback(pageChange)
         mViewModel.getDataCategory().observe(this, OB {
             tl.removeAllTabs()
             if (it != null) {
