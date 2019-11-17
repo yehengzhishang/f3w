@@ -2,4 +2,6 @@
     <string name="app_name">fuel war with warfare</string>
     <string name="hint_shake">shake phone ,find new world</string>
     <string name="action_settings">Settings</string>
+
+    <string name="topbook_change_mode">切换</string>
 </resources>
