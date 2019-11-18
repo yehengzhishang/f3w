@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.GsonBuilder
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.fwww.R
@@ -51,7 +49,7 @@ class MainTopBookActivity : AppCompatActivity() {
         setContentView(R.layout.topbook_activity_main)
         rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mAdapter
-        mViewModel.getDataTp().observe(this, OB {
+        mViewModel.getDataList().observe(this, OB {
             if (it == null) {
                 return@OB
             }
@@ -87,34 +85,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val mMapTp = HashMap<String, MutableList<ArticleTopBookBean>>()
     private val mListCategory = mutableListOf<CategoryTopBookBean>()
     private val mDataCategory by lazy { MutableLiveData<List<CategoryTopBookBean>>() }
-    private val mDataTp by lazy { MutableLiveData<List<Any>>() }
+    private val mDataList by lazy { MutableLiveData<List<Any>>() }
 
     fun getPage(start: Int = 0, limit: Int = 20) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getListCategory(start.toString(), limit.toString())
-                .goToThreadMain()
-                .subscribe(object : Observer<CategoryResponseTopBookBean> {
-                    override fun onComplete() {
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-                    }
-
-                    override fun onNext(t: CategoryResponseTopBookBean) {
-                        getItems(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                    }
-                })
-    }
-
-    fun getDataTp(): LiveData<List<Any>> {
-        return mDataTp
-    }
-
-    private fun getItems(topBookBean: CategoryResponseTopBookBean) {
-        Observable.just(topBookBean)
                 .filter { it.isSuccess() && it.data != null }
                 .map { it.data!! }
                 .filter { it.items != null }
@@ -146,13 +121,16 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                             }
                             list.add(sourceBean)
                         }
-                        Log.e("rain", GsonBuilder().setPrettyPrinting().create().toJson(t))
                     }
 
                     override fun onError(e: Throwable) {
 
                     }
                 })
+    }
+
+    fun getDataList(): LiveData<List<Any>> {
+        return mDataList
     }
 
     private fun refreshData() {
@@ -165,7 +143,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             listAll.add(category)
             listAll.addAll(list)
         }
-        mDataTp.postValue(listAll)
+        mDataList.postValue(listAll)
     }
 
     private fun addCategory(topBookBean: CategoryTopBookBean) {
