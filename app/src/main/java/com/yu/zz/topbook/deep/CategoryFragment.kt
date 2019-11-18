@@ -43,7 +43,7 @@ class CategorySingleFragment : Fragment() {
         mRv.adapter = mAdapter
         mRv.layoutManager = GridLayoutManager(activity!!, SPAN_COUNT)
         val context = context!!
-        mRv.addItemDecoration(TwoSpan(context.dp2px(DP_BORDER), context.dp2px(DP_MDDLE), context.dp2px(DP_TOP)))
+        mRv.addItemDecoration(TwoSpan(context.dp2px(DP_BORDER), context.dp2px(DP_MIDDLE), context.dp2px(DP_TOP)))
         mViewModel.getDataNew().observe(this, OB {
             srl.isRefreshing = false
             if (it == null || !it.isSuccess() || it.data == null) {
