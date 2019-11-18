@@ -30,7 +30,18 @@ import pl.droidsonroids.gif.GifImageView
 import androidx.lifecycle.Observer as OB
 
 class MainTopBookActivity : AppCompatActivity() {
-    private val mAdapter = TopBookAdapter()
+    private val mAdapter = TopBookAdapter().apply {
+        this.click = click@{ bean, _ ->
+            if (bean == null) {
+                return@click
+            }
+            when (bean) {
+                is CategoryTopBookBean -> Snackbar.make(rv, "分类页面正在进行中", Snackbar.LENGTH_SHORT).show()
+                is ArticleTopBookBean -> Snackbar.make(rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
+            }
+
+        }
+    }
     private val mViewModel by lazy {
         ViewModelProviders.of(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
     }
@@ -180,6 +191,8 @@ private const val VIEW_TYPE_P = 2
 class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
     private val mListBean = mutableListOf<Any>()
     private val mMapPosition = HashMap<Any, Int>()
+    var click: ((bean: Any?, position: Int) -> Unit)? = null
+
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         val layoutManager = recyclerView.layoutManager as GridLayoutManager
@@ -231,9 +244,7 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
     override fun getItemCount(): Int = mListBean.size
 
     override fun onBindViewHolder(holder: TopBookViewHolder<*>, position: Int) {
-        holder.click = { _, _ ->
-            Snackbar.make(holder.itemView, "点击稍后", Snackbar.LENGTH_SHORT).show()
-        }
+        holder.click = this.click
         holder.bindAny(mListBean[position], position)
     }
 
@@ -275,7 +286,7 @@ class CategoryTopBookViewHolder private constructor(parent: ViewGroup, layoutId:
     override fun bind(bean: CategoryTopBookBean, position: Int) {
         tvTitleName.text = bean.name
         tvMore.setOnClickListener {
-            Snackbar.make(tvMore, "都闪开！我要跳转了！！！", Snackbar.LENGTH_SHORT).show()
+            click?.invoke(bean, position)
         }
     }
 }
