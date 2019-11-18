@@ -14,6 +14,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.fwww.R
+import com.yu.zz.topbook.category.CategorySingleFragment
+import com.yu.zz.topbook.category.KEY_CATEGORY_ID
 import com.yu.zz.topbook.deep.*
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable

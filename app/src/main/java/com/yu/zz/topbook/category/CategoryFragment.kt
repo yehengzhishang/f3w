@@ -1,4 +1,4 @@
-package com.yu.zz.topbook.deep
+package com.yu.zz.topbook.category
 
 import android.app.Application
 import android.graphics.Rect
@@ -14,6 +14,7 @@ import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.fwww.R
 import com.yu.zz.topbook.ArticleTopBookViewHolder
+import com.yu.zz.topbook.deep.*
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.topbook_fragment_category_single.*
