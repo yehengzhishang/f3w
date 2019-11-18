@@ -5,6 +5,7 @@ buildscript {
         maven {
             url "http://maven.aliyun.com/nexus/content/groups/public"
         }
+        mavenCentral()
         maven {
             url uri('repo') //里面内容为 buildSrc gradle所选位置
         }
@@ -25,6 +26,7 @@ allprojects {
         maven {
             url "http://maven.aliyun.com/nexus/content/groups/public"
         }
+        mavenCentral()
         maven {
             url uri('repo') //里面内容为 buildSrc gradle所选位置
         }
