@@ -11,10 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +32,7 @@ import androidx.lifecycle.Observer as OB
 class MainTopBookActivity : AppCompatActivity() {
     private val mAdapter = TopBookAdapter()
     private val mViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
+        ViewModelProviders.of(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,10 +96,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     override fun onError(e: Throwable) {
                     }
                 })
-    }
-
-    fun getDataCategory(): LiveData<List<CategoryTopBookBean>> {
-        return mDataCategory
     }
 
     fun getDataTp(): LiveData<List<Any>> {
@@ -284,5 +277,15 @@ class CategoryTopBookViewHolder private constructor(parent: ViewGroup, layoutId:
         tvMore.setOnClickListener {
             Snackbar.make(tvMore, "都闪开！我要跳转了！！！", Snackbar.LENGTH_SHORT).show()
         }
+    }
+}
+
+class MainViewModelFactory(private val application: Application) : ViewModelProvider.AndroidViewModelFactory(application) {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(application) as T
+        }
+        return super.create(modelClass)
     }
 }
