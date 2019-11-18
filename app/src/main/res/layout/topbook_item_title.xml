@@ -19,5 +19,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginEnd="12dp"
-        tools:text="查看更多" />
+        android:text="@string/topbook_more" />
 </FrameLayout>
