@@ -26,14 +26,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    // android x
-    api "androidx.appcompat:appcompat:${version_androidx_appcompat}"
-    api "androidx.core:core-ktx:${version_core_ktx}"
-    api "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}"
-    // md
-    api "com.google.android.material:material:${version_androidx_material}"
+    implementation project(":common")
 }
 
