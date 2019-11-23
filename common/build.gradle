@@ -35,19 +35,20 @@ dependencies {
     api "androidx.core:core-ktx:${version_core_ktx}"
     api "androidx.lifecycle:lifecycle-extensions:${version_androidx_lifecycle}"
     api "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}"
     // md
     api "com.google.android.material:material:${version_androidx_material}"
 
     // net
-    implementation "com.squareup.retrofit2:retrofit:${version_retrofit}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${version_retrofit_adapter}"
-    implementation "com.squareup.retrofit2:converter-gson:${version_retrofit_convert}"
-    implementation "io.reactivex.rxjava2:rxjava:${version_rx}"
-    implementation "io.reactivex.rxjava2:rxandroid:${version_rx_android}"
+    api "com.squareup.retrofit2:retrofit:${version_retrofit}"
+    api "com.squareup.retrofit2:adapter-rxjava2:${version_retrofit_adapter}"
+    api "com.squareup.retrofit2:converter-gson:${version_retrofit_convert}"
+    api "io.reactivex.rxjava2:rxjava:${version_rx}"
+    api "io.reactivex.rxjava2:rxandroid:${version_rx_android}"
 
     // image
-    implementation "pl.droidsonroids.gif:android-gif-drawable:${version_gif}"
-    implementation "com.github.bumptech.glide:glide:${version_glide}"
-    implementation "com.airbnb.android:lottie:$version_lottie"
+    api "pl.droidsonroids.gif:android-gif-drawable:${version_gif}"
+    api "com.github.bumptech.glide:glide:${version_glide}"
+    api "com.airbnb.android:lottie:$version_lottie"
 }
 
