@@ -36,6 +36,7 @@ dependencies {
     api "androidx.lifecycle:lifecycle-extensions:${version_androidx_lifecycle}"
     api "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}"
     api "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}"
+    api "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}"
     // md
     api "com.google.android.material:material:${version_androidx_material}"
 
