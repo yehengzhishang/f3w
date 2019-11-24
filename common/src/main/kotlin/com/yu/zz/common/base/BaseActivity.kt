@@ -16,7 +16,7 @@ abstract class BaseActivity : AppCompatActivity() {
     @LayoutRes
     abstract fun layoutId(): Int
 
-    fun init() {
+    open fun init() {
 
     }
 
