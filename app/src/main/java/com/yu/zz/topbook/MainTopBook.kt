@@ -39,7 +39,6 @@ class MainTopBookActivity : AppCompatActivity() {
                 is CategoryTopBookBean -> skip(bean)
                 is ArticleTopBookBean -> Snackbar.make(rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
             }
-
         }
     }
     private val mViewModel by lazy {

@@ -119,7 +119,7 @@ class AssistViewModel(app: Application) : AndroidViewModel(app) {
 
 class AssistViewModelFactory(val app: Application) : ViewModelProvider.AndroidViewModelFactory(app) {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AssistViewModel::class.java)) {
             return AssistViewModel(app) as T
         }
