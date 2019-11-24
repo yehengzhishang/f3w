@@ -8,7 +8,10 @@ import com.yu.zz.topbook.deep.CategoryTopBookBean
 const val KEY_ID_CATEGORY = KEY_CATEGORY_ID
 
 class CategoryActivity : AppCompatActivity() {
-    private val bean: CategoryTopBookBean = CategoryTopBookBean()
+    private val bean: CategoryTopBookBean by lazy {
+        intent.getSerializableExtra(KEY_ID_CATEGORY)!! as CategoryTopBookBean
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.topbook_activity_category)
