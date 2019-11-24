@@ -46,7 +46,7 @@ class AssistTopBookActivity : AppCompatActivity() {
                 mAdapter.add(it)
                 TabLayoutMediator(tl, vp) { tab, pos ->
                     tab.tag = pos
-                    tab.text = title
+                    tab.text = list[pos].name
                 }.attach()
                 mAdapter.notifyDataSetChanged()
             }
