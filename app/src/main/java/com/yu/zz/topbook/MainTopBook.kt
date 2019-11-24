@@ -19,6 +19,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.fwww.R
+import com.yu.zz.topbook.category.CategoryActivity
+import com.yu.zz.topbook.category.KEY_ID_CATEGORY
 import com.yu.zz.topbook.deep.*
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -34,7 +36,7 @@ class MainTopBookActivity : AppCompatActivity() {
                 return@click
             }
             when (bean) {
-                is CategoryTopBookBean -> Snackbar.make(rv, "分类页面正在进行中", Snackbar.LENGTH_SHORT).show()
+                is CategoryTopBookBean -> skip(bean)
                 is ArticleTopBookBean -> Snackbar.make(rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
             }
 
@@ -42,6 +44,12 @@ class MainTopBookActivity : AppCompatActivity() {
     }
     private val mViewModel by lazy {
         ViewModelProviders.of(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
+    }
+
+    private fun skip(bean: CategoryTopBookBean) {
+        startActivity(Intent(this, CategoryActivity::class.java).apply {
+            putExtra(KEY_ID_CATEGORY, bean)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
