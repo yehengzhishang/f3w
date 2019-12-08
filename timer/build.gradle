@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -26,4 +27,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":common")
+    def version_room = "2.2.2"
+    implementation "androidx.room:room-runtime:${version_room}"
+    kapt "androidx.room:room-compiler:$version_room"
+    implementation "androidx.room:room-rxjava2:$version_room"
 }
