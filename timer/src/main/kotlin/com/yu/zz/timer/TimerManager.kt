@@ -8,11 +8,12 @@ class TimerManager {
         val time = sp.getLong("default_time", TIME_DEFAULT_EVERY)
         return TimeInfo(time)
     }
-
 }
 
+
 class TimeInfo constructor(var time: Long) {
-    fun getTimeStr(): String {
+    fun getTimeStr(sustainTime: Long): String {
+        val time = this.time - sustainTime
         val second = time / 1000L
         val min = second / 60L
         val ss = second % 6000L

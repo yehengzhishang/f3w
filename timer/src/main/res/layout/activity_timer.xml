@@ -12,6 +12,7 @@
         tools:layout_height="200dp">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvShowTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
