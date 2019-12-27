@@ -15,4 +15,4 @@ fun config(isDebug: Boolean, isLog: Boolean = IS_LOG) {
 
 data class AppConfig(val isDebug: Boolean, val isLog: Boolean)
 
-fun getAppconfig(): AppConfig = AppConfig(isDebug = IS_DEBUG, isLog = IS_LOG)
+fun getAppConfig(): AppConfig = AppConfig(isDebug = IS_DEBUG, isLog = IS_LOG)
