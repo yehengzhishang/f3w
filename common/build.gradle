@@ -37,5 +37,12 @@ dependencies {
     //rx
     implementation "io.reactivex.rxjava2:rxjava:${version_rx}"
     implementation "io.reactivex.rxjava2:rxandroid:${version_rx_android}"
+
+    //net
+    api "com.squareup.retrofit2:retrofit:${version_retrofit}"
+    api "com.squareup.retrofit2:adapter-rxjava2:${version_retrofit_adapter}"
+    api "com.squareup.retrofit2:converter-gson:${version_retrofit_convert}"
+    api "com.squareup.okhttp3:okhttp:${version_okhttp}"
+    api "com.squareup.okhttp3:logging-interceptor:${version_okhttp}"
 }
 
