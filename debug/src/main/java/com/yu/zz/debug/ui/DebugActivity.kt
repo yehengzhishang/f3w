@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat
 import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.debug.DebugManager
 import com.yu.zz.debug.R
+import com.yu.zz.debug.arrange.getAttrColor
 import kotlinx.android.synthetic.main.activity_debug.*
 
 class DebugActivity : AppCompatActivity() {
@@ -15,6 +16,7 @@ class DebugActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(DebugManager.INSTANCE.themeId)
         setContentView(R.layout.activity_debug)
+        themeAttrColor()
         setSupportActionBar(barDebug)
         btnMore.setOnClickListener { openOptionsMenu() }
     }
@@ -55,6 +57,10 @@ class DebugActivity : AppCompatActivity() {
             return
         }
         super.onBackPressed()
+    }
+
+    private fun themeAttrColor() {
+        btnMore.setTextColor(getAttrColor(0, 0xFFFFFF))
     }
 }
 
