@@ -3,6 +3,7 @@ package com.yu.zz.topbook.deep
 import com.google.gson.annotations.SerializedName
 import com.yu.zz.common.arrange.ListFilter
 import com.yu.zz.common.arrange.ifRemoveAndReturn
+import java.io.Serializable
 
 open class TopBookBean<T> {
     @SerializedName("success")
@@ -59,7 +60,7 @@ class ArticleTopBookBean {
 class ArticleResponseTopBookBean : TopBookBean<ListTopBookBean<ArticleTopBookBean>>()
 
 
-class CategoryTopBookBean {
+class CategoryTopBookBean : Serializable {
     @SerializedName("categoryId")
     var categoryId: Int? = null
     @SerializedName("name")

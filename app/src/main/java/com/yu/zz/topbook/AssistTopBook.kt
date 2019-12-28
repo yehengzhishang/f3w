@@ -10,11 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.*
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.fwww.R
-import com.yu.zz.topbook.deep.*
+import com.yu.zz.topbook.category.CategorySingleFragment
+import com.yu.zz.topbook.category.KEY_CATEGORY_ID
+import com.yu.zz.topbook.deep.CategoryResponseTopBookBean
+import com.yu.zz.topbook.deep.CategoryTopBookBean
+import com.yu.zz.topbook.deep.TopBookApi
+import com.yu.zz.topbook.deep.TopBookService
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.topbook_activity_assist.*
@@ -27,43 +31,23 @@ class AssistTopBookActivity : AppCompatActivity() {
     private val mAdapter: CategoryAdapter by lazy {
         CategoryAdapter(supportFragmentManager, lifecycle)
     }
-    private val tabChange: TabLayout.OnTabSelectedListener =
-            object : TabLayout.OnTabSelectedListener {
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                }
-
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    vp.setCurrentItem(tab.position, false)
-                }
-            }
-    private val pageChange: ViewPager2.OnPageChangeCallback =
-            object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    tl.setScrollPosition(position, 0F, true)
-                }
-            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.topbook_activity_assist)
         vp.adapter = mAdapter
-        tl.addOnTabSelectedListener(tabChange)
-        vp.registerOnPageChangeCallback(pageChange)
         mViewModel.getDataCategory().observe(this, OB {
-            tl.removeAllTabs()
             if (it != null) {
+                val list = mutableListOf<CategoryTopBookBean>()
                 for (bean in it) {
-                    val title = bean.name ?: continue
-                    val tab = tl.newTab()
-                    tab.tag = it.indexOf(bean)
-                    tab.text = title
-                    tl.addTab(tab)
+                    bean.name ?: continue
+                    list.add(bean)
                 }
                 mAdapter.add(it)
+                TabLayoutMediator(tl, vp) { tab, pos ->
+                    tab.tag = pos
+                    tab.text = list[pos].name
+                }.attach()
                 mAdapter.notifyDataSetChanged()
             }
         })
@@ -135,7 +119,7 @@ class AssistViewModel(app: Application) : AndroidViewModel(app) {
 
 class AssistViewModelFactory(val app: Application) : ViewModelProvider.AndroidViewModelFactory(app) {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AssistViewModel::class.java)) {
             return AssistViewModel(app) as T
         }

@@ -4,26 +4,23 @@ import android.app.Application
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.GsonBuilder
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.fwww.R
+import com.yu.zz.topbook.category.CategoryActivity
+import com.yu.zz.topbook.category.KEY_ID_CATEGORY
 import com.yu.zz.topbook.deep.*
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -33,9 +30,25 @@ import pl.droidsonroids.gif.GifImageView
 import androidx.lifecycle.Observer as OB
 
 class MainTopBookActivity : AppCompatActivity() {
-    private val mAdapter = TopBookAdapter()
+    private val mAdapter = TopBookAdapter().apply {
+        this.click = click@{ bean, _ ->
+            if (bean == null) {
+                return@click
+            }
+            when (bean) {
+                is CategoryTopBookBean -> skip(bean)
+                is ArticleTopBookBean -> Snackbar.make(rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
     private val mViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
+        ViewModelProviders.of(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
+    }
+
+    private fun skip(bean: CategoryTopBookBean) {
+        startActivity(Intent(this, CategoryActivity::class.java).apply {
+            putExtra(KEY_ID_CATEGORY, bean)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +56,7 @@ class MainTopBookActivity : AppCompatActivity() {
         setContentView(R.layout.topbook_activity_main)
         rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mAdapter
-        mViewModel.getDataTp().observe(this, OB {
+        mViewModel.getDataList().observe(this, OB {
             if (it == null) {
                 return@OB
             }
@@ -79,38 +92,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val mMapTp = HashMap<String, MutableList<ArticleTopBookBean>>()
     private val mListCategory = mutableListOf<CategoryTopBookBean>()
     private val mDataCategory by lazy { MutableLiveData<List<CategoryTopBookBean>>() }
-    private val mDataTp by lazy { MutableLiveData<List<Any>>() }
+    private val mDataList by lazy { MutableLiveData<List<Any>>() }
 
     fun getPage(start: Int = 0, limit: Int = 20) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getListCategory(start.toString(), limit.toString())
-                .goToThreadMain()
-                .subscribe(object : Observer<CategoryResponseTopBookBean> {
-                    override fun onComplete() {
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-                    }
-
-                    override fun onNext(t: CategoryResponseTopBookBean) {
-                        getItems(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                    }
-                })
-    }
-
-    fun getDataCategory(): LiveData<List<CategoryTopBookBean>> {
-        return mDataCategory
-    }
-
-    fun getDataTp(): LiveData<List<Any>> {
-        return mDataTp
-    }
-
-    private fun getItems(topBookBean: CategoryResponseTopBookBean) {
-        Observable.just(topBookBean)
                 .filter { it.isSuccess() && it.data != null }
                 .map { it.data!! }
                 .filter { it.items != null }
@@ -142,13 +128,16 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                             }
                             list.add(sourceBean)
                         }
-                        Log.e("rain", GsonBuilder().setPrettyPrinting().create().toJson(t))
                     }
 
                     override fun onError(e: Throwable) {
 
                     }
                 })
+    }
+
+    fun getDataList(): LiveData<List<Any>> {
+        return mDataList
     }
 
     private fun refreshData() {
@@ -161,7 +150,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             listAll.add(category)
             listAll.addAll(list)
         }
-        mDataTp.postValue(listAll)
+        mDataList.postValue(listAll)
     }
 
     private fun addCategory(topBookBean: CategoryTopBookBean) {
@@ -187,6 +176,8 @@ private const val VIEW_TYPE_P = 2
 class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
     private val mListBean = mutableListOf<Any>()
     private val mMapPosition = HashMap<Any, Int>()
+    var click: ((bean: Any?, position: Int) -> Unit)? = null
+
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         val layoutManager = recyclerView.layoutManager as GridLayoutManager
@@ -238,9 +229,7 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
     override fun getItemCount(): Int = mListBean.size
 
     override fun onBindViewHolder(holder: TopBookViewHolder<*>, position: Int) {
-        holder.click = { _, _ ->
-            Snackbar.make(holder.itemView, "点击稍后", Snackbar.LENGTH_SHORT).show()
-        }
+        holder.click = this.click
         holder.bindAny(mListBean[position], position)
     }
 
@@ -282,7 +271,17 @@ class CategoryTopBookViewHolder private constructor(parent: ViewGroup, layoutId:
     override fun bind(bean: CategoryTopBookBean, position: Int) {
         tvTitleName.text = bean.name
         tvMore.setOnClickListener {
-            Snackbar.make(tvMore, "都闪开！我要跳转了！！！", Snackbar.LENGTH_SHORT).show()
+            click?.invoke(bean, position)
         }
+    }
+}
+
+class MainViewModelFactory(private val application: Application) : ViewModelProvider.AndroidViewModelFactory(application) {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(application) as T
+        }
+        return super.create(modelClass)
     }
 }
