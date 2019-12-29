@@ -28,11 +28,4 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":debug")
     implementation project(":common")
-
-    implementation "androidx.lifecycle:lifecycle-extensions:${version_androidx_lifecycle}"
-    implementation "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}"
-
-    implementation "pl.droidsonroids.gif:android-gif-drawable:${version_gif}"
-    implementation "com.github.bumptech.glide:glide:${version_glide}"
-    implementation "com.airbnb.android:lottie:$version_lottie"
 }
