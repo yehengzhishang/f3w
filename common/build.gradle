@@ -27,16 +27,17 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     // android x
     api "androidx.appcompat:appcompat:${version_androidx_appcompat}"
     api "androidx.core:core-ktx:${version_core_ktx}"
-
+    api "androidx.lifecycle:lifecycle-extensions:${version_androidx_lifecycle}"
+    api "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}"
+    api "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}"
     //rx
-    implementation "io.reactivex.rxjava2:rxjava:${version_rx}"
-    implementation "io.reactivex.rxjava2:rxandroid:${version_rx_android}"
+    api "io.reactivex.rxjava2:rxjava:${version_rx}"
+    api "io.reactivex.rxjava2:rxandroid:${version_rx_android}"
 
     //net
     api "com.squareup.retrofit2:retrofit:${version_retrofit}"
@@ -44,10 +45,7 @@ dependencies {
     api "com.squareup.retrofit2:converter-gson:${version_retrofit_convert}"
     api "com.squareup.okhttp3:okhttp:${version_okhttp}"
     api "com.squareup.okhttp3:logging-interceptor:${version_okhttp}"
-    api "androidx.lifecycle:lifecycle-extensions:${version_androidx_lifecycle}"
-    api "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}"
-    api "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}"
-    api "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}"
+
     // md
     api "com.google.android.material:material:${version_androidx_material}"
 
