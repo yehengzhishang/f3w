@@ -1,4 +1,4 @@
-package com.yu.zz.biz
+package com.yu.zz.composite
 
 import android.app.Activity
 import com.yu.zz.common.base.ActivityCallback

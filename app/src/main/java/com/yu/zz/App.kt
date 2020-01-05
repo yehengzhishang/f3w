@@ -3,7 +3,7 @@ package com.yu.zz
 import android.app.Application
 import com.yu.zz.common.base.appInit
 import com.yu.zz.common.config
-import com.yu.zz.biz.BizLifecycle
+import com.yu.zz.composite.BizLifecycle
 import com.yu.zz.debug.DebugManager
 import com.yu.zz.fwww.BuildConfig
 import com.yu.zz.fwww.R
