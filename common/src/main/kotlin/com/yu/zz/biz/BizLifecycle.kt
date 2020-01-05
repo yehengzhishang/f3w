@@ -3,7 +3,7 @@ package com.yu.zz.biz
 import android.app.Activity
 import com.yu.zz.common.base.ActivityCallback
 import com.yu.zz.common.base.ActivityLifecycleCallback
-import com.yu.zz.common.base.AppContext
+import com.yu.zz.common.base.PROVIDER_ACTIVITY
 
 class BizLifecycle(mCallback: ActivityCallback) : ActivityLifecycleCallback(mCallback) {
     constructor() : this(BizCallback())
@@ -11,10 +11,10 @@ class BizLifecycle(mCallback: ActivityCallback) : ActivityLifecycleCallback(mCal
 
 private class BizCallback : ActivityCallback {
     override fun add(activity: Activity) {
-        AppContext.INSTANCE.addActivity(activity)
+        PROVIDER_ACTIVITY.set(activity)
     }
 
     override fun remove(activity: Activity) {
-        AppContext.INSTANCE.remove(activity)
+        PROVIDER_ACTIVITY.remove(activity)
     }
 }
