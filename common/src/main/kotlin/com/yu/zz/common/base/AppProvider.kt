@@ -1,4 +1,4 @@
-package com.yu.zz.common
+package com.yu.zz.common.base
 
 import android.app.Application
 import android.util.Log

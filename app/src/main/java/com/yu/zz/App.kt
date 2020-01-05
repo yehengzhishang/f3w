@@ -1,7 +1,7 @@
 package com.yu.zz
 
 import android.app.Application
-import com.yu.zz.common.appInit
+import com.yu.zz.common.base.appInit
 import com.yu.zz.common.config
 import com.yu.zz.biz.BizLifecycle
 import com.yu.zz.debug.DebugManager
