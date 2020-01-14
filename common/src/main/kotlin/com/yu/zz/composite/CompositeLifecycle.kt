@@ -5,11 +5,11 @@ import com.yu.zz.common.base.ActivityCallback
 import com.yu.zz.common.base.ActivityLifecycleCallback
 import com.yu.zz.common.base.PROVIDER_ACTIVITY
 
-class BizLifecycle(mCallback: ActivityCallback) : ActivityLifecycleCallback(mCallback) {
-    constructor() : this(BizCallback())
+class CompositeLifecycle(mCallback: ActivityCallback) : ActivityLifecycleCallback(mCallback) {
+    constructor() : this(CompositeCallback())
 }
 
-private class BizCallback : ActivityCallback {
+private class CompositeCallback : ActivityCallback {
     override fun add(activity: Activity) {
         PROVIDER_ACTIVITY.set(activity)
     }
