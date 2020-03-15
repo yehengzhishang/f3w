@@ -41,7 +41,7 @@ class MainTopBookActivity : AppCompatActivity() {
         }
     }
     private val mViewModel by lazy {
-        ViewModelProviders.of(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
+        ViewModelProvider(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
     }
 
     private fun skip(bean: CategoryTopBookBean) {
