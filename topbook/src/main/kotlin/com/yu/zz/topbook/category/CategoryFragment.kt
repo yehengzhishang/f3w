@@ -29,7 +29,7 @@ class CategorySingleFragment : Fragment() {
         view!!.findViewById<RecyclerView>(R.id.rv)
     }
     private val mViewModel: CategoryViewModel by lazy {
-        ViewModelProviders.of(this, CategoryFactory(app = activity!!.application)).get(CategoryViewModel::class.java)
+        ViewModelProvider(this, CategoryFactory(app = activity!!.application)).get(CategoryViewModel::class.java)
     }
 
     private val mCategoryID: String by lazy { arguments!!.getString(KEY_CATEGORY_ID)!! }
@@ -45,7 +45,7 @@ class CategorySingleFragment : Fragment() {
         mRv.layoutManager = GridLayoutManager(activity!!, SPAN_COUNT)
         val context = context!!
         mRv.addItemDecoration(TwoSpan(context.dp2px(DP_BORDER), context.dp2px(DP_MIDDLE), context.dp2px(DP_TOP)))
-        mViewModel.getDataNew().observe(this, OB {
+        mViewModel.getDataNew().observe(viewLifecycleOwner, OB {
             srl.isRefreshing = false
             if (it == null || !it.isSuccess() || it.data == null) {
                 cleanAdapter()
