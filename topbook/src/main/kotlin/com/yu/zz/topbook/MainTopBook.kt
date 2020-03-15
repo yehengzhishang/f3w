@@ -18,7 +18,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
-import com.yu.zz.fwww.R
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
 import com.yu.zz.topbook.deep.*
