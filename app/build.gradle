@@ -28,4 +28,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":debug")
     implementation project(":common")
+    implementation project(":topbook")
 }

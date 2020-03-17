@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
-import com.yu.zz.fwww.R
 import com.yu.zz.topbook.ArticleTopBookViewHolder
+import com.yu.zz.topbook.R
 import com.yu.zz.topbook.deep.*
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable

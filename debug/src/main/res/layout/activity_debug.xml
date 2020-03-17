@@ -35,7 +35,7 @@
                     android:layout_height="160dp"
                     android:background="@android:color/white">
 
-                    <androidx.appcompat.widget.AppCompatImageView
+                    <ImageView
                         android:id="@+id/ivHead"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
@@ -44,7 +44,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -53,7 +53,7 @@
                         app:layout_constraintBottom_toBottomOf="@id/ivHead"
                         app:layout_constraintRight_toRightOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <TextView
                         android:id="@+id/tvUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                         app:layout_constraintTop_toBottomOf="@id/ivHead"
                         tools:text="小夜呆呆" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <TextView
                         android:id="@+id/tvVip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                     android:layout_marginEnd="16dp"
                     android:background="@android:color/white">
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -97,7 +97,7 @@
                         android:textSize="18sp" />
                 </androidx.cardview.widget.CardView>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <Button
                     android:id="@+id/btnMore"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -112,7 +112,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
