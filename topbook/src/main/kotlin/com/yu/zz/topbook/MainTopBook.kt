@@ -10,7 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +44,7 @@ class MainTopBookActivity : AppCompatActivity() {
         }
     }
     private val mViewModel by lazy {
-        ViewModelProvider(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
+        ViewModelProvider(this, defaultViewModelProviderFactory).get(MainViewModel::class.java)
     }
 
     private fun skip(bean: CategoryTopBookBean) {
@@ -272,15 +275,5 @@ class CategoryTopBookViewHolder private constructor(parent: ViewGroup, layoutId:
         tvMore.setOnClickListener {
             click?.invoke(bean, position)
         }
-    }
-}
-
-class MainViewModelFactory(private val application: Application) : ViewModelProvider.AndroidViewModelFactory(application) {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(application) as T
-        }
-        return super.create(modelClass)
     }
 }

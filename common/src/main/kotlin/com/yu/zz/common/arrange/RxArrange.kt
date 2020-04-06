@@ -56,6 +56,10 @@ class RxCompositeDisposable : Disposable {
         return mComposite.isDisposed
     }
 
+    override fun dispose() {
+        mComposite.dispose()
+    }
+
     fun add(dis: Disposable) {
         mComposite.add(dis)
     }
@@ -67,9 +71,5 @@ class RxCompositeDisposable : Disposable {
 
     fun remove(dis: Disposable): Boolean {
         return mComposite.remove(dis)
-    }
-
-    override fun dispose() {
-        mComposite.dispose()
     }
 }

@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.common.arrange.dp2px
@@ -15,8 +18,7 @@ import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.topbook.ArticleTopBookViewHolder
 import com.yu.zz.topbook.R
 import com.yu.zz.topbook.deep.*
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
+import com.yu.zz.topbook.deep.employ.TopBookViewModel
 import kotlinx.android.synthetic.main.topbook_fragment_category_single.*
 import androidx.lifecycle.Observer as OB
 
@@ -29,7 +31,7 @@ class CategorySingleFragment : Fragment() {
         view!!.findViewById<RecyclerView>(R.id.rv)
     }
     private val mViewModel: CategoryViewModel by lazy {
-        ViewModelProvider(this, CategoryFactory(app = activity!!.application)).get(CategoryViewModel::class.java)
+        ViewModelProvider(this, defaultViewModelProviderFactory).get(CategoryViewModel::class.java)
     }
 
     private val mCategoryID: String by lazy { arguments!!.getString(KEY_CATEGORY_ID)!! }
@@ -45,7 +47,7 @@ class CategorySingleFragment : Fragment() {
         mRv.layoutManager = GridLayoutManager(activity!!, SPAN_COUNT)
         val context = context!!
         mRv.addItemDecoration(TwoSpan(context.dp2px(DP_BORDER), context.dp2px(DP_MIDDLE), context.dp2px(DP_TOP)))
-        mViewModel.getDataNew().observe(viewLifecycleOwner, OB {
+        mViewModel.dateNew.observe(viewLifecycleOwner, OB {
             srl.isRefreshing = false
             if (it == null || !it.isSuccess() || it.data == null) {
                 cleanAdapter()
@@ -106,34 +108,17 @@ private class TwoSpan(private val pxBorder: Int, private val pxMiddle: Int, priv
     }
 }
 
-class CategoryViewModel(app: Application) : AndroidViewModel(app) {
+class CategoryViewModel(app: Application) : TopBookViewModel(app) {
     private val mDataNet: MutableLiveData<ArticleResponseTopBookBean> by lazy {
         MutableLiveData<ArticleResponseTopBookBean>()
     }
-
-    fun getDataNew(): LiveData<ArticleResponseTopBookBean> {
-        return mDataNet
-    }
+    val dateNew: LiveData<ArticleResponseTopBookBean> get() = mDataNet
 
     fun requestArticleWithCategoryId(categoryId: String, start: Int, limit: Int) {
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
                 .goToThreadMain()
-                .subscribe(object : Observer<ArticleResponseTopBookBean> {
-                    override fun onComplete() {
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-                    }
-
-                    override fun onNext(t: ArticleResponseTopBookBean) {
-                        mDataNet.value = t
-                    }
-
-                    override fun onError(e: Throwable) {
-                    }
-
-                })
+                .subscribe(getNext { bean -> mDataNet.value = bean })
     }
 }
 
