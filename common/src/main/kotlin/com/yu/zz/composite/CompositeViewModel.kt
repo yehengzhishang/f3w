@@ -12,6 +12,10 @@ open class CompositeViewModel(app: Application) : BaseViewModel(app) {
         return mDisposables.addAndReturn(getRxObserver(next))
     }
 
+    protected fun <T> getNextComplete(next: (T) -> Unit, complete: () -> Unit): RxObserverWrapper<T> {
+        return mDisposables.addAndReturn(getRxObserver(next = next,complete = getDefaultComplete(complete)))
+    }
+
     override fun onCleared() {
         super.onCleared()
         mDisposables.dispose()

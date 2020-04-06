@@ -1,5 +1,6 @@
 package com.yu.zz.common.arrange
 
+import android.util.Log
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,14 +25,17 @@ class RxObserverWrapper<T> : DisposableObserver<T>() {
     private var mFlowError: ((RxObserverWrapper<T>, Throwable) -> Unit)? = null
     override fun onComplete() {
         mFlowComplete?.invoke(this)
+        Log.e("rain", "complete")
     }
 
     override fun onNext(t: T) {
         mFlowNext?.invoke(this, t)
+        Log.e("rain", "next")
     }
 
     override fun onError(e: Throwable) {
         mFlowError?.invoke(this, e)
+        Log.e("rain", "error")
     }
 
     internal fun flowNext(next: ((RxObserverWrapper<T>, T) -> Unit)) {
@@ -40,6 +44,10 @@ class RxObserverWrapper<T> : DisposableObserver<T>() {
 
     internal fun flowError(error: ((RxObserverWrapper<T>, Throwable) -> Unit)?) {
         this.mFlowError = error
+    }
+
+    internal fun flowComplete(complete: (RxObserverWrapper<T>) -> Unit) {
+        this.mFlowComplete = complete
     }
 
     fun flowDispose() {

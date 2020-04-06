@@ -111,10 +111,10 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
                 .map { it.categoryId!! }
                 .flatMap { getObsItem(it.toString()) }
                 .goToThreadMain()
-                .subscribe(getNext { bean ->
-                    val itemId = itemId(bean) ?: return@getNext
+                .subscribe(getNextComplete(next = next@{ bean ->
+                    val itemId = itemId(bean) ?: return@next
                     if (!mMapCategory.keys.contains(itemId)) {
-                        return@getNext
+                        return@next
                     }
                     val list = mMapTp.getOrPut(itemId, { mutableListOf() })
                     val listSource = bean.data?.items!!
@@ -124,8 +124,10 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
                         }
                         list.add(sourceBean)
                     }
+
+                }, complete = {
                     refreshData()
-                })
+                }))
     }
 
     fun getDataList(): LiveData<List<Any>> {
@@ -156,7 +158,7 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
         return t.data?.items?.getOrNull(0)?.categoryId?.toString()
     }
 
-    private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 8): Observable<ArticleResponseTopBookBean> {
+    private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 4): Observable<ArticleResponseTopBookBean> {
         return TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getArticleWithCategoryId(itemId, start.toString(), limit.toString())
     }

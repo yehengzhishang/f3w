@@ -6,7 +6,7 @@ private var compositeError: ((Throwable) -> Unit) = { e ->
     e.printStackTrace()
 }
 
-fun <T> getDefaultError(): (RxObserverWrapper<T>, Throwable) -> Unit {
+fun <T> getErrorEmpty(): (RxObserverWrapper<T>, Throwable) -> Unit {
     return { ob, e ->
         compositeError(e)
         ob.flowDispose()
@@ -14,16 +14,32 @@ fun <T> getDefaultError(): (RxObserverWrapper<T>, Throwable) -> Unit {
 }
 
 fun <T> getDefaultNext(next: ((T) -> Unit)): ((RxObserverWrapper<T>, T) -> Unit) {
-    return { ob, bean ->
+    return { _, bean ->
         next(bean)
+    }
+}
+
+fun <T> getDefaultComplete(complete: () -> Unit): (RxObserverWrapper<T>) -> Unit {
+    return { ob ->
+        complete.invoke()
         ob.flowDispose()
     }
 }
 
-fun <T> getRxObserver(next: ((T) -> Unit)): RxObserverWrapper<T> {
+fun <T> getEmptyComplete(): (RxObserverWrapper<T>) -> Unit {
+    return { ob ->
+        ob.flowDispose()
+    }
+}
+
+fun <T> getRxObserver(next: ((T) -> Unit),
+                      error: (RxObserverWrapper<T>, Throwable) -> Unit = getErrorEmpty(),
+                      complete: (RxObserverWrapper<T>) -> Unit = getEmptyComplete<T>()
+): RxObserverWrapper<T> {
     return RxObserverWrapper<T>().apply {
         flowNext(next = getDefaultNext(next))
-        flowError(getDefaultError())
+        flowError(error = error)
+        flowComplete(complete = complete)
     }
 }
 
