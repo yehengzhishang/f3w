@@ -3,6 +3,8 @@ package com.yu.zz.common.arrange
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
@@ -44,5 +46,30 @@ class RxObserverWrapper<T> : DisposableObserver<T>() {
         if (!isDisposed) {
             dispose()
         }
+    }
+}
+
+class RxCompositeDisposable : Disposable {
+    private val mComposite: CompositeDisposable = CompositeDisposable()
+    val composite: CompositeDisposable get() = mComposite
+    override fun isDisposed(): Boolean {
+        return mComposite.isDisposed
+    }
+
+    fun add(dis: Disposable) {
+        mComposite.add(dis)
+    }
+
+    fun <T : Disposable> addAndReturn(dis: T): T {
+        mComposite.add(dis)
+        return dis
+    }
+
+    fun remove(dis: Disposable): Boolean {
+        return mComposite.remove(dis)
+    }
+
+    override fun dispose() {
+        mComposite.dispose()
     }
 }

@@ -20,9 +20,10 @@ fun <T> getDefaultNext(next: ((T) -> Unit)): ((RxObserverWrapper<T>, T) -> Unit)
     }
 }
 
-fun <T> getObserver(next: ((T) -> Unit)): RxObserverWrapper<T> {
+fun <T> getRxObserver(next: ((T) -> Unit)): RxObserverWrapper<T> {
     return RxObserverWrapper<T>().apply {
         flowNext(next = getDefaultNext(next))
         flowError(getDefaultError())
     }
 }
+
