@@ -8,19 +8,19 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId())
-        init()
-        ui()
-        data()
+        createFirstInit()
+        createSecondUi()
+        createThirdData()
     }
 
     @LayoutRes
     abstract fun layoutId(): Int
 
-    open fun init() {
+    open fun createFirstInit() {
 
     }
 
-    abstract fun ui()
+    abstract fun createSecondUi()
 
-    abstract fun data()
+    abstract fun createThirdData()
 }

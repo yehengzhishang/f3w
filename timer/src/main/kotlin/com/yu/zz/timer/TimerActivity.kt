@@ -25,9 +25,11 @@ class TimerActivity : BaseActivity() {
         getDataBaseRecord(this)
     }
 
-    override fun layoutId(): Int = R.layout.activity_timer
+    override fun layoutId(): Int {
+        return R.layout.activity_timer
+    }
 
-    override fun ui() {
+    override fun createSecondUi() {
         title = "Just Do It"
         val lp = fl.layoutParams
         lp.height = getScreenWidth()
@@ -36,7 +38,7 @@ class TimerActivity : BaseActivity() {
         }
     }
 
-    override fun data() {
+    override fun createThirdData() {
     }
 
     private fun timeInterval(info: TimeInfo) {
