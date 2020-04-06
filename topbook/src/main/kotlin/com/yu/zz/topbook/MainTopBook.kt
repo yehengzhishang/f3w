@@ -3,17 +3,13 @@ package com.yu.zz.topbook
 import android.app.Application
 import android.content.Intent
 import android.graphics.Rect
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,17 +17,18 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
+import com.yu.zz.common.base.createViewModel
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
 import com.yu.zz.topbook.deep.*
+import com.yu.zz.topbook.deep.employ.TopBookActivity
+import com.yu.zz.topbook.deep.employ.TopBookViewModel
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.topbook_activity_main.*
 import pl.droidsonroids.gif.GifImageView
 import androidx.lifecycle.Observer as OB
 
-class MainTopBookActivity : AppCompatActivity() {
+class MainTopBookActivity : TopBookActivity() {
     private val mAdapter = TopBookAdapter().apply {
         this.click = click@{ bean, _ ->
             if (bean == null) {
@@ -44,18 +41,14 @@ class MainTopBookActivity : AppCompatActivity() {
         }
     }
     private val mViewModel by lazy {
-        ViewModelProvider(this, defaultViewModelProviderFactory).get(MainViewModel::class.java)
+        createViewModel(this, MainViewModel::class.java)
     }
 
-    private fun skip(bean: CategoryTopBookBean) {
-        startActivity(Intent(this, CategoryActivity::class.java).apply {
-            putExtra(KEY_ID_CATEGORY, bean)
-        })
+    override fun layoutId(): Int {
+        return R.layout.topbook_activity_main
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.topbook_activity_main)
+    override fun createSecondUi() {
         rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mAdapter
         mViewModel.getDataList().observe(this, OB {
@@ -66,6 +59,9 @@ class MainTopBookActivity : AppCompatActivity() {
             srl.isEnabled = false
             mAdapter.add(it)
         })
+    }
+
+    override fun createThirdData() {
         mViewModel.getPage()
         srl.isRefreshing = true
     }
@@ -82,6 +78,12 @@ class MainTopBookActivity : AppCompatActivity() {
         }
     }
 
+    private fun skip(bean: CategoryTopBookBean) {
+        startActivity(Intent(this, CategoryActivity::class.java).apply {
+            putExtra(KEY_ID_CATEGORY, bean)
+        })
+    }
+
     private fun changeAssist(): Boolean {
         startActivity(Intent(this, AssistTopBookActivity::class.java))
         finish()
@@ -89,7 +91,7 @@ class MainTopBookActivity : AppCompatActivity() {
     }
 }
 
-class MainViewModel(app: Application) : AndroidViewModel(app) {
+class MainViewModel(app: Application) : TopBookViewModel(app) {
     private val mMapCategory = HashMap<String, CategoryTopBookBean>()
     private val mMapTp = HashMap<String, MutableList<ArticleTopBookBean>>()
     private val mListCategory = mutableListOf<CategoryTopBookBean>()
@@ -109,32 +111,20 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 .map { it.categoryId!! }
                 .flatMap { getObsItem(it.toString()) }
                 .goToThreadMain()
-                .subscribe(object : Observer<ArticleResponseTopBookBean> {
-                    override fun onComplete() {
-                        refreshData()
+                .subscribe(getNext { bean ->
+                    val itemId = itemId(bean) ?: return@getNext
+                    if (!mMapCategory.keys.contains(itemId)) {
+                        return@getNext
                     }
-
-                    override fun onSubscribe(d: Disposable) {
-                    }
-
-                    override fun onNext(t: ArticleResponseTopBookBean) {
-                        val itemId = itemId(t) ?: return
-                        if (!mMapCategory.keys.contains(itemId)) {
-                            return
+                    val list = mMapTp.getOrPut(itemId, { mutableListOf() })
+                    val listSource = bean.data?.items!!
+                    for (sourceBean in listSource) {
+                        if (sourceBean == null) {
+                            continue
                         }
-                        val list = mMapTp.getOrPut(itemId, { mutableListOf() })
-                        val listSource = t.data?.items!!
-                        for (sourceBean in listSource) {
-                            if (sourceBean == null) {
-                                continue
-                            }
-                            list.add(sourceBean)
-                        }
+                        list.add(sourceBean)
                     }
-
-                    override fun onError(e: Throwable) {
-
-                    }
+                    refreshData()
                 })
     }
 

@@ -1,20 +1,22 @@
 package com.yu.zz.topbook.category
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.yu.zz.topbook.R
 import com.yu.zz.topbook.deep.CategoryTopBookBean
+import com.yu.zz.topbook.deep.employ.TopBookActivity
 
 const val KEY_ID_CATEGORY = KEY_CATEGORY_ID
 
-class CategoryActivity : AppCompatActivity() {
+class CategoryActivity : TopBookActivity() {
     private val bean: CategoryTopBookBean by lazy {
         intent.getSerializableExtra(KEY_ID_CATEGORY)!! as CategoryTopBookBean
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.topbook_activity_category)
+    override fun layoutId(): Int {
+        return R.layout.topbook_activity_category
+    }
+
+    override fun createSecondUi() {
         title = bean.name
         supportFragmentManager.beginTransaction().apply {
             val fragment = CategorySingleFragment().apply {
@@ -23,7 +25,10 @@ class CategoryActivity : AppCompatActivity() {
                 }
             }
             add(R.id.fl, fragment)
-            commitNow()
+            commitAllowingStateLoss()
         }
+    }
+
+    override fun createThirdData() {
     }
 }

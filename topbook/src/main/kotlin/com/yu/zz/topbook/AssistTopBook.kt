@@ -5,37 +5,42 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yu.zz.common.arrange.goToThreadMain
+import com.yu.zz.common.base.createViewModel
 import com.yu.zz.topbook.category.CategorySingleFragment
 import com.yu.zz.topbook.category.KEY_CATEGORY_ID
 import com.yu.zz.topbook.deep.CategoryTopBookBean
 import com.yu.zz.topbook.deep.TopBookApi
 import com.yu.zz.topbook.deep.TopBookService
+import com.yu.zz.topbook.deep.employ.TopBookActivity
 import com.yu.zz.topbook.deep.employ.TopBookViewModel
 import kotlinx.android.synthetic.main.topbook_activity_assist.*
 import androidx.lifecycle.Observer as OB
 
-class AssistTopBookActivity : AppCompatActivity() {
+class AssistTopBookActivity : TopBookActivity() {
     private val mViewModel: AssistViewModel by lazy {
-        ViewModelProvider(this, defaultViewModelProviderFactory).get(AssistViewModel::class.java)
+        createViewModel(this, AssistViewModel::class.java)
     }
     private val mAdapter: CategoryAdapter by lazy {
         CategoryAdapter(supportFragmentManager, lifecycle)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.topbook_activity_assist)
+    override fun layoutId(): Int {
+        return R.layout.topbook_activity_assist
+    }
+
+    override fun createSecondUi() {
         vp.adapter = mAdapter
+    }
+
+    override fun createThirdData() {
         mViewModel.dataCategory.observe(this, OB {
             if (it != null) {
                 val list = mutableListOf<CategoryTopBookBean>()
