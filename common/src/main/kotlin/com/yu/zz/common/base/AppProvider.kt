@@ -19,6 +19,8 @@ fun getAppProvider(): AppProvider {
     return provider!!
 }
 
-fun getProviderApplication(): Application = getAppProvider().app
+fun getProviderApplication(): Application {
+    return getAppProvider().app
+}
 
 class AppProvider constructor(val app: Application)
