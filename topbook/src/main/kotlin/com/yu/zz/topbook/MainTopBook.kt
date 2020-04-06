@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.common.base.createViewModel
+import com.yu.zz.composite.observeOnce
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
 import com.yu.zz.topbook.deep.*
@@ -26,7 +27,6 @@ import com.yu.zz.topbook.deep.employ.TopBookViewModel
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.topbook_activity_main.*
 import pl.droidsonroids.gif.GifImageView
-import androidx.lifecycle.Observer as OB
 
 class MainTopBookActivity : TopBookActivity() {
     private val mAdapter = TopBookAdapter().apply {
@@ -51,18 +51,17 @@ class MainTopBookActivity : TopBookActivity() {
     override fun createSecondUi() {
         rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mAdapter
-        mViewModel.getDataList().observe(this, OB {
-            if (it == null) {
+    }
+
+    override fun createThirdData() {
+        mViewModel.load().observeOnce(this) OB@{ list ->
+            if (list == null) {
                 return@OB
             }
             srl.isRefreshing = false
             srl.isEnabled = false
-            mAdapter.add(it)
-        })
-    }
-
-    override fun createThirdData() {
-        mViewModel.getPage()
+            mAdapter.add(list)
+        }
         srl.isRefreshing = true
     }
 
@@ -95,10 +94,9 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
     private val mMapCategory = HashMap<String, CategoryTopBookBean>()
     private val mMapTp = HashMap<String, MutableList<ArticleTopBookBean>>()
     private val mListCategory = mutableListOf<CategoryTopBookBean>()
-    private val mDataCategory by lazy { MutableLiveData<List<CategoryTopBookBean>>() }
-    private val mDataList by lazy { MutableLiveData<List<Any>>() }
 
-    fun getPage(start: Int = 0, limit: Int = 20) {
+    fun load(start: Int = 0, limit: Int = 20): LiveData<List<Any>> {
+        val dataList = MutableLiveData<List<Any>>()
         TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
                 .getListCategory(start.toString(), limit.toString())
                 .filter { it.isSuccess() && it.data != null }
@@ -126,17 +124,14 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
                     }
 
                 }, complete = {
-                    refreshData()
+                    updateData(dataList)
                 }))
+        return dataList
     }
 
-    fun getDataList(): LiveData<List<Any>> {
-        return mDataList
-    }
 
-    private fun refreshData() {
+    private fun updateData(dataList: MutableLiveData<List<Any>>) {
         mListCategory.sortByDescending { it.categoryId }
-        mDataCategory.postValue(mListCategory)
         val listAll = mutableListOf<Any>()
         for (category in mListCategory) {
             val list: MutableList<ArticleTopBookBean> = mMapTp[category.categoryId!!.toString()]
@@ -144,14 +139,13 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
             listAll.add(category)
             listAll.addAll(list)
         }
-        mDataList.postValue(listAll)
+        dataList.value = listAll
     }
 
     private fun addCategory(topBookBean: CategoryTopBookBean) {
         mMapCategory[topBookBean.categoryId!!.toString()] = topBookBean
         mListCategory.add(topBookBean)
     }
-
 
     private fun itemId(t: ArticleResponseTopBookBean): String? {
         if (!t.isSuccess()) return null
