@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -119,15 +118,5 @@ class CategoryViewModel(app: Application) : TopBookViewModel(app) {
                 .getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
                 .goToThreadMain()
                 .subscribe(getNext { bean -> mDataNet.value = bean })
-    }
-}
-
-class CategoryFactory(private val app: Application) : ViewModelProvider.AndroidViewModelFactory(app) {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass::class.java.isAssignableFrom(CategoryViewModel::class.java)) {
-            return CategoryViewModel(app) as T
-        }
-        return super.create(modelClass)
     }
 }
