@@ -13,7 +13,7 @@ open class CompositeViewModel(app: Application) : BaseViewModel(app) {
     }
 
     protected fun <T> getNextComplete(next: (T) -> Unit, complete: () -> Unit): RxObserverWrapper<T> {
-        return mDisposables.addAndReturn(getRxObserver(next = next,complete = getDefaultComplete(complete)))
+        return mDisposables.addAndReturn(getRxObserver(next = next, complete = getDefaultComplete(complete)))
     }
 
     override fun onCleared() {
