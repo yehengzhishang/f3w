@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.common.arrange.dp2px
@@ -24,12 +22,12 @@ const val KEY_CATEGORY_ID = "categoryId"
 private const val LIMIT = 20
 private const val SPAN_COUNT = 2
 
-class CategorySingleFragment : Fragment() {
+class CategorySingleFragment : TopBookFragment() {
     private val mRv: RecyclerView by lazy {
         view!!.findViewById<RecyclerView>(R.id.rv)
     }
     private val mViewModel: CategoryViewModel by lazy {
-        ViewModelProvider(this, defaultViewModelProviderFactory).get(CategoryViewModel::class.java)
+        createViewModel(CategoryViewModel::class.java)
     }
 
     private val mCategoryID: String by lazy { arguments!!.getString(KEY_CATEGORY_ID)!! }

@@ -3,14 +3,22 @@ package com.yu.zz.common.base
 import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 
 const val DEFAULT_FIRST = 0
 const val DEFAULT_MESSAGE = ""
 
-fun <T : ViewModel> createViewModel(activity: AppCompatActivity, clazz: Class<T>): T {
-    val provider = ViewModelProvider(activity.viewModelStore, activity.defaultViewModelProviderFactory)
-    return provider[clazz]
+fun <T : ViewModel> createViewModelActivity(activity: AppCompatActivity, clazz: Class<T>): T {
+    return createViewModel(activity.viewModelStore, activity.defaultViewModelProviderFactory, clazz)
+}
+
+fun <T : ViewModel> createViewModelFragment(fragment: Fragment, clazz: Class<T>): T {
+    return createViewModel(fragment.viewModelStore, fragment.defaultViewModelProviderFactory, clazz)
+}
+
+fun <T : ViewModel> createViewModel(store: ViewModelStore, factory: ViewModelProvider.Factory, clazz: Class<T>): T {
+    return ViewModelProvider(store, factory)[clazz]
 }
 
 open class BaseViewModel(app: Application) : AndroidViewModel(app) {

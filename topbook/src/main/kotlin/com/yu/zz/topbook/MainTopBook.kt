@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
-import com.yu.zz.common.base.createViewModel
 import com.yu.zz.composite.observeOnce
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
@@ -39,7 +38,7 @@ class MainTopBookActivity : TopBookActivity() {
         }
     }
     private val mViewModel by lazy {
-        createViewModel(this, MainViewModel::class.java)
+        createViewModel(MainViewModel::class.java)
     }
 
     override fun layoutId(): Int {

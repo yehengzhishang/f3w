@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.yu.zz.common.base.BaseActivity
 import com.yu.zz.common.base.UI
-import com.yu.zz.common.base.createViewModel as createVM
+import com.yu.zz.common.base.createViewModelActivity
 
 abstract class CompositeActivity : BaseActivity(), UI {
     override val mUiContext: Context
@@ -14,6 +14,6 @@ abstract class CompositeActivity : BaseActivity(), UI {
         get() = this
 
     protected fun <T : ViewModel> createViewModel(clazz: Class<T>): T {
-        return createVM(this, clazz)
+        return createViewModelActivity(this, clazz)
     }
 }
