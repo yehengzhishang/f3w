@@ -16,6 +16,10 @@ open class CompositeViewModel(app: Application) : BaseViewModel(app) {
         return mDisposables.addAndReturn(getRxObserver(next = next, complete = getDefaultComplete(complete)))
     }
 
+    open protected fun <T> createService(clazz: Class<T>): T? {
+        return null
+    }
+
     override fun onCleared() {
         super.onCleared()
         mDisposables.dispose()

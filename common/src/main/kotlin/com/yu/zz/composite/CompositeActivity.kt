@@ -7,7 +7,7 @@ import com.yu.zz.common.base.BaseActivity
 import com.yu.zz.common.base.UI
 import com.yu.zz.common.base.createViewModel as createVM
 
-abstract class CompositeActivity() : BaseActivity(), UI {
+abstract class CompositeActivity : BaseActivity(), UI {
     override val mUiContext: Context
         get() = this
     override val mLifecycleOwner: LifecycleOwner

@@ -21,9 +21,7 @@ import com.yu.zz.common.base.createViewModel
 import com.yu.zz.composite.observeOnce
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
-import com.yu.zz.topbook.deep.*
-import com.yu.zz.topbook.deep.employ.TopBookActivity
-import com.yu.zz.topbook.deep.employ.TopBookViewModel
+import com.yu.zz.topbook.employ.*
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.topbook_activity_main.*
 import pl.droidsonroids.gif.GifImageView

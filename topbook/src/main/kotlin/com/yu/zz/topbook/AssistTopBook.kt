@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.*
@@ -14,11 +13,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.topbook.category.CategorySingleFragment
 import com.yu.zz.topbook.category.KEY_CATEGORY_ID
-import com.yu.zz.topbook.deep.CategoryTopBookBean
-import com.yu.zz.topbook.deep.TopBookApi
-import com.yu.zz.topbook.deep.TopBookService
-import com.yu.zz.topbook.deep.employ.TopBookActivity
-import com.yu.zz.topbook.deep.employ.TopBookViewModel
+import com.yu.zz.topbook.employ.CategoryTopBookBean
+import com.yu.zz.topbook.employ.TopBookApi
+import com.yu.zz.topbook.employ.TopBookService
+import com.yu.zz.topbook.employ.TopBookActivity
+import com.yu.zz.topbook.employ.TopBookViewModel
 import kotlinx.android.synthetic.main.topbook_activity_assist.*
 import androidx.lifecycle.Observer as OB
 

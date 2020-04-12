@@ -2,8 +2,8 @@ package com.yu.zz.topbook.category
 
 import android.os.Bundle
 import com.yu.zz.topbook.R
-import com.yu.zz.topbook.deep.CategoryTopBookBean
-import com.yu.zz.topbook.deep.employ.TopBookActivity
+import com.yu.zz.topbook.employ.CategoryTopBookBean
+import com.yu.zz.topbook.employ.TopBookActivity
 
 const val KEY_ID_CATEGORY = KEY_CATEGORY_ID
 

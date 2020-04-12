@@ -16,8 +16,7 @@ import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.topbook.ArticleTopBookViewHolder
 import com.yu.zz.topbook.R
-import com.yu.zz.topbook.deep.*
-import com.yu.zz.topbook.deep.employ.TopBookViewModel
+import com.yu.zz.topbook.employ.*
 import kotlinx.android.synthetic.main.topbook_fragment_category_single.*
 import androidx.lifecycle.Observer as OB
 
@@ -108,14 +107,14 @@ private class TwoSpan(private val pxBorder: Int, private val pxMiddle: Int, priv
 }
 
 class CategoryViewModel(app: Application) : TopBookViewModel(app) {
+    private val mService: TopBookService = createService(TopBookService::class.java)
     private val mDataNet: MutableLiveData<ArticleResponseTopBookBean> by lazy {
         MutableLiveData<ArticleResponseTopBookBean>()
     }
     val dateNew: LiveData<ArticleResponseTopBookBean> get() = mDataNet
 
     fun requestArticleWithCategoryId(categoryId: String, start: Int, limit: Int) {
-        TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
-                .getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
+        mService.getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
                 .goToThreadMain()
                 .subscribe(getNext { bean -> mDataNet.value = bean })
     }
