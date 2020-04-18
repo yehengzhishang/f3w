@@ -1,5 +1,6 @@
 package com.yu.zz.topbook.category
 
+import android.app.Activity
 import android.app.Application
 import android.graphics.Rect
 import android.os.Bundle
@@ -14,6 +15,7 @@ import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.topbook.R
 import com.yu.zz.topbook.article.ArticleViewHolder
+import com.yu.zz.topbook.article.articleClick
 import com.yu.zz.topbook.employ.*
 import kotlinx.android.synthetic.main.topbook_fragment_category_single.*
 import androidx.lifecycle.Observer as OB
@@ -39,6 +41,7 @@ class CategorySingleFragment : TopBookFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        mAdapter.settingClick(activity!!)
         mRv.adapter = mAdapter
         mRv.layoutManager = GridLayoutManager(activity!!, SPAN_COUNT)
         val context = context!!
@@ -66,6 +69,20 @@ class CategorySingleFragment : TopBookFragment() {
 
 class CategorySingleAdapter : RecyclerView.Adapter<ArticleViewHolder>() {
     private val mListBean = mutableListOf<ArticleTopBookBean>()
+    private var itemClick: ((ArticleTopBookBean, Int) -> Unit)? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
+        return ArticleViewHolder(parent)
+    }
+
+    override fun getItemCount(): Int {
+        return mListBean.size
+    }
+
+    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
+        holder.click = itemClick
+        holder.bind(bean = mListBean[position], position = position)
+    }
 
     fun addBean(source: List<ArticleTopBookBean>) {
         mListBean.addAll(source)
@@ -77,14 +94,8 @@ class CategorySingleAdapter : RecyclerView.Adapter<ArticleViewHolder>() {
         addBean(newSource)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        return ArticleViewHolder(parent)
-    }
-
-    override fun getItemCount(): Int = mListBean.size
-
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        holder.bind(bean = mListBean[position], position = position)
+    fun settingClick(activity: Activity) {
+        itemClick = articleClick(activity)
     }
 }
 
