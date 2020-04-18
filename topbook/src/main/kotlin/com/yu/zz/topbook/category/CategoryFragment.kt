@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
-import com.yu.zz.topbook.ArticleTopBookViewHolder
 import com.yu.zz.topbook.R
+import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.employ.*
 import kotlinx.android.synthetic.main.topbook_fragment_category_single.*
 import androidx.lifecycle.Observer as OB
@@ -64,7 +64,7 @@ class CategorySingleFragment : TopBookFragment() {
     }
 }
 
-class CategorySingleAdapter : RecyclerView.Adapter<ArticleTopBookViewHolder>() {
+class CategorySingleAdapter : RecyclerView.Adapter<ArticleViewHolder>() {
     private val mListBean = mutableListOf<ArticleTopBookBean>()
 
     fun addBean(source: List<ArticleTopBookBean>) {
@@ -77,13 +77,13 @@ class CategorySingleAdapter : RecyclerView.Adapter<ArticleTopBookViewHolder>() {
         addBean(newSource)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleTopBookViewHolder {
-        return ArticleTopBookViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
+        return ArticleViewHolder(parent)
     }
 
     override fun getItemCount(): Int = mListBean.size
 
-    override fun onBindViewHolder(holder: ArticleTopBookViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         holder.bind(bean = mListBean[position], position = position)
     }
 }

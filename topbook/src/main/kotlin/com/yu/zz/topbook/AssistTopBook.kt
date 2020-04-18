@@ -7,16 +7,17 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.topbook.category.CategorySingleFragment
 import com.yu.zz.topbook.category.KEY_CATEGORY_ID
 import com.yu.zz.topbook.employ.CategoryTopBookBean
-import com.yu.zz.topbook.employ.TopBookApi
-import com.yu.zz.topbook.employ.TopBookService
 import com.yu.zz.topbook.employ.TopBookActivity
+import com.yu.zz.topbook.employ.TopBookService
 import com.yu.zz.topbook.employ.TopBookViewModel
 import kotlinx.android.synthetic.main.topbook_activity_assist.*
 import androidx.lifecycle.Observer as OB
@@ -91,14 +92,14 @@ class CategoryAdapter(fm: FragmentManager, lifecycle: Lifecycle) : FragmentState
 }
 
 class AssistViewModel(app: Application) : TopBookViewModel(app) {
+    private val mService = createService(TopBookService::class.java)
     private val mDataCategory: MutableLiveData<List<CategoryTopBookBean>> by lazy {
         MutableLiveData<List<CategoryTopBookBean>>()
     }
     val dataCategory: LiveData<List<CategoryTopBookBean>> get() = mDataCategory
 
     fun requestCategoryList() {
-        TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
-                .getListCategory(start = "0", limit = "20")
+        mService.getListCategory(start = "0", limit = "20")
                 .filter { it.isSuccess() && it.data != null }
                 .goToThreadMain()
                 .subscribe(getNext { bean -> mDataCategory.value = bean.data!!.getList() })

@@ -13,17 +13,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.composite.observeOnce
+import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
 import com.yu.zz.topbook.employ.*
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.topbook_activity_main.*
-import pl.droidsonroids.gif.GifImageView
 
 class MainTopBookActivity : TopBookActivity() {
     private val mAdapter = TopBookAdapter().apply {
@@ -88,14 +87,14 @@ class MainTopBookActivity : TopBookActivity() {
 }
 
 class MainViewModel(app: Application) : TopBookViewModel(app) {
+    private val mService = createService(TopBookService::class.java)
     private val mMapCategory = HashMap<String, CategoryTopBookBean>()
     private val mMapTp = HashMap<String, MutableList<ArticleTopBookBean>>()
     private val mListCategory = mutableListOf<CategoryTopBookBean>()
 
     fun load(start: Int = 0, limit: Int = 20): LiveData<List<Any>> {
         val dataList = MutableLiveData<List<Any>>()
-        TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
-                .getListCategory(start.toString(), limit.toString())
+        mService.getListCategory(start.toString(), limit.toString())
                 .filter { it.isSuccess() && it.data != null }
                 .map { it.data!! }
                 .filter { it.items != null }
@@ -205,7 +204,7 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopBookViewHolder<*> {
         return when (viewType) {
-            VIEW_TYPE_A -> ArticleTopBookViewHolder(parent)
+            VIEW_TYPE_A -> ArticleViewHolder(parent)
             VIEW_TYPE_P -> CategoryTopBookViewHolder(parent)
             else -> throw RuntimeException("cant find view Type")
         }
@@ -224,26 +223,6 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
             mListBean[position] is CategoryTopBookBean -> VIEW_TYPE_P
             else -> throw RuntimeException("cant find type")
         }
-    }
-}
-
-
-class ArticleTopBookViewHolder private constructor(parent: ViewGroup, layoutId: Int) : TopBookViewHolder<ArticleTopBookBean>(parent, layoutId) {
-    private val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
-    private val ivPic = itemView.findViewById<GifImageView>(R.id.ivPic)
-    private val tvTime = itemView.findViewById<TextView>(R.id.tvTime)
-    private val tvLike = itemView.findViewById<TextView>(R.id.tvLike)
-
-    constructor(parent: ViewGroup) : this(parent, R.layout.topbook_item_article)
-
-    override fun bind(bean: ArticleTopBookBean, position: Int) {
-        itemView.setOnClickListener {
-            click?.invoke(bean, position)
-        }
-        Glide.with(ivPic).load(bean.cover).into(ivPic)
-        tvTitle.text = bean.title
-        tvTime.text = bean.createTime
-        tvLike.text = bean.likeTotal?.toString()
     }
 }
 
