@@ -11,14 +11,21 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 fun getFactoryDefaultCall(): CallAdapter.Factory = RxJava2CallAdapterFactory.create()
 fun getFactoryDefaultConverter(): Converter.Factory = GsonConverterFactory.create()
+interface ServiceFactory {
+    fun <T> createService(clazz: Class<T>): T
+}
 
-class FlyNet constructor(config: FlyNetConfig) {
+class FlyNet constructor(config: FlyNetConfig) : ServiceFactory {
     val retrofit: Retrofit = Retrofit.Builder()
             .client(config.getClient())
             .baseUrl(config.baseUrl)
             .addCallAdapterFactory(config.callFactory)
             .addConverterFactory(config.converterFactory)
             .build()
+
+    override fun <T> createService(clazz: Class<T>): T {
+        return retrofit.create(clazz)
+    }
 }
 
 open class FlyNetConfig constructor(val isDebug: Boolean, val baseUrl: String, val callFactory: CallAdapter.Factory, val converterFactory: Converter.Factory) {

@@ -149,7 +149,7 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
     }
 
     private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 4): Observable<ArticleResponseTopBookBean> {
-        return TopBookApi.INSTANCE.retrofit.create(TopBookService::class.java)
+        return TopBookApi.INSTANCE.createService(TopBookService::class.java)
                 .getArticleWithCategoryId(itemId, start.toString(), limit.toString())
     }
 }
