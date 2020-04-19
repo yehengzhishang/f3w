@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -30,8 +31,19 @@ class AssistTopBookActivity : TopBookActivity() {
         CategoryAdapter(supportFragmentManager, lifecycle)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun layoutId(): Int {
         return R.layout.topbook_activity_assist
+    }
+
+    override fun createFirstInit() {
+        super.createFirstInit()
+        setSupportActionBar(tb)
     }
 
     override fun createSecondUi() {
