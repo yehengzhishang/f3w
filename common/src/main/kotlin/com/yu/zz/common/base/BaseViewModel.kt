@@ -1,6 +1,7 @@
 package com.yu.zz.common.base
 
 import android.app.Application
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
@@ -9,7 +10,7 @@ import androidx.lifecycle.*
 const val DEFAULT_FIRST = 0
 const val DEFAULT_MESSAGE = ""
 
-fun <T : ViewModel> createViewModelActivity(activity: AppCompatActivity, clazz: Class<T>): T {
+fun <T : ViewModel> createViewModelActivity(activity: ComponentActivity, clazz: Class<T>): T {
     return createViewModel(activity.viewModelStore, activity.defaultViewModelProviderFactory, clazz)
 }
 

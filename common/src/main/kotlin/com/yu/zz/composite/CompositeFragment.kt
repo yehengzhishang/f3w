@@ -1,6 +1,5 @@
 package com.yu.zz.composite
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import com.yu.zz.common.base.createViewModelActivity
@@ -12,6 +11,6 @@ open class CompositeFragment : Fragment() {
     }
 
     protected open fun <T : ViewModel> createViewModelByActivity(clazz: Class<T>): T {
-        return createViewModelActivity(requireActivity() as AppCompatActivity, clazz)
+        return createViewModelActivity(requireActivity(), clazz)
     }
 }
