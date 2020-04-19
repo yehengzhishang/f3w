@@ -2,12 +2,14 @@ package com.yu.zz.common.arrange
 
 import android.util.Log
 import io.reactivex.Flowable
+import io.reactivex.FlowableTransformer
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Publisher
 
 fun <T> Observable<T>.goToThreadMain(): Observable<T> {
     return this.subscribeOn(Schedulers.io())
@@ -15,8 +17,14 @@ fun <T> Observable<T>.goToThreadMain(): Observable<T> {
 }
 
 fun <T> Flowable<T>.goToThreadMain(): Flowable<T> {
-    return this.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    return this.compose(MainThreadTransformer())
+}
+
+class MainThreadTransformer<T> : FlowableTransformer<T, T> {
+    override fun apply(upstream: Flowable<T>): Publisher<T> {
+        return upstream.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
 }
 
 class RxObserverWrapper<T> : DisposableObserver<T>() {
