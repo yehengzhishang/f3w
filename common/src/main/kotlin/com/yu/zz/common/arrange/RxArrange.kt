@@ -65,23 +65,17 @@ class RxObserverWrapper<T> : DisposableObserver<T>() {
     }
 }
 
-class RxCompositeDisposable : Disposable {
-    private val mComposite: CompositeDisposable = CompositeDisposable()
-    val composite: CompositeDisposable get() = mComposite
-    override fun isDisposed(): Boolean {
-        return mComposite.isDisposed
-    }
+class RxCompositeDisposable(private val mComposite: CompositeDisposable) : Disposable by mComposite {
+    constructor() : this(CompositeDisposable())
 
-    override fun dispose() {
-        mComposite.dispose()
-    }
+    val composite: CompositeDisposable get() = mComposite
 
     fun add(dis: Disposable) {
         mComposite.add(dis)
     }
 
     fun <T : Disposable> addAndReturn(dis: T): T {
-        mComposite.add(dis)
+        add(dis)
         return dis
     }
 
