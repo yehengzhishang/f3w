@@ -1,17 +1,13 @@
 package com.yu.zz.composite
 
-import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import com.yu.zz.bypass.createViewModelActivity
 import com.yu.zz.common.base.BaseActivity
-import com.yu.zz.common.base.UI
-import com.yu.zz.common.base.createViewModelActivity
 
-abstract class CompositeActivity : BaseActivity(), UI {
-    override val mUiContext: Context
-        get() = this
-    override val mLifecycleOwner: LifecycleOwner
-        get() = this
+abstract class CompositeActivity : BaseActivity() {
+    protected inline fun <reified T : ViewModel> createViewModel(): T {
+        return createViewModelActivity(this)
+    }
 
     protected fun <T : ViewModel> createViewModel(clazz: Class<T>): T {
         return createViewModelActivity(this, clazz)

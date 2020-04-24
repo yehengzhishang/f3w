@@ -25,7 +25,7 @@ import androidx.lifecycle.Observer as OB
 
 class AssistTopBookActivity : TopBookActivity() {
     private val mViewModel: AssistViewModel by lazy {
-        createViewModel(AssistViewModel::class.java)
+        createViewModel<AssistViewModel>()
     }
     private val mAdapter: CategoryAdapter by lazy {
         CategoryAdapter(supportFragmentManager, lifecycle)
