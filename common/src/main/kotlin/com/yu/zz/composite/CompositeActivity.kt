@@ -9,7 +9,7 @@ abstract class CompositeActivity : BaseActivity() {
         return createVM()
     }
 
-    protected fun <T : ViewModel> createViewModel(clazz: Class<T>): T {
+    protected open fun <T : ViewModel> createViewModel(clazz: Class<T>): T {
         return createVM(clazz)
     }
 }
