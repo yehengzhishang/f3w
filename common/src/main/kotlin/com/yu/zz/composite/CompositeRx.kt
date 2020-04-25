@@ -1,6 +1,7 @@
 package com.yu.zz.composite
 
-import com.yu.zz.common.arrange.RxObserverWrapper
+import com.yu.zz.bypass.RxObserverWrapper
+
 
 private var compositeError: ((Throwable) -> Unit) = { e ->
     e.printStackTrace()

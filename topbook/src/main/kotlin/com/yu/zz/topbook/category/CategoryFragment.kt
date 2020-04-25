@@ -11,8 +11,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.common.arrange.dp2px
-import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.topbook.R
 import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.article.articleClick

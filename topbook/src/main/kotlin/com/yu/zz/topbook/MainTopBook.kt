@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.common.arrange.dp2px
-import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.common.arrange.observeOnce
 import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.category.CategoryActivity
