@@ -1,4 +1,4 @@
-package com.yu.zz.common.base
+package com.yu.zz.bypass.app
 
 import android.annotation.SuppressLint
 import android.app.Activity

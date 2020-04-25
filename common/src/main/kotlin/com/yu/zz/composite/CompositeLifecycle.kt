@@ -1,9 +1,9 @@
 package com.yu.zz.composite
 
 import android.app.Activity
-import com.yu.zz.common.base.ActivityCallback
-import com.yu.zz.common.base.ActivityLifecycleCallback
-import com.yu.zz.common.base.PROVIDER_ACTIVITY
+import com.yu.zz.bypass.app.ActivityCallback
+import com.yu.zz.bypass.app.ActivityLifecycleCallback
+import com.yu.zz.bypass.app.PROVIDER_ACTIVITY
 
 class CompositeLifecycle(mCallback: ActivityCallback) : ActivityLifecycleCallback(mCallback) {
     constructor() : this(CompositeCallback())

@@ -1,4 +1,4 @@
-package com.yu.zz.common
+package com.yu.zz.bypass.app
 
 private var isInit = false
 private var IS_DEBUG = false

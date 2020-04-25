@@ -1,9 +1,11 @@
-package com.yu.zz.common.base
+package com.yu.zz.bypass.app
 
 import android.app.Application
 import android.util.Log
 
 private var provider: AppProvider? = null
+
+class AppProvider constructor(val app: Application)
 
 fun appInit(app: Application) {
     if (provider != null) {
@@ -22,5 +24,3 @@ fun getAppProvider(): AppProvider {
 fun getProviderApplication(): Application {
     return getAppProvider().app
 }
-
-class AppProvider constructor(val app: Application)

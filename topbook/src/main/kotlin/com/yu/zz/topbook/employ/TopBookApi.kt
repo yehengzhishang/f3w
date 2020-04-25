@@ -1,7 +1,7 @@
 package com.yu.zz.topbook.employ
 
-import com.yu.zz.common.getAppConfig
-import com.yu.zz.common.net.*
+import com.yu.zz.bypass.*
+import com.yu.zz.bypass.app.getAppConfig
 
 class TopBookApi private constructor(private val fly: FlyNet) : ServiceFactory by fly {
     companion object {

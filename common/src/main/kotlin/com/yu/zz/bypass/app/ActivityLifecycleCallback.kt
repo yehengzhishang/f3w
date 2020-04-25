@@ -1,4 +1,4 @@
-package com.yu.zz.common.base
+package com.yu.zz.bypass.app
 
 import android.app.Activity
 import android.app.Application

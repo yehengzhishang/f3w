@@ -1,4 +1,4 @@
-package com.yu.zz.common.net
+package com.yu.zz.bypass
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
