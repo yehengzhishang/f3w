@@ -9,14 +9,20 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-fun getFactoryDefaultCall(): CallAdapter.Factory = RxJava2CallAdapterFactory.create()
-fun getFactoryDefaultConverter(): Converter.Factory = GsonConverterFactory.create()
+fun getFactoryDefaultCall(): CallAdapter.Factory {
+    return RxJava2CallAdapterFactory.create()
+}
+
+fun getFactoryDefaultConverter(): Converter.Factory {
+    return GsonConverterFactory.create()
+}
+
 interface ServiceFactory {
     fun <T> createService(clazz: Class<T>): T
 }
 
 class FlyNet constructor(config: FlyNetConfig) : ServiceFactory {
-    val retrofit: Retrofit = Retrofit.Builder()
+    private val mRetrofit: Retrofit = Retrofit.Builder()
             .client(config.getClient())
             .baseUrl(config.baseUrl)
             .addCallAdapterFactory(config.callFactory)
@@ -24,14 +30,15 @@ class FlyNet constructor(config: FlyNetConfig) : ServiceFactory {
             .build()
 
     override fun <T> createService(clazz: Class<T>): T {
-        return retrofit.create(clazz)
+        return mRetrofit.create(clazz)
     }
 }
 
 open class FlyNetConfig constructor(val isDebug: Boolean, val baseUrl: String, val callFactory: CallAdapter.Factory, val converterFactory: Converter.Factory) {
-    open fun getClient(): OkHttpClient = getClientBuilder().build()
-    open fun getClientBuilder(): OkHttpClient.Builder = ClientFactory().getClientBuilder(getInterceptors())
-    open fun getLogger(): Interceptor? = LoggerInterceptor().logger
+    open fun getLogger(): Interceptor? {
+        return LoggerInterceptor().logger
+    }
+
     open fun getInterceptors(): List<Interceptor> {
         val interceptors = mutableListOf<Interceptor>()
         val logger = getLogger()
@@ -42,19 +49,32 @@ open class FlyNetConfig constructor(val isDebug: Boolean, val baseUrl: String, v
         }
         return interceptors
     }
+
+    open fun getClientBuilder(): OkHttpClient.Builder {
+        return ClientFactory().getClientBuilder(getInterceptors())
+    }
+
+    open fun getClient(): OkHttpClient {
+        return getClientBuilder().build()
+    }
 }
 
 class LoggerInterceptor {
-    val logger: Interceptor = HttpLoggingInterceptor().apply {
-        this.level = HttpLoggingInterceptor.Level.BASIC
+    val logger: Interceptor = createLogger()
+
+    private fun createLogger(level: HttpLoggingInterceptor.Level = HttpLoggingInterceptor.Level.BASIC): Interceptor {
+        return HttpLoggingInterceptor().apply {
+            this.level = level
+        }
     }
 }
 
 class ClientFactory {
-    fun getClientBuilder(interceptors: List<Interceptor>): OkHttpClient.Builder = OkHttpClient.Builder()
-            .apply {
-                for (i in interceptors) {
-                    this.addNetworkInterceptor(i)
-                }
-            }
+    fun getClientBuilder(interceptors: List<Interceptor>): OkHttpClient.Builder {
+        val builder = OkHttpClient.Builder()
+        for (i in interceptors) {
+            builder.addNetworkInterceptor(i)
+        }
+        return builder
+    }
 }
