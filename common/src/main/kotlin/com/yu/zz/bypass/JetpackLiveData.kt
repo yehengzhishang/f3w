@@ -1,5 +1,6 @@
 package com.yu.zz.bypass
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
@@ -8,4 +9,8 @@ class OnceLiveDataObserver<Info>(private val mLiveData: LiveData<Info>, private 
         mChange(info)
         mLiveData.removeObserver(this)
     }
+}
+
+fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, change: ((T?) -> Unit)) {
+    observe(owner, OnceLiveDataObserver(this, change))
 }

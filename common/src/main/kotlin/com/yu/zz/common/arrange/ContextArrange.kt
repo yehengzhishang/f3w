@@ -7,9 +7,17 @@ import androidx.annotation.StringRes
 
 private const val MESSAGE_DURATION = Toast.LENGTH_SHORT
 
-fun Context.getScreenHeight(): Int = applicationContext.resources.displayMetrics.heightPixels
-fun Context.getScreenWidth(): Int = applicationContext.resources.displayMetrics.widthPixels
-fun Context.dp2px(dp: Int): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).toInt()
+fun Context.getScreenHeight(): Int {
+    return applicationContext.resources.displayMetrics.heightPixels
+}
+
+fun Context.getScreenWidth(): Int {
+    return applicationContext.resources.displayMetrics.widthPixels
+}
+
+fun Context.dp2px(dp: Int): Int {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).toInt()
+}
 
 fun Context.toast(content: String, duration: Int = MESSAGE_DURATION) {
     Toast.makeText(this, content, duration).show()
