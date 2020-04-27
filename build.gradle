@@ -13,7 +13,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.android.tools.build:gradle:3.6.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         if (isPluginJar) {
             classpath 'com.yu.zz:demoplugin:0.0.1'
@@ -51,21 +51,65 @@ ext {
     version_androidx_viewpager2 = "1.0.0"
     version_androidx_swiperfreshlayout = "1.0.0"
 
+    androidx_map = [
+            "appcompat"         : "androidx.appcompat:appcompat:${version_androidx_appcompat}",
+            "lifecycle"         : "androidx.lifecycle:lifecycle-extensions:${version_androidx_lifecycle}",
+            "viewpager2"        : "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}",
+            "swiperefreshlayout": "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}",
+            "constraintlayout"  : "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}",
+            "md"                : "com.google.android.material:material:${version_androidx_material}"
+
+    ]
+    androidx_lib = androidx_map.values()
+
     version_kotlin = ext.kotlin_version
     version_core_ktx = "1.2.0"
+    kotlin_map = [
+            "lib": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+            "ktx": "androidx.core:core-ktx:${version_core_ktx}",
+    ]
+    kotlin_lib = kotlin_map.values()
 
     version_retrofit = "2.6.2"
     version_retrofit_adapter = version_retrofit
     version_retrofit_convert = version_retrofit
     version_okhttp = "4.2.2"
+    net_map = [
+            "retrofit"          : "com.squareup.retrofit2:retrofit:${version_retrofit}",
+            "retrofit_adapter"  : "com.squareup.retrofit2:adapter-rxjava2:${version_retrofit_adapter}",
+            "retrofit_converter": "com.squareup.retrofit2:converter-gson:${version_retrofit_convert}",
+            "okhttp"            : "com.squareup.okhttp3:okhttp:${version_okhttp}",
+            "okhttp_logg"       : "com.squareup.okhttp3:logging-interceptor:${version_okhttp}",
+    ]
+    net_lib = net_map.values()
 
+    //rx
     version_rx = "2.2.14"
     version_rx_android = "2.1.1"
+    rx_map = [
+            "rx_java"   : "io.reactivex.rxjava2:rxjava:${version_rx}",
+            "rx_andoird": "io.reactivex.rxjava2:rxandroid:${version_rx_android}"
+    ]
+    rx_lib = rx_map.values()
 
+    // image
     version_glide = "4.10.0"
+    glide_map = [
+            "glide": "com.github.bumptech.glide:glide:${version_glide}"
+    ]
+    image_lib = glide_map.values()
+
     version_gif = "1.2.19"
+    gif_map = [
+            "gif": "pl.droidsonroids.gif:android-gif-drawable:${version_gif}"
+    ]
+    git_lib = gif_map.values()
 
     version_lottie = "3.2.0"
+    animation_map = [
+            "lottie": "com.airbnb.android:lottie:$version_lottie"
+    ]
+    animation_lib = animation_map.values()
 
     deafultAndroid = { projectTarget ->
         projectTarget.android {

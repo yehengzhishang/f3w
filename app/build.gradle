@@ -29,4 +29,6 @@ dependencies {
     implementation project(":debug")
     implementation project(":common")
     implementation project(":topbook")
+
+    implementation animation_lib
 }

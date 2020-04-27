@@ -18,7 +18,7 @@ class SplashActivity : AppCompatActivity() {
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                startActivity(Intent(this@SplashActivity, com.yu.zz.topbook.MainTopBookActivity::class.java))
+                startActivity(Intent(this@SplashActivity, MainTopBookActivity::class.java))
                 finish()
             }
 
