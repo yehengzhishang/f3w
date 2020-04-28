@@ -39,7 +39,5 @@ dependencies {
 
     // image
     api image_lib
-    api "pl.droidsonroids.gif:android-gif-drawable:${version_gif}"
-
 }
 
