@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.common.arrange.getScreenWidth
-import com.yu.zz.common.arrange.goToThreadMain
 import com.yu.zz.common.base.BaseActivity
 import com.yu.zz.timer.db.RecordBean
 import com.yu.zz.timer.db.RecordDataBase
