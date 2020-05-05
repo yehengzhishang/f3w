@@ -4,7 +4,8 @@
 
     <item
         android:id="@+id/action_state"
-        android:orderInCategory="100"
+        android:icon="@drawable/topic"
+        android:orderInCategory="1"
         android:title="@string/topbook_change_topic"
         app:showAsAction="ifRoom" />
 
