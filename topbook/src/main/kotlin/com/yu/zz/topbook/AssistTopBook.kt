@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yu.zz.bypass.goToThreadMain
@@ -21,7 +22,6 @@ import com.yu.zz.topbook.employ.TopBookActivity
 import com.yu.zz.topbook.employ.TopBookService
 import com.yu.zz.topbook.employ.TopBookViewModel
 import kotlinx.android.synthetic.main.topbook_activity_assist.*
-import androidx.lifecycle.Observer as OB
 
 class AssistTopBookActivity : TopBookActivity() {
     private val mViewModel: AssistViewModel by lazy {
@@ -31,10 +31,45 @@ class AssistTopBookActivity : TopBookActivity() {
         CategoryAdapter(supportFragmentManager, lifecycle)
     }
 
+    private fun obData(result: List<CategoryTopBookBean>?) {
+        if (result == null) {
+            return
+        }
+        val list = mutableListOf<CategoryTopBookBean>()
+        for (bean in result) {
+            bean.name ?: continue
+            list.add(bean)
+        }
+        mAdapter.add(result)
+        TabLayoutMediator(tl, vp) { tab, pos ->
+            tab.tag = pos
+            tab.text = list[pos].name
+        }.attach()
+        mAdapter.notifyDataSetChanged()
+    }
+
+    private fun changeMain(): Boolean {
+        startActivity(Intent(this, MainTopBookActivity::class.java))
+        finish()
+        return true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.topboob_menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_change -> changeMain()
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun layoutId(): Int {
@@ -51,40 +86,10 @@ class AssistTopBookActivity : TopBookActivity() {
     }
 
     override fun createThirdData() {
-        mViewModel.dataCategory.observe(this, OB {
-            if (it != null) {
-                val list = mutableListOf<CategoryTopBookBean>()
-                for (bean in it) {
-                    bean.name ?: continue
-                    list.add(bean)
-                }
-                mAdapter.add(it)
-                TabLayoutMediator(tl, vp) { tab, pos ->
-                    tab.tag = pos
-                    tab.text = list[pos].name
-                }.attach()
-                mAdapter.notifyDataSetChanged()
-            }
+        mViewModel.dataCategory.observe(this, Observer { result: List<CategoryTopBookBean>? ->
+            this.obData(result)
         })
         mViewModel.requestCategoryList()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.topboob_menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_change -> changeMain()
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun changeMain(): Boolean {
-        startActivity(Intent(this, MainTopBookActivity::class.java))
-        finish()
-        return true
     }
 }
 
