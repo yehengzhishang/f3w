@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.yu.zz.fwww.R
-import com.yu.zz.topbook.MainTopBookActivity
+import com.yu.zz.topbook.FoundationTopBookActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
@@ -18,7 +18,7 @@ class SplashActivity : AppCompatActivity() {
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                startActivity(Intent(this@SplashActivity, MainTopBookActivity::class.java))
+                startActivity(Intent(this@SplashActivity, FoundationTopBookActivity::class.java))
                 finish()
             }
 

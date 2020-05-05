@@ -49,7 +49,7 @@ class AssistTopBookActivity : TopBookActivity() {
     }
 
     private fun changeMain(): Boolean {
-        startActivity(Intent(this, MainTopBookActivity::class.java))
+        startActivity(Intent(this, FoundationTopBookActivity::class.java))
         finish()
         return true
     }

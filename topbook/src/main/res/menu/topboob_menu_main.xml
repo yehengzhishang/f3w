@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_state"
+        android:orderInCategory="100"
+        android:title="@string/topbook_change_topic"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_change"
         android:orderInCategory="100"

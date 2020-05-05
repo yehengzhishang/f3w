@@ -3,10 +3,8 @@ package com.yu.zz.topbook
 import android.app.Application
 import android.content.Intent
 import android.graphics.Rect
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.os.Bundle
+import android.view.*
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,74 +15,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.bypass.observeOnce
 import com.yu.zz.common.arrange.dp2px
+import com.yu.zz.common.arrange.toast
 import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
+import com.yu.zz.topbook.databinding.TopbookActivityMainBinding
 import com.yu.zz.topbook.employ.*
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.topbook_activity_main.*
-
-class MainTopBookActivity : TopBookActivity() {
-    private val mAdapter = TopBookAdapter().apply {
-        this.click = click@{ bean, _ ->
-            if (bean == null) {
-                return@click
-            }
-            when (bean) {
-                is CategoryTopBookBean -> skip(bean)
-                is ArticleTopBookBean -> Snackbar.make(rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
-            }
-        }
-    }
-    private val mViewModel by lazy {
-        createViewModel(MainViewModel::class.java)
-    }
-
-    override fun layoutId(): Int {
-        return R.layout.topbook_activity_main
-    }
-
-    override fun createSecondUi() {
-        rv.layoutManager = GridLayoutManager(this, 2)
-        rv.adapter = mAdapter
-    }
-
-    override fun createThirdData() {
-        mViewModel.load().observeOnce(this) OB@{ list ->
-            if (list == null) {
-                return@OB
-            }
-            srl.isRefreshing = false
-            srl.isEnabled = false
-            mAdapter.add(list)
-        }
-        srl.isRefreshing = true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.topboob_menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_change -> changeAssist()
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun skip(bean: CategoryTopBookBean) {
-        startActivity(Intent(this, CategoryActivity::class.java).apply {
-            putExtra(KEY_ID_CATEGORY, bean)
-        })
-    }
-
-    private fun changeAssist(): Boolean {
-        startActivity(Intent(this, AssistTopBookActivity::class.java))
-        finish()
-        return true
-    }
-}
 
 class MainViewModel(app: Application) : TopBookViewModel(app) {
     private val mService = createService(TopBookService::class.java)
@@ -237,5 +175,133 @@ class CategoryTopBookViewHolder private constructor(parent: ViewGroup, layoutId:
         tvMore.setOnClickListener {
             click?.invoke(bean, position)
         }
+    }
+}
+
+class MainTopBookFragment : TopBookFragment() {
+    private var _viewBinding: TopbookActivityMainBinding? = null
+    private val mViewBinding get() = _viewBinding!!
+    private val mAdapter = TopBookAdapter().apply {
+        this.click = click@{ bean, _ ->
+            if (bean == null) {
+                return@click
+            }
+            when (bean) {
+                is CategoryTopBookBean -> skip(bean)
+                is ArticleTopBookBean -> Snackbar.make(rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private val mViewModel by lazy {
+        createViewModel(MainViewModel::class.java)
+    }
+
+    private fun goTopic(): Boolean {
+        requireContext().toast("正在开发")
+        return true
+    }
+
+    private fun skip(bean: CategoryTopBookBean) {
+        startActivity(Intent(requireContext(), CategoryActivity::class.java).apply {
+            putExtra(KEY_ID_CATEGORY, bean)
+        })
+    }
+
+    private fun createSecondUi() {
+        mViewBinding.rv.run {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = mAdapter
+        }
+    }
+
+    private fun createThirdData() {
+        mViewModel.load().observeOnce(this) OB@{ list ->
+            if (list == null) {
+                return@OB
+            }
+            srl.isRefreshing = false
+            srl.isEnabled = false
+            mAdapter.add(list)
+        }
+        srl.isRefreshing = true
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _viewBinding = TopbookActivityMainBinding.inflate(inflater, container, false)
+        createSecondUi()
+        return mViewBinding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        createThirdData()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_state -> goTopic()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+}
+
+class FoundationTopBookActivity : TopBookActivity() {
+    private var mFragmentCurrent: TopBookFragment? = null
+    private val mFragmentMain: MainTopBookFragment by lazy {
+        MainTopBookFragment()
+    }
+
+    private fun changeFragment(fragmentTarget: TopBookFragment) {
+        val beginTransaction = supportFragmentManager.beginTransaction()
+        mFragmentCurrent?.let { current ->
+            beginTransaction.hide(current)
+        }
+        if (!fragmentTarget.isAdded) {
+            beginTransaction.run {
+                add(R.id.fcv_tp, fragmentTarget)
+            }
+        } else {
+            beginTransaction.run {
+                show(fragmentTarget)
+            }
+        }
+        beginTransaction.commitAllowingStateLoss()
+        mFragmentCurrent = fragmentTarget
+    }
+
+    override fun layoutId(): Int {
+        return R.layout.topbook_activity_foundation
+    }
+
+    override fun createSecondUi() {
+        changeFragment(mFragmentMain)
+    }
+
+    override fun createThirdData() {
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.topboob_menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_change -> changeAssist()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun changeAssist(): Boolean {
+        startActivity(Intent(this, AssistTopBookActivity::class.java))
+        finish()
+        return true
     }
 }
