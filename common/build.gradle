@@ -39,5 +39,7 @@ dependencies {
 
     // image
     api image_lib
+
+    api dagger_lib
 }
 

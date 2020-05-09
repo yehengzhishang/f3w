@@ -8,5 +8,5 @@ rootProject.ext.deafultAndroid this
 rootProject.ext.commonLib this
 
 dependencies {
-    api git_lib
+    api gif_lib
 }

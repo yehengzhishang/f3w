@@ -103,7 +103,7 @@ ext {
     gif_map = [
             "gif": "pl.droidsonroids.gif:android-gif-drawable:${version_gif}"
     ]
-    git_lib = gif_map.values()
+    gif_lib = gif_map.values()
 
     version_lottie = "3.2.0"
     animation_map = [
@@ -111,6 +111,16 @@ ext {
     ]
     animation_lib = animation_map.values()
 
+    version_dagger = "2.27"
+    dagger_map = [
+            "dagger"         : "com.google.dagger:dagger:${version_dagger}",
+            "dragger_support": "com.google.dagger:dagger-android-support:$version_dagger"
+    ]
+    dagger_lib = dagger_map.values()
+
+    dagger_kapt = [
+            "dagger-android-processor": "com.google.dagger:dagger-android-processor:$version_dagger"
+    ]
     deafultAndroid = { projectTarget ->
         projectTarget.android {
             compileSdkVersion sdk_version_base
