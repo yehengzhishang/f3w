@@ -114,13 +114,17 @@ ext {
     version_dagger = "2.27"
     dagger_map = [
             "dagger"         : "com.google.dagger:dagger:${version_dagger}",
+            "dagger_andorid" : "com.google.dagger:dagger-android:${version_dagger}",
             "dragger_support": "com.google.dagger:dagger-android-support:$version_dagger"
     ]
     dagger_lib = dagger_map.values()
 
     dagger_kapt = [
-            "dagger-android-processor": "com.google.dagger:dagger-android-processor:$version_dagger"
+            "dagger-android-processor": "com.google.dagger:dagger-android-processor:$version_dagger",
+            "dagger-compiler"         : "com.google.dagger:dagger-compiler:$version_dagger"
     ]
+    dagger_kapt_lib = dagger_kapt.values()
+
     deafultAndroid = { projectTarget ->
         projectTarget.android {
             compileSdkVersion sdk_version_base
