@@ -18,10 +18,9 @@ class TopicViewHolder private constructor(private val mViewBinding: TopbookTopic
         mViewBinding.topicTvTitle.text = bean.title
         mViewBinding.topicTvFirst.text = bean.abstract
         mViewBinding.topicTvHeadCreate.text = bean.nickname
-        val rc: RoundedCorners = RoundedCorners(150)
         Glide.with(mViewBinding.topicIvHeadCreate)
                 .load(bean.avatarUrl)
-                .apply(RequestOptions.bitmapTransform(rc).override(300, 300))
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(150)).override(300, 300))
                 .into(mViewBinding.topicIvHeadCreate)
     }
 }
