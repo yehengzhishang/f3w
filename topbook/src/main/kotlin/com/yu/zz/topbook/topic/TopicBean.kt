@@ -1,6 +1,8 @@
 package com.yu.zz.topbook.topic
 
 import com.google.gson.annotations.SerializedName
+import com.yu.zz.topbook.employ.ListTopBookBean
+import com.yu.zz.topbook.employ.TopBookBean
 
 data class TopicBean(
         @SerializedName("topicId")
@@ -18,5 +20,9 @@ data class TopicBean(
         @SerializedName("nickname")
         var nickname: String? = null,
         @SerializedName("avatarUrl")
-        var avatarUrl: String? = null
+        var avatarUrl: String? = null,
+        @SerializedName("viewpointsTotal")
+        var viewpointsTotal: Int? = 0
 )
+
+class ResultTopicBean : TopBookBean<ListTopBookBean<TopicBean>>()
