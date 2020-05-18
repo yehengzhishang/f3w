@@ -239,6 +239,11 @@ class MainTopBookFragment : TopBookFragment() {
         createThirdData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = "TopBook"
+    }
+
 }
 
 class FoundationTopBookActivity : TopBookActivity() {
@@ -250,8 +255,12 @@ class FoundationTopBookActivity : TopBookActivity() {
         TopicFragment()
     }
 
-    private val goTopic: () -> Boolean = {
-        changeFragment(mFragmentTopic)
+    private val topChange: () -> Boolean = {
+        if (mFragmentCurrent != mFragmentTopic) {
+            changeFragment(mFragmentTopic)
+        } else {
+            changeFragment(mFragmentMain)
+        }
         true
     }
 
@@ -275,7 +284,7 @@ class FoundationTopBookActivity : TopBookActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_change -> changeAssist()
-            R.id.action_state -> goTopic()
+            R.id.action_state -> topChange()
             else -> super.onOptionsItemSelected(item)
         }
     }
