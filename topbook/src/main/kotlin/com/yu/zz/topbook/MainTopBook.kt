@@ -15,13 +15,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.bypass.observeOnce
 import com.yu.zz.common.arrange.dp2px
-import com.yu.zz.common.arrange.toast
 import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
 import com.yu.zz.topbook.databinding.TopbookActivityMainBinding
 import com.yu.zz.topbook.employ.*
+import com.yu.zz.topbook.topic.TopicFragment
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.topbook_activity_main.*
 
 class MainViewModel(app: Application) : TopBookViewModel(app) {
@@ -89,6 +90,7 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
     private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 4): Observable<ArticleResponseTopBookBean> {
         return TopBookApi.INSTANCE.createService(TopBookService::class.java)
                 .getArticleWithCategoryId(itemId, start.toString(), limit.toString())
+                .subscribeOn(Schedulers.io())
     }
 }
 
@@ -196,11 +198,6 @@ class MainTopBookFragment : TopBookFragment() {
         createViewModel(MainViewModel::class.java)
     }
 
-    private fun goTopic(): Boolean {
-        requireContext().toast("正在开发")
-        return true
-    }
-
     private fun skip(bean: CategoryTopBookBean) {
         startActivity(Intent(requireContext(), CategoryActivity::class.java).apply {
             putExtra(KEY_ID_CATEGORY, bean)
@@ -242,13 +239,6 @@ class MainTopBookFragment : TopBookFragment() {
         createThirdData()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_state -> goTopic()
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
 }
 
 class FoundationTopBookActivity : TopBookActivity() {
@@ -256,23 +246,13 @@ class FoundationTopBookActivity : TopBookActivity() {
     private val mFragmentMain: MainTopBookFragment by lazy {
         MainTopBookFragment()
     }
+    private val mFragmentTopic: TopicFragment by lazy {
+        TopicFragment()
+    }
 
-    private fun changeFragment(fragmentTarget: TopBookFragment) {
-        val beginTransaction = supportFragmentManager.beginTransaction()
-        mFragmentCurrent?.let { current ->
-            beginTransaction.hide(current)
-        }
-        if (!fragmentTarget.isAdded) {
-            beginTransaction.run {
-                add(R.id.fcv_tp, fragmentTarget)
-            }
-        } else {
-            beginTransaction.run {
-                show(fragmentTarget)
-            }
-        }
-        beginTransaction.commitAllowingStateLoss()
-        mFragmentCurrent = fragmentTarget
+    private val goTopic: () -> Boolean = {
+        changeFragment(mFragmentTopic)
+        true
     }
 
     override fun layoutId(): Int {
@@ -295,6 +275,7 @@ class FoundationTopBookActivity : TopBookActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_change -> changeAssist()
+            R.id.action_state -> goTopic()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -303,5 +284,23 @@ class FoundationTopBookActivity : TopBookActivity() {
         startActivity(Intent(this, AssistTopBookActivity::class.java))
         finish()
         return true
+    }
+
+    private fun changeFragment(fragmentTarget: TopBookFragment) {
+        val beginTransaction = supportFragmentManager.beginTransaction()
+        mFragmentCurrent?.let { current ->
+            beginTransaction.hide(current)
+        }
+        if (!fragmentTarget.isAdded) {
+            beginTransaction.run {
+                add(R.id.fcv_tp, fragmentTarget)
+            }
+        } else {
+            beginTransaction.run {
+                show(fragmentTarget)
+            }
+        }
+        beginTransaction.commitAllowingStateLoss()
+        mFragmentCurrent = fragmentTarget
     }
 }

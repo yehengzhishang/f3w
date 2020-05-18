@@ -1,7 +1,6 @@
 package com.yu.zz.topbook.topic
 
 import android.app.Application
-import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yu.zz.bypass.goToThreadMain
@@ -14,27 +13,30 @@ class TopicViewModel(app: Application) : TopBookViewModel(app) {
     private val mService: TopicService by lazy {
         createService(TopicService::class.java)
     }
-    private val mDataList: MutableLiveData<MutableList<TopicBean>> by lazy {
-        MutableLiveData<MutableList<TopicBean>>()
+    private val mDataList: MutableLiveData<ListInfo> by lazy {
+        MutableLiveData<ListInfo>()
     }
-    private val dataList: LiveData<MutableList<TopicBean>> get() = mDataList
+    val dataList: LiveData<ListInfo> get() = mDataList
 
-
-    @UiThread
-    private fun onNextList(bean: TopBookBean<ListTopBookBean<TopicBean>>) {
+    private val nextList: (Int, Int, TopBookBean<ListTopBookBean<TopicBean>>) -> Unit = next@{ start, limit, bean ->
         if (!bean.isSuccess()) {
             getApplication<Application>().toast("加载异常")
-            return
+            return@next
         }
-        val data = bean.data ?: return
+        val data = bean.data ?: return@next
         val list = data.getList()
-        mDataList.value= list
+        mDataList.value = ListInfo(start, limit, list)
     }
 
     fun loadList(start: Int = 0, limit: Int = 10) {
         mService.requestList(start.toString(), limit = limit.toString())
                 .goToThreadMain()
-                .subscribe(getNext(this::onNextList))
+                .subscribe(getNext { bean -> nextList(start, limit, bean) })
     }
+}
 
+data class ListInfo(private val start: Int, private val limit: Int, val list: List<TopicBean>) {
+    fun isNeedClear(): Boolean {
+        return 0 == start
+    }
 }
