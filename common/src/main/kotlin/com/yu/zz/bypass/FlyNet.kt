@@ -8,6 +8,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 fun getFactoryDefaultCall(): CallAdapter.Factory {
     return RxJava2CallAdapterFactory.create()
@@ -55,7 +56,9 @@ open class FlyNetConfig constructor(val isDebug: Boolean, val baseUrl: String, v
     }
 
     open fun getClient(): OkHttpClient {
-        return getClientBuilder().build()
+        return getClientBuilder()
+                .callTimeout(1, TimeUnit.SECONDS)
+                .build()
     }
 }
 
