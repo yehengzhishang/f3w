@@ -1,11 +1,13 @@
 package com.yu.zz.topbook.topic
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +18,9 @@ import com.yu.zz.topbook.employ.TopBookFragment
 class TopicFragment : TopBookFragment() {
     private var mViewBinding: TopbookTopicFragmentBinding? = null
     private val mBinding get() = mViewBinding!!
-    private val mAdapter: TopicAdapter = TopicAdapter()
+    private val mAdapter: TopicAdapter = TopicAdapter().apply {
+        this.clickBean = this@TopicFragment::goToDetail
+    }
     private lateinit var mViewModel: TopicViewModel
     private lateinit var mScroller: Scroller
 
@@ -37,6 +41,13 @@ class TopicFragment : TopBookFragment() {
             mAdapter.addList(list)
         }
         mAdapter.notifyDataSetChanged()
+    }
+
+    private fun goToDetail(bean: TopicBean, position: Int) {
+        val topicId = bean.topicId ?: return
+        ActivityCompat.startActivity(requireContext(), Intent(requireActivity(), DetailTopicActivity::class.java).apply {
+            this.putExtra(KEY_ID, topicId.toString())
+        }, null)
     }
 
     override fun onAttach(context: Context) {

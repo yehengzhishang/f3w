@@ -1,13 +1,16 @@
 package com.yu.zz.topbook.topic
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.yu.zz.topbook.R
 import com.yu.zz.topbook.databinding.TopbookTopicItemBinding
 import com.yu.zz.topbook.employ.TopBookViewHolder
+
 
 class TopicViewHolder private constructor(private val mViewBinding: TopbookTopicItemBinding) : TopBookViewHolder<TopicBean>(mViewBinding.root) {
     constructor(parent: ViewGroup) : this(TopbookTopicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -26,7 +29,17 @@ class TopicViewHolder private constructor(private val mViewBinding: TopbookTopic
 }
 
 class TopicAdapter : RecyclerView.Adapter<TopicViewHolder>() {
+    private val keyTag = R.id.topic_tv_first
     private val mListBean = mutableListOf<TopicBean>()
+    private val mItemClick: View.OnClickListener = View.OnClickListener { view ->
+        val obj = view.getTag(keyTag) ?: return@OnClickListener
+        if (obj !is TopicBean) {
+            return@OnClickListener
+        }
+        clickBean?.invoke(obj, mListBean.indexOf(obj))
+    }
+    var clickBean: ((TopicBean, Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
         return TopicViewHolder(parent)
     }
@@ -36,7 +49,10 @@ class TopicAdapter : RecyclerView.Adapter<TopicViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TopicViewHolder, position: Int) {
-        holder.bind(mListBean[position], position)
+        val bean = mListBean[position]
+        holder.itemView.setTag(keyTag, bean)
+        holder.itemView.setOnClickListener(mItemClick)
+        holder.bind(bean, position)
     }
 
     fun clearList() {

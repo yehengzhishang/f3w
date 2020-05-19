@@ -13,5 +13,8 @@
         <activity
             android:name="com.yu.zz.topbook.category.CategoryActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".topic.DetailTopicActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>
