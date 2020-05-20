@@ -2,6 +2,7 @@ package com.yu.zz.plugin
 
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryPlugin
+import com.android.build.gradle.api.AndroidBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin
@@ -35,8 +36,8 @@ class Judge {
     }
 
     public static boolean isAndroidProject(Project project) {
-        // 其实还有几个 plugin 是android 项目用的，不常用，这里就没有写，看官自己看需求加就可以了
-        return isApp(project) || isLibrary(project)
+        // 尝试性api，看注释是这样用的
+        return project.plugins.hasPlugin(AndroidBasePlugin)
     }
 
     public static boolean isApp(Project project) {
