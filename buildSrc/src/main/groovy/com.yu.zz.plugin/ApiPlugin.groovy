@@ -32,7 +32,7 @@ class ApiPlugin implements Plugin<Project> {
 
 class Judge {
     private Judge() {
-
+        throw new RuntimeException("cant init Judge")
     }
 
     public static boolean isAndroidProject(Project project) {
@@ -60,7 +60,7 @@ class Judge {
 
 class ProjectUtils {
     private ProjectUtils() {
-
+        throw new RuntimeException("cant init Judge")
     }
 
     /**
