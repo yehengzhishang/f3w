@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.bypass.observeOnce
 import com.yu.zz.common.arrange.dp2px
+import com.yu.zz.common.arrange.toast
 import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
@@ -198,6 +199,7 @@ class MainTopBookFragment : TopBookFragment() {
         createViewModel(MainViewModel::class.java)
     }
 
+
     private fun skip(bean: CategoryTopBookBean) {
         startActivity(Intent(requireContext(), CategoryActivity::class.java).apply {
             putExtra(KEY_ID_CATEGORY, bean)
@@ -247,6 +249,7 @@ class MainTopBookFragment : TopBookFragment() {
 }
 
 class FoundationTopBookActivity : TopBookActivity() {
+    private var mTimeBack = 0L
     private var mFragmentCurrent: TopBookFragment? = null
     private val mFragmentMain: MainTopBookFragment by lazy {
         MainTopBookFragment()
@@ -287,6 +290,16 @@ class FoundationTopBookActivity : TopBookActivity() {
             R.id.action_state -> topChange()
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        val current = System.currentTimeMillis()
+        if (current - mTimeBack > 1000) {
+            mTimeBack = current
+            toast("再按一次退出")
+            return
+        }
+        super.onBackPressed()
     }
 
     private fun changeAssist(): Boolean {
