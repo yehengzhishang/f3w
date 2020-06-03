@@ -1,4 +1,4 @@
-include ":lib", ":buildSrc"
+include ":lib"
 include ':apt'
 include ":common"
 include ":timer"
