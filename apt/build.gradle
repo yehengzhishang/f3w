@@ -1,0 +1,12 @@
+import org.gradle.internal.jvm.Jvm
+
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":lib")
+    implementation files(Jvm.current().toolsJar)
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
