@@ -31,4 +31,5 @@ dependencies {
     implementation project(":topbook")
 
     implementation animation_lib
+    kapt project(":apt")
 }

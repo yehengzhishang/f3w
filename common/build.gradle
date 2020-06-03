@@ -27,6 +27,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // java lib
+    api project(":lib")
     //kotlin
     api kotlin_lib
     // android x
