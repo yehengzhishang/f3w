@@ -19,8 +19,11 @@ class DetailTopicActivity : TopBookActivity() {
         findViewById<RecyclerView>(R.id.rv)
     }
     private val mAdapter: ViewPointAdapter = ViewPointAdapter()
+    private val loadMore: () -> Unit = {
+        mViewModel.loadViewpoints(mIdTopic, mAdapter.itemCount)
+    }
     private val mScroller: ViewpointScroller by lazy {
-        return@lazy ViewpointScroller(mIdTopic, mViewModel)
+        return@lazy ViewpointScroller(loadMore)
     }
 
     private fun initRecyclerView(rv: RecyclerView) {
@@ -56,8 +59,9 @@ class DetailTopicActivity : TopBookActivity() {
     }
 }
 
-private class ViewpointScroller(private val topicId: String, private val viewModel: DetailTopicViewModel) : RecyclerView.OnScrollListener() {
+private class ViewpointScroller(private val loadMore: () -> Unit) : RecyclerView.OnScrollListener() {
     private var mIsLoad = false
+
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         if (mIsLoad) {
@@ -72,7 +76,7 @@ private class ViewpointScroller(private val topicId: String, private val viewMod
         val firstPosition = linearLayoutManager.findLastVisibleItemPosition()
         if (firstPosition > adapter.itemCount - 5) {
             mIsLoad = true
-            viewModel.loadViewpoints(topicId, adapter.itemCount)
+            loadMore()
         }
     }
 
