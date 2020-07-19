@@ -9,10 +9,7 @@ import com.yu.zz.topbook.employ.ListTopBookBean
 import com.yu.zz.topbook.employ.TopBookBean
 import com.yu.zz.topbook.employ.TopBookViewModel
 
-class TopicViewModel(app: Application) : TopBookViewModel(app) {
-    private val mService: TopicService by lazy {
-        createService(TopicService::class.java)
-    }
+class TopicViewModel(app: Application, private val repository: ITopicRepository) : TopBookViewModel(app) {
     private val mDataList: MutableLiveData<ListInfo> by lazy {
         MutableLiveData<ListInfo>()
     }
@@ -29,7 +26,7 @@ class TopicViewModel(app: Application) : TopBookViewModel(app) {
     }
 
     fun loadList(start: Int = 0, limit: Int = 10) {
-        mService.requestList(start.toString(), limit = limit.toString())
+        repository.loadList(start, limit = limit)
                 .goToThreadMain()
                 .subscribe(getNext { bean -> nextList(start, limit, bean) })
     }
