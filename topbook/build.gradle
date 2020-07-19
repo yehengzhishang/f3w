@@ -11,4 +11,5 @@ rootProject.ext.commonLib this
 dependencies {
     api gif_lib
     kapt dagger_kapt_lib
+    api koin_lib
 }

@@ -125,10 +125,23 @@ ext {
     ]
     dagger_kapt_lib = dagger_kapt.values()
 
+    koin_version = '2.1.6'
+    koin_map = [
+            // Koin AndroidX Scope features
+            "scope"    : "org.koin:koin-androidx-scope:$koin_version",
+            // Koin AndroidX ViewModel features
+            "viewModel": "org.koin:koin-androidx-viewmodel:$koin_version",
+            // Koin AndroidX Fragment features
+            "fragment" : "org.koin:koin-androidx-fragment:$koin_version",
+            // Koin AndroidX Experimental features
+            "ext"      : "org.koin:koin-androidx-ext:$koin_version"
+    ]
+    koin_lib = koin_map.values()
+
     deafultAndroid = { projectTarget ->
         projectTarget.android {
             compileSdkVersion sdk_version_base
-            buildFeatures{
+            buildFeatures {
                 viewBinding = true
             }
             defaultConfig {
