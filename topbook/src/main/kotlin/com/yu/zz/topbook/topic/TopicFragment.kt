@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.topbook.databinding.TopbookTopicFragmentBinding
+import com.yu.zz.topbook.employ.LoadScroller
 import com.yu.zz.topbook.employ.TopBookFragment
 
 
@@ -22,7 +23,7 @@ class TopicFragment : TopBookFragment() {
         this.clickBean = this@TopicFragment::goToDetail
     }
     private lateinit var mViewModel: TopicViewModel
-    private lateinit var mScroller: Scroller
+    private lateinit var mScroller: LoadScroller
 
     private val initRecyclerView: (rv: RecyclerView, adapter: RecyclerView.Adapter<*>) -> Unit = { rv, adapter ->
         rv.layoutManager = LinearLayoutManager(rv.context)
@@ -56,7 +57,10 @@ class TopicFragment : TopBookFragment() {
         mViewModel.dataList.observe(this, Observer {
             adaptList(it)
         })
-        mScroller = Scroller(mViewModel)
+        val loadMore = {
+            mViewModel.loadList(mAdapter.itemCount)
+        }
+        mScroller = LoadScroller(loadMore)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -81,28 +85,3 @@ class TopicFragment : TopBookFragment() {
     }
 }
 
-private class Scroller(private val viewModel: TopicViewModel) : RecyclerView.OnScrollListener() {
-    private var mIsLoad = false
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        super.onScrolled(recyclerView, dx, dy)
-        if (mIsLoad) {
-            return
-        }
-        Log.e("rain", "dy = $dy")
-        if (dy <= 0) {
-            return
-        }
-        val layoutManager = recyclerView.layoutManager ?: return
-        val linearLayoutManager = layoutManager as LinearLayoutManager
-        val adapter = recyclerView.adapter ?: return
-        val firstPosition = linearLayoutManager.findLastVisibleItemPosition()
-        if (firstPosition > adapter.itemCount - 5) {
-            mIsLoad = true
-            viewModel.loadList(adapter.itemCount)
-        }
-    }
-
-    fun finishLoad() {
-        mIsLoad = false
-    }
-}

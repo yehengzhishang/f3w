@@ -4,6 +4,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.topbook.R
+import com.yu.zz.topbook.employ.LoadScroller
 import com.yu.zz.topbook.employ.TopBookActivity
 
 const val KEY_ID = "topic_id"
@@ -22,8 +23,8 @@ class DetailTopicActivity : TopBookActivity() {
     private val loadMore: () -> Unit = {
         mViewModel.loadViewpoints(mIdTopic, mAdapter.itemCount)
     }
-    private val mScroller: ViewpointScroller by lazy {
-        return@lazy ViewpointScroller(loadMore)
+    private val mScroller: LoadScroller by lazy {
+        return@lazy LoadScroller(loadMore)
     }
 
     private fun initRecyclerView(rv: RecyclerView) = rv.apply {
@@ -55,31 +56,5 @@ class DetailTopicActivity : TopBookActivity() {
 
     override fun createThirdData() {
         mViewModel.loadViewpoints(mIdTopic)
-    }
-}
-
-private class ViewpointScroller(private val loadMore: () -> Unit) : RecyclerView.OnScrollListener() {
-    private var mIsLoad = false
-
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-        super.onScrolled(recyclerView, dx, dy)
-        if (mIsLoad) {
-            return
-        }
-        if (dy <= 0) {
-            return
-        }
-        val layoutManager = recyclerView.layoutManager ?: return
-        val linearLayoutManager = layoutManager as LinearLayoutManager
-        val adapter = recyclerView.adapter ?: return
-        val firstPosition = linearLayoutManager.findLastVisibleItemPosition()
-        if (firstPosition > adapter.itemCount - 5) {
-            mIsLoad = true
-            loadMore()
-        }
-    }
-
-    fun finishLoad() {
-        mIsLoad = false
     }
 }
