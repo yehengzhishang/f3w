@@ -26,11 +26,10 @@ class DetailTopicActivity : TopBookActivity() {
         return@lazy ViewpointScroller(loadMore)
     }
 
-    private fun initRecyclerView(rv: RecyclerView) {
-        rv.layoutManager = LinearLayoutManager(this)
-        rv.adapter = mAdapter
-        rv.addOnScrollListener(mScroller)
-        mAdapter.notifyDataSetChanged()
+    private fun initRecyclerView(rv: RecyclerView) = rv.apply {
+        layoutManager = LinearLayoutManager(this@DetailTopicActivity)
+        adapter = mAdapter
+        addOnScrollListener(mScroller)
     }
 
     private fun obNext(info: ViewpointInfo?) {
