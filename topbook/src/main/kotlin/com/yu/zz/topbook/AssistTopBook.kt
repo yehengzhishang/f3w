@@ -8,24 +8,19 @@ import android.view.MenuItem
 import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.topbook.category.CategorySingleFragment
 import com.yu.zz.topbook.category.KEY_CATEGORY_ID
-import com.yu.zz.topbook.employ.CategoryTopBookBean
-import com.yu.zz.topbook.employ.TopBookActivity
-import com.yu.zz.topbook.employ.TopBookService
-import com.yu.zz.topbook.employ.TopBookViewModel
+import com.yu.zz.topbook.employ.*
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.topbook_activity_assist.*
 
 class AssistTopBookActivity : TopBookActivity() {
     private val mViewModel: AssistViewModel by lazy {
-        createViewModel<AssistViewModel>()
+        createViewModel<AssistViewModel>(viewModelStore, AssistViewModelFactory(application, AssistRepository(TopBookApi.INSTANCE.createService(TopBookService::class.java))))
     }
     private val mAdapter: CategoryAdapter by lazy {
         CategoryAdapter(supportFragmentManager, lifecycle)
@@ -108,17 +103,32 @@ class CategoryAdapter(fm: FragmentManager, lifecycle: Lifecycle) : FragmentState
     }
 }
 
-class AssistViewModel(app: Application) : TopBookViewModel(app) {
-    private val mService = createService(TopBookService::class.java)
+class AssistViewModelFactory(private val app: Application, private val repo: AssistRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(AssistViewModel::class.java)) {
+            return AssistViewModel(app, repo) as T
+        }
+        return super.create(modelClass)
+    }
+}
+
+class AssistViewModel(app: Application, private val repo: AssistRepository) : TopBookViewModel(app) {
     private val mDataCategory: MutableLiveData<List<CategoryTopBookBean>> by lazy {
         MutableLiveData<List<CategoryTopBookBean>>()
     }
     val dataCategory: LiveData<List<CategoryTopBookBean>> get() = mDataCategory
 
     fun requestCategoryList() {
-        mService.getListCategory(start = "0", limit = "20")
+        repo.getListCategory(start = "0", limit = "20")
                 .filter { it.isSuccess() && it.data != null }
                 .goToThreadMain()
                 .subscribe(getNext { bean -> mDataCategory.value = bean.data!!.getList() })
+    }
+}
+
+class AssistRepository(private val service: TopBookService) {
+    fun getListCategory(start: String, limit: String): Observable<CategoryResponseTopBookBean> {
+        return service.getListCategory(start, limit)
     }
 }
