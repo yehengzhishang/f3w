@@ -7,16 +7,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.yu.zz.bypass.createViewModel
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.topbook.R
 import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.article.articleClick
 import com.yu.zz.topbook.employ.*
+import dagger.Component
+import dagger.Module
+import dagger.Provides
 import kotlinx.android.synthetic.main.topbook_fragment_category_single.*
 import androidx.lifecycle.Observer as OB
 
@@ -29,7 +36,8 @@ class CategorySingleFragment : TopBookFragment() {
         requireView().findViewById<RecyclerView>(R.id.rv)
     }
     private val mViewModel: CategoryViewModel by lazy {
-        createViewModel(CategoryViewModel::class.java)
+        DaggerCategoryComponent.builder().categoryModule(CategoryModule(this))
+                .build().getViewModel()
     }
 
     private val mCategoryID: String by lazy { requireArguments().getString(KEY_CATEGORY_ID)!! }
@@ -115,15 +123,44 @@ private class TwoSpan(private val pxBorder: Int, private val pxMiddle: Int, priv
     }
 }
 
-class CategoryViewModel(app: Application) : TopBookViewModel(app) {
-    private val mService: TopBookService = createService(TopBookService::class.java)
+@Module
+class CategoryModule constructor(private val fragment: Fragment) {
+
+    @Provides
+    fun provideViewModel(factory: ViewModelProvider.Factory): CategoryViewModel {
+        return createViewModel(fragment.viewModelStore, factory, CategoryViewModel::class.java)
+    }
+
+    @Provides
+    fun provideFactory(): ViewModelProvider.Factory {
+        return CategoryViewModelFactory(fragment.requireActivity().application, TopBookApi.INSTANCE.createService(TopBookService::class.java))
+    }
+}
+
+@Component(modules = [CategoryModule::class])
+interface CategoryComponent {
+    fun getViewModel(): CategoryViewModel
+}
+
+class CategoryViewModelFactory constructor(private val app: Application, private val service: TopBookService) : ViewModelProvider.AndroidViewModelFactory(app) {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CategoryViewModel::class.java)) {
+            return CategoryViewModel(app, service) as T
+        }
+        return super.create(modelClass)
+    }
+}
+
+class CategoryViewModel(app: Application, private val service: TopBookService) : TopBookViewModel(app) {
     private val mDataNet: MutableLiveData<ArticleResponseTopBookBean> by lazy {
         MutableLiveData<ArticleResponseTopBookBean>()
     }
     val dateNew: LiveData<ArticleResponseTopBookBean> get() = mDataNet
 
     fun requestArticleWithCategoryId(categoryId: String, start: Int, limit: Int) {
-        mService.getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
+        service.getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
                 .goToThreadMain()
                 .subscribe(getNext { bean -> mDataNet.value = bean })
     }
