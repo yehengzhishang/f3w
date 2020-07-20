@@ -26,13 +26,13 @@ private const val SPAN_COUNT = 2
 
 class CategorySingleFragment : TopBookFragment() {
     private val mRv: RecyclerView by lazy {
-        view!!.findViewById<RecyclerView>(R.id.rv)
+        requireView().findViewById<RecyclerView>(R.id.rv)
     }
     private val mViewModel: CategoryViewModel by lazy {
         createViewModel(CategoryViewModel::class.java)
     }
 
-    private val mCategoryID: String by lazy { arguments!!.getString(KEY_CATEGORY_ID)!! }
+    private val mCategoryID: String by lazy { requireArguments().getString(KEY_CATEGORY_ID)!! }
     private val mAdapter: CategorySingleAdapter = CategorySingleAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -41,10 +41,10 @@ class CategorySingleFragment : TopBookFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mAdapter.settingClick(activity!!)
+        mAdapter.settingClick(requireActivity())
         mRv.adapter = mAdapter
-        mRv.layoutManager = GridLayoutManager(activity!!, SPAN_COUNT)
-        val context = context!!
+        mRv.layoutManager = GridLayoutManager(requireActivity(), SPAN_COUNT)
+        val context = requireContext()
         mRv.addItemDecoration(TwoSpan(context.dp2px(DP_BORDER), context.dp2px(DP_MIDDLE), context.dp2px(DP_TOP)))
         mViewModel.dateNew.observe(viewLifecycleOwner, OB {
             srl.isRefreshing = false
