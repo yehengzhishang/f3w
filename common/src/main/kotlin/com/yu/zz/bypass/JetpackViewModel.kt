@@ -25,3 +25,7 @@ inline fun <reified T : ViewModel> createViewModelFragment(fragment: Fragment): 
 fun <T : ViewModel> createViewModel(store: ViewModelStore, factory: ViewModelProvider.Factory, clazz: Class<T>): T {
     return ViewModelProvider(store, factory)[clazz]
 }
+
+inline fun <reified T : ViewModel> createViewModel(store: ViewModelStore, factory: ViewModelProvider.Factory): T {
+    return ViewModelProvider(store, factory)[T::class.java]
+}

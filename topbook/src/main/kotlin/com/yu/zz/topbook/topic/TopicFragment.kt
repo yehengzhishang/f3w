@@ -1,5 +1,6 @@
 package com.yu.zz.topbook.topic
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.topbook.databinding.TopbookTopicFragmentBinding
@@ -15,9 +18,8 @@ import com.yu.zz.topbook.employ.LoadScroller
 import com.yu.zz.topbook.employ.TopBookApi
 import com.yu.zz.topbook.employ.TopBookFragment
 import io.reactivex.Observable
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.getKoin
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.dsl.module
 
 
@@ -29,13 +31,20 @@ class TopicFragment : TopBookFragment() {
         factory<ITopicRepository> {
             TopicRepository(get())
         }
-        viewModel{ TopicViewModel(get(), get()) }
+        factory<ViewModelProvider.Factory> {
+            TopicViewModelFactory(requireActivity().application, get())
+        }
+        factory {
+            ViewModelProvider(viewModelStore, get())[TopicViewModel::class.java]
+        }
     }.apply {
         getKoin().loadModules(listOf(this))
     }
     private var mViewBinding: TopbookTopicFragmentBinding? = null
     private val mBinding get() = mViewBinding!!
-    private val mViewModel: TopicViewModel by viewModel()
+    private val mViewModel: TopicViewModel by lazy {
+        get<TopicViewModel>()
+    }
     private val mAdapter: TopicAdapter = TopicAdapter().apply {
         this.clickBean = this@TopicFragment::goToDetail
     }
@@ -102,6 +111,16 @@ class TopicFragment : TopBookFragment() {
     override fun onDestroy() {
         super.onDestroy()
         getKoin().unloadModules(listOf(mTopicModel))
+    }
+}
+
+class TopicViewModelFactory(private val app: Application, private val repo: ITopicRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(TopicViewModel::class.java)) {
+            return TopicViewModel(app, repo) as T
+        }
+        return super.create(modelClass)
     }
 }
 
