@@ -45,26 +45,26 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
                 .map { it.categoryId!! }
                 .flatMap { getObsItem(it.toString()) }
                 .goToThreadMain()
-                .subscribe(getNextComplete(next = next@{ bean ->
-                    val itemId = itemId(bean) ?: return@next
-                    if (!mMapCategory.keys.contains(itemId)) {
-                        return@next
-                    }
-                    val list = mMapTp.getOrPut(itemId, { mutableListOf() })
-                    val listSource = bean.data?.items!!
-                    for (sourceBean in listSource) {
-                        if (sourceBean == null) {
-                            continue
-                        }
-                        list.add(sourceBean)
-                    }
-
-                }, complete = {
+                .subscribe(getNextComplete(next = this::next, complete = {
                     updateData(dataList)
                 }))
         return dataList
     }
 
+    private fun next(bean: ArticleResponseTopBookBean) {
+        val itemId = itemId(bean) ?: return
+        if (!mMapCategory.keys.contains(itemId)) {
+            return
+        }
+        val list = mMapTp.getOrPut(itemId, { mutableListOf() })
+        val listSource = bean.data?.items!!
+        for (sourceBean in listSource) {
+            if (sourceBean == null) {
+                continue
+            }
+            list.add(sourceBean)
+        }
+    }
 
     private fun updateData(dataList: MutableLiveData<List<Any>>) {
         mListCategory.sortByDescending { it.categoryId }
