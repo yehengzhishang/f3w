@@ -24,6 +24,7 @@ import com.yu.zz.topbook.employ.*
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.topbook_fragment_category_single.*
 import androidx.lifecycle.Observer as OB
 
@@ -132,8 +133,18 @@ class CategoryModule constructor(private val fragment: Fragment) {
     }
 
     @Provides
-    fun provideFactory(): ViewModelProvider.Factory {
-        return CategoryViewModelFactory(fragment.requireActivity().application, TopBookApi.INSTANCE.createService(TopBookService::class.java))
+    fun provideService(): TopBookService {
+        return TopBookApi.INSTANCE.createService(TopBookService::class.java)
+    }
+
+    @Provides
+    fun provideRepository(service: TopBookService): CategoryRepository {
+        return CategoryRepository(service)
+    }
+
+    @Provides
+    fun provideFactory(repo: CategoryRepository): ViewModelProvider.Factory {
+        return CategoryViewModelFactory(fragment.requireActivity().application, repo)
     }
 }
 
@@ -142,26 +153,32 @@ interface CategoryComponent {
     fun getViewModel(): CategoryViewModel
 }
 
-class CategoryViewModelFactory constructor(private val app: Application, private val service: TopBookService) : ViewModelProvider.AndroidViewModelFactory(app) {
+class CategoryViewModelFactory constructor(private val app: Application, private val repo: CategoryRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CategoryViewModel::class.java)) {
-            return CategoryViewModel(app, service) as T
+            return CategoryViewModel(app, repo) as T
         }
         return super.create(modelClass)
     }
 }
 
-class CategoryViewModel(app: Application, private val service: TopBookService) : TopBookViewModel(app) {
+class CategoryViewModel(app: Application, private val repo: CategoryRepository) : TopBookViewModel(app) {
     private val mDataNet: MutableLiveData<ArticleResponseTopBookBean> by lazy {
         MutableLiveData<ArticleResponseTopBookBean>()
     }
     val dateNew: LiveData<ArticleResponseTopBookBean> get() = mDataNet
 
     fun requestArticleWithCategoryId(categoryId: String, start: Int, limit: Int) {
-        service.getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
+        repo.getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
                 .goToThreadMain()
                 .subscribe(getNext { bean -> mDataNet.value = bean })
+    }
+}
+
+class CategoryRepository(private val service: TopBookService) {
+    fun getArticleWithCategoryId(categoryId: String, start: String, limit: String): Observable<ArticleResponseTopBookBean> {
+        return service.getArticleWithCategoryId(categoryId, start, limit)
     }
 }
