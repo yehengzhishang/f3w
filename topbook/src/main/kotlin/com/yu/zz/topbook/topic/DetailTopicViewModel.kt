@@ -3,13 +3,30 @@ package com.yu.zz.topbook.topic
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.topbook.employ.TopBookViewModel
+import io.reactivex.Observable
 
-class DetailTopicViewModel(app: Application) : TopBookViewModel(app) {
-    private val mServiceDetail: DetailTopicService by lazy {
-        return@lazy createService(DetailTopicService::class.java)
+
+class DetailViewModelFactory(private val app: Application, private val repo: DetailRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(DetailTopicViewModel::class.java)) {
+            return DetailTopicViewModel(app, repo) as T
+        }
+        return super.create(modelClass)
     }
+}
+
+class DetailRepository(private val service: DetailTopicService) {
+    fun getViewpointByTopicId(topicId: String, start: String, limit: String): Observable<ViewPointTopicBean> {
+        return service.requestViewpointsByTopicId(topicId, start, limit)
+    }
+}
+
+class DetailTopicViewModel(app: Application, private val repo: DetailRepository) : TopBookViewModel(app) {
     private val mDataViewPoint: MutableLiveData<ViewpointInfo> by lazy {
         MutableLiveData<ViewpointInfo>()
     }
@@ -20,7 +37,7 @@ class DetailTopicViewModel(app: Application) : TopBookViewModel(app) {
     }
 
     fun loadViewpoints(topicId: String, start: Int = 0, limit: Int = 10) {
-        mServiceDetail.requestViewpointsByTopicId(topicId, start.toString(), limit.toString())
+        repo.getViewpointByTopicId(topicId, start.toString(), limit.toString())
                 .goToThreadMain()
                 .subscribe(getNext { bean -> nextViewPoints(start, limit, bean) })
     }

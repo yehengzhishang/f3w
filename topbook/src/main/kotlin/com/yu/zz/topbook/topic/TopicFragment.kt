@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.topbook.databinding.TopbookTopicFragmentBinding
 import com.yu.zz.topbook.employ.LoadScroller
-import com.yu.zz.topbook.employ.TopBookApi
 import com.yu.zz.topbook.employ.TopBookFragment
 import io.reactivex.Observable
 import org.koin.android.ext.android.get
@@ -26,7 +25,7 @@ import org.koin.dsl.module
 class TopicFragment : TopBookFragment() {
     private val mTopicModel = module {
         factory {
-            TopBookApi.INSTANCE.createService(TopicService::class.java)
+            createService(TopicService::class.java)
         }
         factory<ITopicRepository> {
             TopicRepository(get())

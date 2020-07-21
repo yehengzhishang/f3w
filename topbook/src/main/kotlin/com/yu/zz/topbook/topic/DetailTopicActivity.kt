@@ -14,7 +14,7 @@ class DetailTopicActivity : TopBookActivity() {
         intent.getStringExtra(KEY_ID) ?: ""
     }
     private val mViewModel: DetailTopicViewModel by lazy {
-        createViewModel(DetailTopicViewModel::class.java)
+        createViewModel<DetailTopicViewModel>(viewModelStore, DetailViewModelFactory(application, DetailRepository(createService())))
     }
     private val mRv: RecyclerView by lazy {
         findViewById<RecyclerView>(R.id.rv)

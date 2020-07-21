@@ -208,7 +208,7 @@ class MainTopBookFragment : TopBookFragment() {
         }
     }
     private val mViewModel by lazy {
-        createViewModel<MainViewModel>(viewModelStore, MainViewModelFactory(requireActivity().application, MainRepository(TopBookApi.INSTANCE.createService(TopBookService::class.java))))
+        createViewModel<MainViewModel>(viewModelStore, MainViewModelFactory(requireActivity().application, MainRepository(createService(TopBookService::class.java))))
     }
 
 
