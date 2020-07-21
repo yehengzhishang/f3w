@@ -16,11 +16,12 @@ abstract class CompositeActivity : BaseActivity() {
         return createVM(clazz)
     }
 
-    protected inline fun <reified T : ViewModel> createViewModel(viewModelStore: ViewModelStore, factory: ViewModelProvider.Factory): T {
-        return createVMByFactory(viewModelStore, factory, T::class.java)
+    protected inline fun <reified T : ViewModel> createViewModel(vs: ViewModelStore = viewModelStore, factory: ViewModelProvider.Factory): T {
+        return createVMByFactory(vs, factory, T::class.java)
     }
 
-    protected open fun <T : ViewModel> createViewModel(viewModelStore: ViewModelStore, factory: ViewModelProvider.Factory, clazz: Class<T>): T {
-        return createVMByFactory(viewModelStore, factory, clazz)
+    protected open fun <T : ViewModel> createViewModel(vms: ViewModelStore = viewModelStore, factory: ViewModelProvider.Factory, clazz: Class<T>): T {
+        return createVMByFactory(vms, factory, clazz)
     }
+
 }

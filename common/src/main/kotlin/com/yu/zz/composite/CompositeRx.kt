@@ -3,7 +3,7 @@ package com.yu.zz.composite
 import com.yu.zz.bypass.RxObserverWrapper
 
 
-private var compositeError: ((Throwable) -> Unit) = { e ->
+private val compositeError: ((Throwable) -> Unit) = { e ->
     e.printStackTrace()
 }
 

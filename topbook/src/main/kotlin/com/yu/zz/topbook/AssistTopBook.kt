@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.topbook_activity_assist.*
 
 class AssistTopBookActivity : TopBookActivity() {
     private val mViewModel: AssistViewModel by lazy {
-        createViewModel<AssistViewModel>(viewModelStore, AssistViewModelFactory(application, AssistRepository(createService())))
+        createViewModel<AssistViewModel>(factory = AssistViewModelFactory(application, AssistRepository(createService())))
     }
     private val mAdapter: CategoryAdapter by lazy {
         CategoryAdapter(supportFragmentManager, lifecycle)
