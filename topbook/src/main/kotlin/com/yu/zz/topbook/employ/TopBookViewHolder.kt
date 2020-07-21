@@ -12,7 +12,7 @@ abstract class TopBookViewHolder<Bean> constructor(itemView: View) : BaseViewHol
     constructor(parent: ViewGroup, layoutId: Int) : this(LayoutInflater.from(parent.context).inflate(layoutId, parent, false))
 
     @Suppress("UNCHECKED_CAST")
-    protected fun <T> bridgePut(key: String): T {
+    protected fun <T> bridgeGet(key: String): T {
         return bridgeMap[key] as T
     }
 
