@@ -8,10 +8,13 @@ import android.view.*
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.yu.zz.bypass.createViewModel
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.bypass.observeOnce
 import com.yu.zz.common.arrange.dp2px
@@ -26,19 +29,14 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.topbook_activity_main.*
 
-class MainViewModel(app: Application) : TopBookViewModel(app) {
-    private val mService = createService(TopBookService::class.java)
+class MainViewModel(app: Application, private val repo: MainRepository) : TopBookViewModel(app) {
     private val mMapCategory = HashMap<String, CategoryTopBookBean>()
     private val mMapTp = HashMap<String, MutableList<ArticleTopBookBean>>()
     private val mListCategory = mutableListOf<CategoryTopBookBean>()
 
     fun load(start: Int = 0, limit: Int = 20): LiveData<List<Any>> {
         val dataList = MutableLiveData<List<Any>>()
-        mService.getListCategory(start.toString(), limit.toString())
-                .filter { it.isSuccess() && it.data != null }
-                .map { it.data!! }
-                .filter { it.items != null }
-                .map { it.items!! }
+        repo.requestAllCategory(start.toString(), limit.toString())
                 .flatMap { Observable.fromIterable(it) }
                 .filter { it.categoryId != null }
                 .doOnNext { addCategory(it!!) }
@@ -89,9 +87,23 @@ class MainViewModel(app: Application) : TopBookViewModel(app) {
     }
 
     private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 4): Observable<ArticleResponseTopBookBean> {
-        return TopBookApi.INSTANCE.createService(TopBookService::class.java)
-                .getArticleWithCategoryId(itemId, start.toString(), limit.toString())
+        return repo.getArticleWithCategoryId(itemId, start.toString(), limit.toString())
                 .subscribeOn(Schedulers.io())
+    }
+}
+
+class MainRepository constructor(private val service: TopBookService) {
+    fun requestAllCategory(start: String, limit: String): Observable<MutableList<CategoryTopBookBean?>> {
+        return service.getListCategory(start, limit)
+                .filter { it.isSuccess() && it.data != null }
+                .map { it.data!! }
+                .filter { it.items != null }
+                .map { it.items!! }
+
+    }
+
+    fun getArticleWithCategoryId(itemId: String, start: String, limit: String): Observable<ArticleResponseTopBookBean> {
+        return service.getArticleWithCategoryId(itemId, start, limit)
     }
 }
 
@@ -196,7 +208,7 @@ class MainTopBookFragment : TopBookFragment() {
         }
     }
     private val mViewModel by lazy {
-        createViewModel(MainViewModel::class.java)
+        createViewModel<MainViewModel>(viewModelStore, MainViewModelFactory(requireActivity().application, MainRepository(TopBookApi.INSTANCE.createService(TopBookService::class.java))))
     }
 
 
@@ -244,6 +256,18 @@ class MainTopBookFragment : TopBookFragment() {
     override fun onResume() {
         super.onResume()
         requireActivity().title = "TopBook"
+    }
+
+}
+
+class MainViewModelFactory(private val app: Application, private val repo: MainRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(app, repo) as T
+        }
+        return super.create(modelClass)
     }
 
 }
