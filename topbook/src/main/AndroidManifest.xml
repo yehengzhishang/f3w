@@ -5,16 +5,20 @@
         <activity
             android:name="com.yu.zz.topbook.FoundationTopBookActivity"
             android:label="TopBook"
+            android:process=":topbook"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.yu.zz.topbook.AssistTopBookActivity"
             android:label="TopBook Assist"
+            android:process=":topbook"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.yu.zz.topbook.category.CategoryActivity"
+            android:process=":topbook"
             android:screenOrientation="portrait" />
         <activity
             android:name=".topic.DetailTopicActivity"
+            android:process=":topbook"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

@@ -1,6 +1,7 @@
 package com.yu.zz
 
 import android.app.Application
+import android.util.Log
 import com.yu.zz.bypass.app.config
 import com.yu.zz.composite.compositeInit
 import com.yu.zz.debug.DebugManager
@@ -13,6 +14,7 @@ import org.koin.core.context.startKoin
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
+        Log.e("rain", "app onCreate" + android.os.Process.myPid())
         // app config
         val isDebug = BuildConfig.DEBUG
         config(isDebug, isDebug)

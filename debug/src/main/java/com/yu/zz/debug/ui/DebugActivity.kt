@@ -27,8 +27,9 @@ class DebugActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        fun openTicker() {
+        val openTicker: () -> Boolean = {
             Snackbar.make(tvUserName, "车票 进行开发中，敬请期待", Snackbar.LENGTH_SHORT).show()
+            true;
         }
 
         fun openInterfaceMessage() {
@@ -37,7 +38,6 @@ class DebugActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_ticker -> {
                 openTicker()
-                true
             }
             R.id.action_interface -> {
                 openInterfaceMessage()
@@ -50,6 +50,7 @@ class DebugActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 
     override fun onBackPressed() {
         if (dlRoot.isDrawerOpen(GravityCompat.START)) {
