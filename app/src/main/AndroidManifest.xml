@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.yu.zz.DrawActivity" />
+        <activity android:name="com.yu.zz.ViewModelFragmentActivity" />
+
     </application>
 
 </manifest>
