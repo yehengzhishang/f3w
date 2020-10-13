@@ -1,0 +1,14 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+rootProject.ext.deafultAndroid this
+rootProject.ext.commonLib this
+
+dependencies {
+    api "androidx.room:room-runtime:${version_androidx_room}"
+    kapt "androidx.room:room-compiler:${version_androidx_room}"
+}

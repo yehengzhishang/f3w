@@ -50,6 +50,7 @@ ext {
     version_androidx_lifecycle = "2.2.0"
     version_androidx_viewpager2 = "1.0.0"
     version_androidx_swiperfreshlayout = "1.0.0"
+    version_androidx_room = "2.2.5"
 
     androidx_map = [
             "appcompat"         : "androidx.appcompat:appcompat:${version_androidx_appcompat}",
@@ -57,8 +58,7 @@ ext {
             "viewpager2"        : "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}",
             "swiperefreshlayout": "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}",
             "constraintlayout"  : "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}",
-            "md"                : "com.google.android.material:material:${version_androidx_material}"
-
+            "md"                : "com.google.android.material:material:${version_androidx_material}",
     ]
     androidx_lib = androidx_map.values()
 
