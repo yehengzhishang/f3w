@@ -10,5 +10,6 @@ rootProject.ext.commonLib this
 
 dependencies {
     api "androidx.room:room-runtime:${version_androidx_room}"
+    api "androidx.room:room-rxjava2:${version_androidx_room}"
     kapt "androidx.room:room-compiler:${version_androidx_room}"
 }
