@@ -31,4 +31,12 @@
             android:layout_height="match_parent"
             android:hint="user_name" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp" />
 </LinearLayout>
