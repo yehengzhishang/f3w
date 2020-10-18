@@ -34,6 +34,7 @@ dependencies {
     implementation project(":debug")
     implementation project(":common")
     implementation project(":topbook")
+    implementation project(":up")
 
     implementation animation_lib
     kapt project(":apt")
