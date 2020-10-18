@@ -70,7 +70,7 @@ class ColorEntity {
 class GroupEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "group_id")
-    var groupId: Long? = null
+    var groupId: Long = 0
 
     @ColumnInfo(name = "group_name")
     var groupName: String? = null
@@ -79,8 +79,11 @@ class GroupEntity {
 @Entity(tableName = "list_table")
 class ListEntity {
     @ColumnInfo(name = "list_id")
-    var listId: Long? = null
+    var listId: Long = 0
 
     @ColumnInfo(name = "list_name")
     var listName: String? = null
+
+    @ColumnInfo(name = "group_id")
+    var groupId: Long? = null
 }
