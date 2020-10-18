@@ -20,11 +20,23 @@ fun <T> Flowable<T>.goToThreadMain(): Flowable<T> {
     return this.compose(MainThreadTransformer())
 }
 
+fun <T> Flowable<T>.goToThreadIO(): Flowable<T> {
+    return this.compose(IoThreadTransformer<T>())
+}
+
 class MainThreadTransformer<T> : FlowableTransformer<T, T> {
     override fun apply(upstream: Flowable<T>): Publisher<T> {
         return upstream.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
+}
+
+class IoThreadTransformer<T> : FlowableTransformer<T, T> {
+    override fun apply(upstream: Flowable<T>): Publisher<T> {
+        return upstream.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+    }
+
 }
 
 class RxObserverWrapper<T> : DisposableObserver<T>() {
