@@ -11,19 +11,20 @@ class TodoRepository {
 }
 
 
-class TodoCache constructor(val map: Map<String, TodoEntity>) : Map<String, TodoEntity> by map {
+class TodoCache constructor(private val map: Map<String, TodoEntity>) : Map<String, TodoEntity> by map {
 
 
 }
 
 class GradationRepository(private val daoList: ListDao, private val daoGroup: GroupDao) {
     fun loadAll(): Flowable<List<GradationInfo>> {
-        return Flowable.zip(
-                daoGroup.queryPersistentAll().goToThreadIO()
-                , daoList.queryPersistentNoGroup().goToThreadIO()
-                , GradationInfoZip()
-        )
+        return Flowable.zip(loadGroupAll(), loadListAll(), GradationInfoZip())
     }
+
+    private fun loadGroupAll() = daoGroup.queryPersistentAll().goToThreadIO()
+
+    private fun loadListAll() = daoList.queryPersistentNoGroup().goToThreadIO()
+
 }
 
 class GradationInfoZip : BiFunction<List<GroupEntity>, List<ListEntity>, List<GradationInfo>> {
