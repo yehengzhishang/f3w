@@ -80,10 +80,11 @@ class RxObserverWrapper<T> : DisposableObserver<T>() {
 class RxCompositeDisposable(private val mComposite: CompositeDisposable) : Disposable by mComposite {
     constructor() : this(CompositeDisposable())
 
-    val composite: CompositeDisposable get() = mComposite
+    val composite: CompositeDisposable
+        get() = mComposite
 
     fun add(dis: Disposable) {
-        mComposite.add(dis)
+        composite.add(dis)
     }
 
     fun <T : Disposable> addAndReturn(dis: T): T {
@@ -92,6 +93,14 @@ class RxCompositeDisposable(private val mComposite: CompositeDisposable) : Dispo
     }
 
     fun remove(dis: Disposable): Boolean {
-        return mComposite.remove(dis)
+        return composite.remove(dis)
     }
+}
+
+fun Disposable.addAndReturn(cd: RxCompositeDisposable): Disposable {
+    return cd.addAndReturn(this)
+}
+
+fun Disposable.add(cd: RxCompositeDisposable) {
+    cd.add(this)
 }
