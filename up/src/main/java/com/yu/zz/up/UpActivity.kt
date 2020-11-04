@@ -8,4 +8,4 @@ abstract class UpActivity : CompositeActivity() {
 
 }
 
-class UpViewModel(app: Application) : CompositeViewModel(app)
+open class UpViewModel(app: Application) : CompositeViewModel(app)
