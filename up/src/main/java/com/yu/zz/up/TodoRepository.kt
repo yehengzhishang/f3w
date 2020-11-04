@@ -4,10 +4,8 @@ import com.yu.zz.bypass.goToThreadIO
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 
-class TodoRepository {
-    fun queryOne(todoId: String): TodoEntity {
-        return TodoEntity()
-    }
+class TodoRepository constructor(private val dao: TodoDao) {
+
 }
 
 
