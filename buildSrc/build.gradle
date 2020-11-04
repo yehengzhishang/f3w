@@ -1,6 +1,4 @@
 apply plugin: 'groovy'
-// maven plugin 跟下面的uploadArchives 绑定
-apply plugin: 'maven'
 
 dependencies {
     implementation gradleApi()//gradle sdk
@@ -9,13 +7,20 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
 }
 
-//此TASK 需要 apply plugin: 'maven'
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: uri('../repo'))
-        pom.groupId = 'com.yu.zz'
-        pom.artifactId = 'demoplugin'
-        pom.version = '0.0.1'
+
+boolean isTest = false
+
+if (isTest) {
+    // maven plugin 跟下面的uploadArchives 绑定
+    apply plugin: 'maven'
+    此TASK 需要 apply plugin: 'maven'
+    uploadArchives {
+        repositories.mavenDeployer {
+            repository(url: uri('../repo'))
+            pom.groupId = 'com.yu.zz'
+            pom.artifactId = 'demoplugin'
+            pom.version = '0.0.1'
+        }
     }
 }
 
