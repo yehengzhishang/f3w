@@ -5,12 +5,12 @@ import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 
 class TodoRepository constructor(private val dao: TodoDao) {
+    fun create(todo: TodoEntity) = dao.insertOne(todo)
 
+    fun queryAll() = dao.queryPersistentAll()
 }
 
-
 class TodoCache constructor(private val map: Map<String, TodoEntity>) : Map<String, TodoEntity> by map {
-
 
 }
 
@@ -22,7 +22,6 @@ class GradationRepository(private val daoList: ListDao, private val daoGroup: Gr
     private fun loadGroupAll() = daoGroup.queryPersistentAll().goToThreadIO()
 
     private fun loadListAll() = daoList.queryPersistentNoGroup().goToThreadIO()
-
 }
 
 class GradationInfoZip : BiFunction<List<GroupEntity>, List<ListEntity>, List<GradationInfo>> {
