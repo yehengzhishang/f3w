@@ -3,5 +3,6 @@
 
     <application>
         <activity android:name=".user.UserActivity"/>
+        <activity android:name=".MainUpActivity"/>
     </application>
 </manifest>

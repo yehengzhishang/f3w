@@ -19,6 +19,22 @@
             android:layout_height="48dp"
             app:title="up" />
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_crate_input"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/tv_create"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="create" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
