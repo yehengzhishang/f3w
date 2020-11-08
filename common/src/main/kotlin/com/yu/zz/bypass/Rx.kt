@@ -1,9 +1,7 @@
 package com.yu.zz.bypass
 
 import android.util.Log
-import io.reactivex.Flowable
-import io.reactivex.FlowableTransformer
-import io.reactivex.Observable
+import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -22,6 +20,26 @@ fun <T> Flowable<T>.goToThreadMain(): Flowable<T> {
 
 fun <T> Flowable<T>.goToThreadIO(): Flowable<T> {
     return this.compose(IoThreadTransformer<T>())
+}
+
+fun <T> Single<T>.goToThreadMain(): Single<T> {
+    return this.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+}
+
+fun <T> Single<T>.goToThreadIO(): Single<T> {
+    return this.subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+}
+
+fun Completable.goToThreadMain(): Completable {
+    return this.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+}
+
+fun Completable.goToThreadIO(): Completable {
+    return this.subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
 }
 
 class MainThreadTransformer<T> : FlowableTransformer<T, T> {
