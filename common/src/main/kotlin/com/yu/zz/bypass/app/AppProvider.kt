@@ -10,6 +10,7 @@ class AppProvider constructor(val app: Application)
 fun appInit(app: Application) {
     if (provider != null) {
         Log.e("rain", "app provider is init")
+        return
     }
     provider = AppProvider(app)
 }

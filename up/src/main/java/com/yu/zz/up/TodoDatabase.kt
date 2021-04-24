@@ -13,5 +13,5 @@ abstract class TodoDatabase : RoomDatabase() {
 }
 
 fun todoDataBase(context: Context): TodoDatabase {
-    return Room.databaseBuilder(context, TodoDatabase::class.java, "todo_db").build()
+    return Room.databaseBuilder(context.applicationContext, TodoDatabase::class.java, "todo_db").build()
 }
