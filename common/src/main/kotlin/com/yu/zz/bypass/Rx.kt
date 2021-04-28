@@ -5,7 +5,9 @@ import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableMaybeObserver
 import io.reactivex.observers.DisposableObserver
+import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import org.reactivestreams.Publisher
 
@@ -30,6 +32,11 @@ fun <T> Single<T>.goToThreadMain(): Single<T> {
 fun <T> Single<T>.goToThreadIO(): Single<T> {
     return this.subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
+}
+
+fun <T> Maybe<T>.goToThreadMain(): Maybe<T> {
+    return this.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }
 
 fun Completable.goToThreadMain(): Completable {
@@ -57,7 +64,11 @@ class IoThreadTransformer<T> : FlowableTransformer<T, T> {
 
 }
 
-class RxObserverWrapper<T> : DisposableObserver<T>() {
+interface DisposableChange : Disposable {
+    fun disposeSafe()
+}
+
+class RxObserverWrapper<T> : DisposableObserver<T>(), DisposableChange {
     private var mFlowComplete: ((RxObserverWrapper<T>) -> Unit)? = null
     private var mFlowNext: ((RxObserverWrapper<T>, T) -> Unit)? = null
     private var mFlowError: ((RxObserverWrapper<T>, Throwable) -> Unit)? = null
@@ -88,7 +99,51 @@ class RxObserverWrapper<T> : DisposableObserver<T>() {
         this.mFlowComplete = complete
     }
 
-    fun flowDispose() {
+    override fun disposeSafe() {
+        if (!isDisposed) {
+            dispose()
+        }
+    }
+}
+
+class SingleObserverWrapper<T> constructor(
+        private val success: ((SingleObserverWrapper<T>, T) -> Unit)?,
+        private val error: ((SingleObserverWrapper<T>, Throwable) -> Unit)?
+) : DisposableSingleObserver<T>(), DisposableChange {
+
+    override fun onSuccess(t: T) {
+        success?.invoke(this, t)
+    }
+
+    override fun onError(e: Throwable) {
+        error?.invoke(this, e)
+    }
+
+    override fun disposeSafe() {
+        if (!isDisposed) {
+            dispose()
+        }
+    }
+}
+
+class MaybeObserverWrapper<T> constructor(
+        private val complete: ((MaybeObserverWrapper<T>) -> Unit)? = null,
+        private val success: ((MaybeObserverWrapper<T>, T) -> Unit)? = null,
+        private val error: ((MaybeObserverWrapper<T>, Throwable) -> Unit)? = null
+) : DisposableMaybeObserver<T>(), DisposableChange {
+    override fun onSuccess(t: T) {
+        success?.invoke(this, t)
+    }
+
+    override fun onError(e: Throwable) {
+        error?.invoke(this, e)
+    }
+
+    override fun onComplete() {
+        complete?.invoke(this)
+    }
+
+    override fun disposeSafe() {
         if (!isDisposed) {
             dispose()
         }
