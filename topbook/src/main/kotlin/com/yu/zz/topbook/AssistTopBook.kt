@@ -15,7 +15,7 @@ import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.topbook.category.CategorySingleFragment
 import com.yu.zz.topbook.category.KEY_CATEGORY_ID
 import com.yu.zz.topbook.employ.*
-import io.reactivex.Observable
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.topbook_activity_assist.*
 
 class AssistTopBookActivity : TopBookActivity() {
@@ -123,12 +123,12 @@ class AssistViewModel(app: Application, private val repo: AssistRepository) : To
         repo.getListCategory(start = "0", limit = "20")
                 .filter { it.isSuccess() && it.data != null }
                 .goToThreadMain()
-                .subscribe(getNext { bean -> mDataCategory.value = bean.data!!.getList() })
+                .subscribe(getMaybe { bean -> mDataCategory.value = bean.data!!.getList() })
     }
 }
 
-class AssistRepository(private val service: TopBookService) {
-    fun getListCategory(start: String, limit: String): Observable<CategoryResponseTopBookBean> {
+class AssistRepository(private val service: SingleTopBookService) {
+    fun getListCategory(start: String, limit: String): Single<CategoryResponseTopBookBean> {
         return service.getListCategory(start, limit)
     }
 }

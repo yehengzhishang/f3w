@@ -28,7 +28,7 @@ class TopicViewModel(app: Application, private val repository: ITopicRepository)
     fun loadList(start: Int = 0, limit: Int = 10) {
         repository.loadList(start, limit = limit)
                 .goToThreadMain()
-                .subscribe(getNext { bean -> nextList(start, limit, bean) })
+                .subscribe(getSuccess { bean -> nextList(start, limit, bean) })
     }
 }
 

@@ -17,6 +17,7 @@ import com.yu.zz.topbook.databinding.TopbookTopicFragmentBinding
 import com.yu.zz.topbook.employ.LoadScroller
 import com.yu.zz.topbook.employ.TopBookFragment
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.getKoin
 import org.koin.dsl.module
@@ -125,11 +126,11 @@ class TopicViewModelFactory(private val app: Application, private val repo: ITop
 
 
 interface ITopicRepository {
-    fun loadList(start: Int = 0, limit: Int = 10): Observable<ResultTopicBean>
+    fun loadList(start: Int = 0, limit: Int = 10): Single<ResultTopicBean>
 }
 
 private class TopicRepository(private val service: TopicService) : ITopicRepository {
-    override fun loadList(start: Int, limit: Int): Observable<ResultTopicBean> {
+    override fun loadList(start: Int, limit: Int): Single<ResultTopicBean> {
         return service.requestList(start.toString(), limit.toString())
     }
 }
