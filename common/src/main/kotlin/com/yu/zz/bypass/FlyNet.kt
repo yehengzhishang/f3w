@@ -42,10 +42,9 @@ open class FlyNetConfig constructor(val isDebug: Boolean, val baseUrl: String, v
 
     open fun getInterceptors(): List<Interceptor> {
         val interceptors = mutableListOf<Interceptor>()
-        val logger = getLogger()
-        logger?.apply {
-            if (isDebug) {
-                interceptors.add(this)
+        if (isDebug) {
+            getLogger()?.let {
+                interceptors.add(it)
             }
         }
         return interceptors
