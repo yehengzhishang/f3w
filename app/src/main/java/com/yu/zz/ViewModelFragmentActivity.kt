@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.yu.zz.fwww.R
 import com.yu.zz.topbook.employ.TopBookViewModel
-import kotlinx.android.synthetic.main.activity_fragment_view_model.*
+
 
 class ViewModelFragmentActivity : AppCompatActivity() {
     private val fragment = ViewModelFragment();
@@ -19,19 +19,19 @@ class ViewModelFragmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment_view_model)
         addFragment()
-        btn_debug.setOnClickListener {
+        findViewById<View>(R.id.btn_debug).setOnClickListener {
             log()
         }
-        btn_remove.setOnClickListener { removeFragment() }
+        findViewById<View>(R.id.btn_remove).setOnClickListener { removeFragment() }
     }
 
     private fun addFragment() {
         supportFragmentManager.beginTransaction()
-                .add(R.id.fl, fragment, fragment.toString())
-                .show(fragment).commitAllowingStateLoss()
+            .add(R.id.fl, fragment, fragment.toString())
+            .show(fragment).commitAllowingStateLoss()
     }
 
-    private fun log(){
+    private fun log() {
         Log.e("rain", "debug")
     }
 
@@ -46,7 +46,11 @@ class ViewModelFragment : Fragment() {
         ViewModelProvider(this)[TopBookViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         view.getApplication<App>().toString()
         return inflater.inflate(R.layout.activity_main, container, false)
     }

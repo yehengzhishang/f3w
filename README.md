@@ -12,14 +12,14 @@ Debug功能相关 (进行中)
 gradle plugin (进行中)
 
 # Env
-Android Studio 3.5.1
+Android Studio 2021.2.1 patch 1 
 
-Gradle 5.4.1
+Gradle 7.3.3
 
-Gradle Tools 3.5.1 
+Android Gradle Plugin 7.2.0 
 
-Kotlin 1.3.50
+Kotlin 1.6.10
 
 # Hardware
-Computer : MacBook pro 13-inch Early 2015 (MF840),OS : MacOS 10.15 "Catalina"  
+Computer : MacBook pro 16-inch Early 2019 (MF840),OS : MacOS 12.4 "Monterey"  
 PHONE : SAMSUNG Galaxy s10, OnPlus 5

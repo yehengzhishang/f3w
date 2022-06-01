@@ -1,4 +1,22 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
 
+print("rainrain setting")
+
+rootProject.name = "f3w"
+includeBuild( "buildParam")
 include ":lib"
 include ':apt'
 include ":common"

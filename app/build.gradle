@@ -1,24 +1,22 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
-    id 'zz-api'
+    id 'zz-params'
 }
 
+import com.yu.zz.param.AndroidParam
+
 android {
-    compileSdkVersion sdk_version_base
-    buildToolsVersion sdk_tools
+    compileSdk 32
+
     defaultConfig {
         applicationId "com.yu.zz.fwww"
-        minSdkVersion sdk_min
-        targetSdkVersion sdk_version_base
+        minSdk AndroidParam.MIN_SDK
+        targetSdk 32
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -27,6 +25,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    namespace 'com.yu.zz.fwww'
 }
 
 dependencies {
@@ -37,5 +43,5 @@ dependencies {
     implementation project(":up")
 
     implementation animation_lib
-    kapt project(":apt")
+//    kapt project(":apt")
 }

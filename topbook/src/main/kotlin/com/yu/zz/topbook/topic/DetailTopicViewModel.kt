@@ -12,7 +12,7 @@ import io.reactivex.Observable
 
 class DetailViewModelFactory(private val app: Application, private val repo: DetailRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DetailTopicViewModel::class.java)) {
             return DetailTopicViewModel(app, repo) as T
         }

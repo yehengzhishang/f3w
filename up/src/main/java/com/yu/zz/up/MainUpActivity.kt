@@ -63,7 +63,7 @@ class MainUpActivity : UpActivity() {
 
 class MainViewModelFactory(private val app: Application, private val database: TodoDatabase) : ViewModelProvider.AndroidViewModelFactory(app) {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(app, MainRepository(database)) as T
         }

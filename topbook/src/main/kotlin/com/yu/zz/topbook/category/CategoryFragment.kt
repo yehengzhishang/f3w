@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.yu.zz.bypass.createViewModel
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.common.arrange.dp2px
@@ -25,7 +26,6 @@ import dagger.Component
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Observable
-import kotlinx.android.synthetic.main.topbook_fragment_category_single.*
 import androidx.lifecycle.Observer as OB
 
 const val KEY_CATEGORY_ID = "categoryId"
@@ -36,15 +36,24 @@ class CategorySingleFragment : TopBookFragment() {
     private val mRv: RecyclerView by lazy {
         requireView().findViewById<RecyclerView>(R.id.rv)
     }
+    private val srl: SwipeRefreshLayout by lazy {
+        requireView().findViewById(R.id.srl)
+    }
+
+
     private val mViewModel: CategoryViewModel by lazy {
         DaggerCategoryComponent.builder().categoryModule(CategoryModule(this))
-                .build().getViewModel()
+            .build().getViewModel()
     }
 
     private val mCategoryID: String by lazy { requireArguments().getString(KEY_CATEGORY_ID)!! }
     private val mAdapter: CategorySingleAdapter = CategorySingleAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.topbook_fragment_category_single, container, false)
     }
 
@@ -54,7 +63,13 @@ class CategorySingleFragment : TopBookFragment() {
         mRv.adapter = mAdapter
         mRv.layoutManager = GridLayoutManager(requireActivity(), SPAN_COUNT)
         val context = requireContext()
-        mRv.addItemDecoration(TwoSpan(context.dp2px(DP_BORDER), context.dp2px(DP_MIDDLE), context.dp2px(DP_TOP)))
+        mRv.addItemDecoration(
+            TwoSpan(
+                context.dp2px(DP_BORDER),
+                context.dp2px(DP_MIDDLE),
+                context.dp2px(DP_TOP)
+            )
+        )
         mViewModel.dateNew.observe(viewLifecycleOwner, OB {
             srl.isRefreshing = false
             if (it == null || !it.isSuccess() || it.data == null) {
@@ -67,7 +82,11 @@ class CategorySingleFragment : TopBookFragment() {
             mAdapter.addBean(result.getList())
             mAdapter.notifyDataSetChanged()
         })
-        mViewModel.requestArticleWithCategoryId(mCategoryID, start = mAdapter.itemCount, limit = LIMIT)
+        mViewModel.requestArticleWithCategoryId(
+            mCategoryID,
+            start = mAdapter.itemCount,
+            limit = LIMIT
+        )
     }
 
     private fun cleanAdapter() {
@@ -108,8 +127,14 @@ class CategorySingleAdapter : RecyclerView.Adapter<ArticleViewHolder>() {
     }
 }
 
-private class TwoSpan(private val pxBorder: Int, private val pxMiddle: Int, private val top: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+private class TwoSpan(private val pxBorder: Int, private val pxMiddle: Int, private val top: Int) :
+    RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         super.getItemOffsets(outRect, view, parent, state)
         val position = parent.getChildLayoutPosition(view)
         val left = position % 2 == 0
@@ -153,10 +178,13 @@ interface CategoryComponent {
     fun getViewModel(): CategoryViewModel
 }
 
-class CategoryViewModelFactory constructor(private val app: Application, private val repo: CategoryRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
+class CategoryViewModelFactory constructor(
+    private val app: Application,
+    private val repo: CategoryRepository
+) : ViewModelProvider.AndroidViewModelFactory(app) {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CategoryViewModel::class.java)) {
             return CategoryViewModel(app, repo) as T
         }
@@ -164,21 +192,30 @@ class CategoryViewModelFactory constructor(private val app: Application, private
     }
 }
 
-class CategoryViewModel(app: Application, private val repo: CategoryRepository) : TopBookViewModel(app) {
+class CategoryViewModel(app: Application, private val repo: CategoryRepository) :
+    TopBookViewModel(app) {
     private val mDataNet: MutableLiveData<ArticleResponseTopBookBean> by lazy {
         MutableLiveData<ArticleResponseTopBookBean>()
     }
     val dateNew: LiveData<ArticleResponseTopBookBean> get() = mDataNet
 
     fun requestArticleWithCategoryId(categoryId: String, start: Int, limit: Int) {
-        repo.getArticleWithCategoryId(categoryId, start = start.toString(), limit = limit.toString())
-                .goToThreadMain()
-                .subscribe(getNext { bean -> mDataNet.value = bean })
+        repo.getArticleWithCategoryId(
+            categoryId,
+            start = start.toString(),
+            limit = limit.toString()
+        )
+            .goToThreadMain()
+            .subscribe(getNext { bean -> mDataNet.value = bean })
     }
 }
 
 class CategoryRepository(private val service: TopBookService) {
-    fun getArticleWithCategoryId(categoryId: String, start: String, limit: String): Observable<ArticleResponseTopBookBean> {
+    fun getArticleWithCategoryId(
+        categoryId: String,
+        start: String,
+        limit: String
+    ): Observable<ArticleResponseTopBookBean> {
         return service.getArticleWithCategoryId(categoryId, start, limit)
     }
 }

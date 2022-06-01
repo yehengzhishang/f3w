@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/change_match"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@android:color/holo_red_dark" />
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:color/holo_red_dark" />
+
+
+            <View
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@android:color/holo_red_dark" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@android:color/holo_red_dark" />
+
+        <com.yu.zz.topbook.employ.ExpandFlowLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray">
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@android:color/holo_blue_bright" />
+
+            <View
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@android:color/holo_green_dark" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="1233123123"
+                android:layout_height="wrap_content" />
+        </com.yu.zz.topbook.employ.ExpandFlowLayout>
+
+
+    </FrameLayout>
+</FrameLayout>

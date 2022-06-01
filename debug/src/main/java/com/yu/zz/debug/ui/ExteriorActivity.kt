@@ -11,14 +11,17 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yu.zz.debug.R
-import kotlinx.android.synthetic.main.activity_exterior.*
+import com.yu.zz.debug.databinding.ActivityExteriorBinding
 
 class ExteriorActivity : AppCompatActivity() {
+    private lateinit var mBinding: ActivityExteriorBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_exterior)
-        rv.adapter = ScrollAdapter()
-        rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        mBinding = ActivityExteriorBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
+        mBinding.rv.adapter = ScrollAdapter()
+        mBinding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 Log.e("Rain", dx.toString())
                 super.onScrolled(recyclerView, dx, dy)
@@ -54,7 +57,10 @@ class ScrollAdapter : RecyclerView.Adapter<ScrollViewHolder>() {
 class ScrollViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val mTv: TextView = itemView as TextView
 
-    constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false))
+    constructor(parent: ViewGroup) : this(
+        LayoutInflater.from(parent.context)
+            .inflate(android.R.layout.simple_list_item_1, parent, false)
+    )
 
     public fun bind(content: String) {
         mTv.text = content
@@ -62,7 +68,11 @@ class ScrollViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 }
 
 class MainFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val mView = inflater.inflate(R.layout.fragment_main, container, false)
         return mView
     }

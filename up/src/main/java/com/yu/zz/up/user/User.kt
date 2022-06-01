@@ -1,13 +1,14 @@
 package com.yu.zz.up.user
 
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.room.*
 import com.yu.zz.common.base.BaseActivity
 import com.yu.zz.up.R
 import io.reactivex.Flowable
 import io.reactivex.FlowableSubscriber
 import io.reactivex.functions.Consumer
-import kotlinx.android.synthetic.main.user_zz_activity_zz_test.*
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 
@@ -33,7 +34,7 @@ interface UserDao {
     fun all(): List<UserEntity>
 }
 
-@Database(entities = [UserEntity::class], version = 1)
+@Database(entities = [UserEntity::class], exportSchema = false, version = 1)
 abstract class UserDataBase : RoomDatabase() {
     abstract fun getUserDao(): UserDao
 }
@@ -48,13 +49,13 @@ class UserActivity : BaseActivity() {
     }
 
     override fun layoutId(): Int {
-        return R.layout.user_zz_activity_zz_test;
+        return R.layout.user_zz_activity_zz_test
 
     }
 
     override fun createSecondUi() {
-        btn.setOnClickListener {
-            val name = tie_name.text.toString()
+        findViewById<View>(R.id.btn).setOnClickListener {
+            val name = findViewById<TextView>(R.id.tie_name).text.toString()
             create(UserEntity().apply {
                 this.name = name
             })
@@ -63,24 +64,24 @@ class UserActivity : BaseActivity() {
 
     override fun createThirdData() {
         Flowable.just("abc")
-                .subscribe(object : Subscriber<String> {
-                    override fun onComplete() {
+            .subscribe(object : Subscriber<String> {
+                override fun onComplete() {
 
-                    }
+                }
 
-                    override fun onSubscribe(s: Subscription?) {
+                override fun onSubscribe(s: Subscription?) {
 
-                    }
+                }
 
-                    override fun onNext(t: String?) {
-                        Log.e("rain", t)
-                    }
+                override fun onNext(t: String) {
+                    Log.e("rain", t)
+                }
 
-                    override fun onError(t: Throwable?) {
+                override fun onError(t: Throwable?) {
 
-                    }
+                }
 
-                })
+            })
         dao.queryAll().subscribe(AllUserFlowableSubscriber())
         dao.queryAll().subscribe(AllUserConsumer())
         dao.queryAll().subscribe(AllUserSubscriber())

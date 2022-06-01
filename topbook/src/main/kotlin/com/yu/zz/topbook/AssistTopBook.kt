@@ -10,17 +10,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.*
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.topbook.category.CategorySingleFragment
 import com.yu.zz.topbook.category.KEY_CATEGORY_ID
 import com.yu.zz.topbook.employ.*
 import io.reactivex.Single
-import kotlinx.android.synthetic.main.topbook_activity_assist.*
 
 class AssistTopBookActivity : TopBookActivity() {
     private val mViewModel: AssistViewModel by lazy {
-        createViewModel<AssistViewModel>(factory = AssistViewModelFactory(application, AssistRepository(createService())))
+        createViewModel<AssistViewModel>(
+            factory = AssistViewModelFactory(
+                application,
+                AssistRepository(createService())
+            )
+        )
     }
     private val mAdapter: CategoryAdapter by lazy {
         CategoryAdapter(supportFragmentManager, lifecycle)
@@ -36,7 +41,7 @@ class AssistTopBookActivity : TopBookActivity() {
             list.add(bean)
         }
         mAdapter.add(result)
-        TabLayoutMediator(tl, vp) { tab, pos ->
+        TabLayoutMediator(findViewById(R.id.tl), findViewById(R.id.vp)) { tab, pos ->
             tab.tag = pos
             tab.text = list[pos].name
         }.attach()
@@ -73,11 +78,11 @@ class AssistTopBookActivity : TopBookActivity() {
 
     override fun createFirstInit() {
         super.createFirstInit()
-        setSupportActionBar(tb)
+        setSupportActionBar(findViewById(R.id.tb))
     }
 
     override fun createSecondUi() {
-        vp.adapter = mAdapter
+        findViewById<ViewPager2>(R.id.vp).adapter = mAdapter
     }
 
     override fun createThirdData() {
@@ -88,7 +93,8 @@ class AssistTopBookActivity : TopBookActivity() {
     }
 }
 
-class CategoryAdapter(fm: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fm, lifecycle) {
+class CategoryAdapter(fm: FragmentManager, lifecycle: Lifecycle) :
+    FragmentStateAdapter(fm, lifecycle) {
     private val mListArticle = mutableListOf<CategoryTopBookBean>()
     fun add(list: List<CategoryTopBookBean>) {
         mListArticle.addAll(list)
@@ -103,9 +109,10 @@ class CategoryAdapter(fm: FragmentManager, lifecycle: Lifecycle) : FragmentState
     }
 }
 
-class AssistViewModelFactory(private val app: Application, private val repo: AssistRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
+class AssistViewModelFactory(private val app: Application, private val repo: AssistRepository) :
+    ViewModelProvider.AndroidViewModelFactory(app) {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AssistViewModel::class.java)) {
             return AssistViewModel(app, repo) as T
         }
@@ -113,7 +120,8 @@ class AssistViewModelFactory(private val app: Application, private val repo: Ass
     }
 }
 
-class AssistViewModel(app: Application, private val repo: AssistRepository) : TopBookViewModel(app) {
+class AssistViewModel(app: Application, private val repo: AssistRepository) :
+    TopBookViewModel(app) {
     private val mDataCategory: MutableLiveData<List<CategoryTopBookBean>> by lazy {
         MutableLiveData<List<CategoryTopBookBean>>()
     }
@@ -121,9 +129,9 @@ class AssistViewModel(app: Application, private val repo: AssistRepository) : To
 
     fun requestCategoryList() {
         repo.getListCategory(start = "0", limit = "20")
-                .filter { it.isSuccess() && it.data != null }
-                .goToThreadMain()
-                .subscribe(getMaybe { bean -> mDataCategory.value = bean.data!!.getList() })
+            .filter { it.isSuccess() && it.data != null }
+            .goToThreadMain()
+            .subscribe(getMaybe { bean -> mDataCategory.value = bean.data!!.getList() })
     }
 }
 

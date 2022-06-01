@@ -28,7 +28,7 @@ import com.yu.zz.topbook.topic.TopicFragment
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.topbook_activity_main.*
+
 
 class MainViewModel(app: Application, private val repo: MainRepository) : TopBookViewModel(app) {
     private val mMapCategory = HashMap<String, CategoryTopBookBean>()
@@ -204,7 +204,7 @@ class MainTopBookFragment : TopBookFragment() {
             }
             when (bean) {
                 is CategoryTopBookBean -> skip(bean)
-                is ArticleTopBookBean -> Snackbar.make(rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
+                is ArticleTopBookBean -> Snackbar.make( mViewBinding.rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -231,11 +231,11 @@ class MainTopBookFragment : TopBookFragment() {
             if (list == null) {
                 return@OB
             }
-            srl.isRefreshing = false
-            srl.isEnabled = false
+            mViewBinding.srl.isRefreshing = false
+            mViewBinding.srl.isEnabled = false
             mAdapter.add(list)
         }
-        srl.isRefreshing = true
+        mViewBinding.srl.isRefreshing = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -264,7 +264,7 @@ class MainTopBookFragment : TopBookFragment() {
 class MainViewModelFactory(private val app: Application, private val repo: MainRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(app, repo) as T
         }

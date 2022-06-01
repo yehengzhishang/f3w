@@ -9,16 +9,19 @@ import com.google.android.material.snackbar.Snackbar
 import com.yu.zz.debug.DebugManager
 import com.yu.zz.debug.R
 import com.yu.zz.debug.arrange.getAttrColor
-import kotlinx.android.synthetic.main.activity_debug.*
+import com.yu.zz.debug.databinding.ActivityDebugBinding
 
 class DebugActivity : AppCompatActivity() {
+    private lateinit var mBinding: ActivityDebugBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(DebugManager.INSTANCE.themeId)
-        setContentView(R.layout.activity_debug)
+        mBinding = ActivityDebugBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
         themeAttrColor()
-        setSupportActionBar(barDebug)
-        btnMore.setOnClickListener { openOptionsMenu() }
+        setSupportActionBar(mBinding.barDebug)
+        mBinding.btnMore.setOnClickListener { openOptionsMenu() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -28,12 +31,12 @@ class DebugActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val openTicker: () -> Boolean = {
-            Snackbar.make(tvUserName, "车票 进行开发中，敬请期待", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(mBinding.tvUserName, "车票 进行开发中，敬请期待", Snackbar.LENGTH_SHORT).show()
             true;
         }
 
         fun openInterfaceMessage() {
-            Snackbar.make(tvUserName, "接口信息 开发中，敬请期待", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(mBinding.tvUserName, "接口信息 开发中，敬请期待", Snackbar.LENGTH_SHORT).show()
         }
         return when (item.itemId) {
             R.id.action_ticker -> {
@@ -44,7 +47,7 @@ class DebugActivity : AppCompatActivity() {
                 true
             }
             R.id.action_more -> {
-                dlRoot.openDrawer(GravityCompat.START)
+                mBinding.dlRoot.openDrawer(GravityCompat.START)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -53,15 +56,15 @@ class DebugActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        if (dlRoot.isDrawerOpen(GravityCompat.START)) {
-            dlRoot.closeDrawers()
+        if (mBinding.dlRoot.isDrawerOpen(GravityCompat.START)) {
+            mBinding.dlRoot.closeDrawers()
             return
         }
         super.onBackPressed()
     }
 
     private fun themeAttrColor() {
-        btnMore.setTextColor(getAttrColor(0, 0xFFFFFF))
+        mBinding.btnMore.setTextColor(getAttrColor(0, 0xFFFFFF))
     }
 }
 

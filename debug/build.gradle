@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
+
 android {
     compileSdkVersion sdk_version_base
     buildFeatures{
@@ -12,8 +12,6 @@ android {
     defaultConfig {
         minSdkVersion sdk_min
         targetSdkVersion sdk_version_base
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
@@ -27,6 +25,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.yu.zz.debug'
 }
 
 dependencies {

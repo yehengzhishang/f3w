@@ -1,72 +1,51 @@
-buildscript {
-    ext.kotlin_version = '1.4.32'
-    ext.isPluginJar = false
-    repositories {
-        maven {
-            url "http://maven.aliyun.com/nexus/content/groups/public"
-        }
-        mavenCentral()
-        maven {
-            url uri('repo') //里面内容为 buildSrc gradle所选位置
-        }
-        google()
-
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        if (isPluginJar) {
-            classpath 'com.yu.zz:demoplugin:0.0.1'
-        }
-    }
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.android.application' version '7.2.0' apply false
+    id 'com.android.library' version '7.2.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
 }
 
-allprojects {
-    repositories {
-        maven {
-            url "http://maven.aliyun.com/nexus/content/groups/public"
-        }
-        mavenCentral()
-        maven {
-            url uri('repo') //里面内容为 buildSrc gradle所选位置
-        }
-        google()
-    }
-}
+
+print("rainrain root top ")
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
 ext {
-    sdk_version_base = 29
-    sdk_tools = "29.0.2"
+    sdk_version_base = 31
+//    sdk_tools = "29.0.2"
     sdk_min = 21
 
-    version_androidx_appcompat = "1.2.0"
-    version_androidx_material = "1.3.0"
-    version_androidx_constraintlayout = "2.0.4"
-    version_androidx_lifecycle = "2.2.0"
+    version_androidx_appcompat = "1.4.1"
+    version_androidx_material = "1.4.0"
+    version_androidx_constraintlayout = "2.1.3"
+    version_androidx_lifecycle = "2.4.1"
     version_andoridx_lefecycle_common = "2.3.1"
     version_androidx_viewpager2 = "1.0.0"
     version_androidx_swiperfreshlayout = "1.1.0"
-    version_androidx_room = "2.3.0"
+    version_androidx_room = "2.4.2"
+    version_androidx_recyclerview = "1.2.1"
+    version_androidx_recyclerview_selection = "1.1.0"
 
     androidx_map = [
-            "appcompat"         : "androidx.appcompat:appcompat:${version_androidx_appcompat}",
-            "lifecycle"         : "androidx.lifecycle:lifecycle-extensions:${version_androidx_lifecycle}",
-            "lifecycle_common"  : "androidx.lifecycle:lifecycle-common-java8:${version_andoridx_lefecycle_common}",
-            "viewpager2"        : "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}",
-            "swiperefreshlayout": "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}",
-            "constraintlayout"  : "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}",
-            "md"                : "com.google.android.material:material:${version_androidx_material}",
+            "appcompat"             : "androidx.appcompat:appcompat:${version_androidx_appcompat}",
+            "livedata"             : "androidx.lifecycle:lifecycle-livedata:${version_androidx_lifecycle}",
+            "viewmodel"             : "androidx.lifecycle:lifecycle-viewmodel:${version_androidx_lifecycle}",
+            "lifecycle_common"      : "androidx.lifecycle:lifecycle-common:${version_andoridx_lefecycle_common}",
+            "viewpager2"            : "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}",
+            "swiperefreshlayout"    : "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}",
+            "constraintlayout"      : "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}",
+            "md"                    : "com.google.android.material:material:${version_androidx_material}",
+            "recyclerview"          : "androidx.recyclerview:recyclerview:${version_androidx_recyclerview}",
+
     ]
     androidx_lib = androidx_map.values()
 
-    version_kotlin = ext.kotlin_version
-    version_core_ktx = "1.3.2"
+    version_kotlin = "1.6.10"
+    version_core_ktx = "1.7.0"
     kotlin_map = [
-            "lib": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+            "lib": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${version_kotlin}",
             "ktx": "androidx.core:core-ktx:${version_core_ktx}",
     ]
     kotlin_lib = kotlin_map.values()
@@ -94,25 +73,25 @@ ext {
     rx_lib = rx_map.values()
 
     // image
-    version_glide = "4.12.0"
+    version_glide = "4.13.2"
     glide_map = [
             "glide": "com.github.bumptech.glide:glide:${version_glide}"
     ]
     image_lib = glide_map.values()
 
-    version_gif = "1.2.23"
+    version_gif = "1.2.24"
     gif_map = [
             "gif": "pl.droidsonroids.gif:android-gif-drawable:${version_gif}"
     ]
     gif_lib = gif_map.values()
 
-    version_lottie = "3.7.0"
+    version_lottie = "5.1.1"
     animation_map = [
             "lottie": "com.airbnb.android:lottie:$version_lottie"
     ]
     animation_lib = animation_map.values()
 
-    version_dagger = "2.35"
+    version_dagger = "2.42"
     dagger_map = [
             "dagger"         : "com.google.dagger:dagger:${version_dagger}",
             "dagger_andorid" : "com.google.dagger:dagger-android:${version_dagger}",
@@ -141,23 +120,15 @@ ext {
 
     deafultAndroid = { projectTarget ->
         projectTarget.android {
-            compileSdkVersion sdk_version_base
-            buildFeatures {
-                viewBinding = true
-            }
+            compileSdk sdk_version_base
+
             defaultConfig {
-                minSdkVersion sdk_min
-                targetSdkVersion sdk_version_base
+                minSdk sdk_min
+                targetSdk sdk_version_base
                 versionCode 1
                 versionName "1.0"
 
                 testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-            }
-
-            compileOptions {
-                sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
             }
 
             buildTypes {
@@ -166,6 +137,20 @@ ext {
                     proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
                 }
             }
+
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+
+            kotlinOptions {
+                jvmTarget = '1.8'
+            }
+
+            buildFeatures {
+                viewBinding = true
+            }
+
             sourceSets { main.java.srcDirs += 'src/main/kotlin' }
         }
     }
