@@ -12,10 +12,9 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.yu.zz.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true">
+            android:name="com.yu.zz.SplashActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -24,7 +23,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.yu.zz.DrawActivity" />
         <activity android:name="com.yu.zz.ViewModelFragmentActivity" />
 
     </application>

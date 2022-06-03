@@ -1,17 +1,5 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        // 因为使用的 Kotlin 需要需要添加 Kotlin 插件
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
-        classpath "com.android.tools.build:gradle:7.2.0"
-    }
-}
-
-apply plugin: 'kotlin'
 apply plugin: 'java-gradle-plugin'
+
 repositories {
     // 需要添加 jcenter 否则会提示找不到 gradlePlugin
     mavenCentral()
@@ -19,11 +7,8 @@ repositories {
 }
 
 dependencies {
-    // 因为使用的 Kotlin 需要需要添加 Kotlin 插件
-    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
     implementation "com.android.tools.build:gradle:7.2.0"
 }
-
 
 
 sourceSets {
@@ -32,11 +17,17 @@ sourceSets {
 
 gradlePlugin {
     plugins {
-        version {
+
+        emptyImport {
             // 在 app 模块需要通过 id 引用这个插件
-            id = 'zz-params'
+            id = 'zz-import'
             // 实现这个插件的类的路径
-            implementationClass = 'com.yu.zz.param.AndroidParam'
+            implementationClass = 'com.yu.zz.plugin.ImportPlugin'
         }
+
+//        version {
+//            id = 'zz-library'
+//            implementationClass = 'com.yu.zz.plugin.LibraryPlugin'
+//        }
     }
 }

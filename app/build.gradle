@@ -1,18 +1,21 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'zz-params'
+    id 'zz-import'
 }
 
+
 import com.yu.zz.param.AndroidParam
+import com.yu.zz.param.ThirdLibParam
 
 android {
-    compileSdk 32
+    print("rainrain android start")
+    compileSdk AndroidParam.SDK_BASE
 
     defaultConfig {
         applicationId "com.yu.zz.fwww"
         minSdk AndroidParam.MIN_SDK
-        targetSdk 32
+        targetSdk AndroidParam.SDK_BASE
         versionCode 1
         versionName "1.0"
 
@@ -36,12 +39,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":debug")
     implementation project(":common")
     implementation project(":topbook")
     implementation project(":up")
-
-    implementation animation_lib
+    implementation ThirdLibParam.LOTTIE_LIB
 //    kapt project(":apt")
 }
