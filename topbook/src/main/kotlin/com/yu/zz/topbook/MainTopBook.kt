@@ -26,7 +26,6 @@ import com.yu.zz.topbook.databinding.TopbookActivityMainBinding
 import com.yu.zz.topbook.employ.*
 import com.yu.zz.topbook.topic.TopicFragment
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
 
@@ -38,15 +37,15 @@ class MainViewModel(app: Application, private val repo: MainRepository) : TopBoo
     fun load(start: Int = 0, limit: Int = 20): LiveData<List<Any>> {
         val dataList = MutableLiveData<List<Any>>()
         repo.requestAllCategory(start.toString(), limit.toString())
-                .flatMap { Observable.fromIterable(it) }
-                .filter { it.categoryId != null }
-                .doOnNext { addCategory(it!!) }
-                .map { it.categoryId!! }
-                .flatMap { getObsItem(it.toString()) }
-                .goToThreadMain()
-                .subscribe(getNextComplete(next = this::next, complete = {
-                    updateData(dataList)
-                }))
+            .flatMap { Observable.fromIterable(it) }
+            .filter { it.categoryId != null }
+            .doOnNext { addCategory(it!!) }
+            .map { it.categoryId!! }
+            .flatMap { getObsItem(it.toString()) }
+            .goToThreadMain()
+            .subscribe(getNextComplete(next = this::next, complete = {
+                updateData(dataList)
+            }))
         return dataList
     }
 
@@ -70,7 +69,7 @@ class MainViewModel(app: Application, private val repo: MainRepository) : TopBoo
         val listAll = mutableListOf<Any>()
         for (category in mListCategory) {
             val list: MutableList<ArticleTopBookBean> = mMapTp[category.categoryId!!.toString()]
-                    ?: continue
+                ?: continue
             listAll.add(category)
             listAll.addAll(list)
         }
@@ -87,23 +86,34 @@ class MainViewModel(app: Application, private val repo: MainRepository) : TopBoo
         return t.data?.items?.getOrNull(0)?.categoryId?.toString()
     }
 
-    private fun getObsItem(itemId: String, start: Int = 0, limit: Int = 4): Observable<ArticleResponseTopBookBean> {
+    private fun getObsItem(
+        itemId: String,
+        start: Int = 0,
+        limit: Int = 4
+    ): Observable<ArticleResponseTopBookBean> {
         return repo.getArticleWithCategoryId(itemId, start.toString(), limit.toString())
-                .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
     }
 }
 
 class MainRepository constructor(private val service: TopBookService) {
-    fun requestAllCategory(start: String, limit: String): Observable<MutableList<CategoryTopBookBean?>> {
+    fun requestAllCategory(
+        start: String,
+        limit: String
+    ): Observable<MutableList<CategoryTopBookBean?>> {
         return service.getListCategory(start, limit)
-                .filter { it.isSuccess() && it.data != null }
-                .map { it.data!! }
-                .filter { it.items != null }
-                .map { it.items!! }
+            .filter { it.isSuccess() && it.data != null }
+            .map { it.data!! }
+            .filter { it.items != null }
+            .map { it.items!! }
 
     }
 
-    fun getArticleWithCategoryId(itemId: String, start: String, limit: String): Observable<ArticleResponseTopBookBean> {
+    fun getArticleWithCategoryId(
+        itemId: String,
+        start: String,
+        limit: String
+    ): Observable<ArticleResponseTopBookBean> {
         return service.getArticleWithCategoryId(itemId, start, limit)
     }
 }
@@ -123,7 +133,12 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
             override fun getSpanSize(position: Int): Int = getItemViewType(position)
         }
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
                 super.getItemOffsets(outRect, view, parent, state)
                 val position = parent.getChildLayoutPosition(view)
                 if (mListBean[position] is CategoryTopBookBean) {
@@ -180,7 +195,8 @@ class TopBookAdapter : RecyclerView.Adapter<TopBookViewHolder<*>>() {
     }
 }
 
-class CategoryTopBookViewHolder private constructor(parent: ViewGroup, layoutId: Int) : TopBookViewHolder<CategoryTopBookBean>(parent, layoutId) {
+class CategoryTopBookViewHolder private constructor(parent: ViewGroup, layoutId: Int) :
+    TopBookViewHolder<CategoryTopBookBean>(parent, layoutId) {
     private val tvTitleName = itemView.findViewById<TextView>(R.id.tvName)
     private val tvMore = itemView.findViewById<TextView>(R.id.btnMore)
 
@@ -204,12 +220,22 @@ class MainTopBookFragment : TopBookFragment() {
             }
             when (bean) {
                 is CategoryTopBookBean -> skip(bean)
-                is ArticleTopBookBean -> Snackbar.make( mViewBinding.rv, "文章详情页面正在生成中", Snackbar.LENGTH_SHORT).show()
+                is ArticleTopBookBean -> Snackbar.make(
+                    mViewBinding.rv,
+                    "文章详情页面正在生成中",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
     }
     private val mViewModel by lazy {
-        createViewModel<MainViewModel>(viewModelStore, MainViewModelFactory(requireActivity().application, MainRepository(createService(TopBookService::class.java))))
+        createViewModel<MainViewModel>(
+            viewModelStore,
+            MainViewModelFactory(
+                requireActivity().application,
+                MainRepository(createService(TopBookService::class.java))
+            )
+        )
     }
 
 
@@ -243,14 +269,18 @@ class MainTopBookFragment : TopBookFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _viewBinding = TopbookActivityMainBinding.inflate(inflater, container, false)
         createSecondUi()
         return mViewBinding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         createThirdData()
     }
 
@@ -261,7 +291,8 @@ class MainTopBookFragment : TopBookFragment() {
 
 }
 
-class MainViewModelFactory(private val app: Application, private val repo: MainRepository) : ViewModelProvider.AndroidViewModelFactory(app) {
+class MainViewModelFactory(private val app: Application, private val repo: MainRepository) :
+    ViewModelProvider.AndroidViewModelFactory(app) {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -313,6 +344,7 @@ class FoundationTopBookActivity : TopBookActivity() {
         return when (item.itemId) {
             R.id.action_change -> changeAssist()
             R.id.action_state -> topChange()
+            R.id.action_search -> goSearch()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -330,6 +362,11 @@ class FoundationTopBookActivity : TopBookActivity() {
     private fun changeAssist(): Boolean {
         startActivity(Intent(this, AssistTopBookActivity::class.java))
         finish()
+        return true
+    }
+
+    private fun goSearch(): Boolean {
+        Snackbar.make(findViewById(R.id.fcv_tp), "搜索", Snackbar.LENGTH_SHORT).show()
         return true
     }
 
