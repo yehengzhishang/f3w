@@ -8,6 +8,7 @@ repositories {
 
 dependencies {
     implementation "com.android.tools.build:gradle:7.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
 }
 
 
@@ -17,7 +18,6 @@ sourceSets {
 
 gradlePlugin {
     plugins {
-
         emptyImport {
             // 在 app 模块需要通过 id 引用这个插件
             id = 'zz-import'

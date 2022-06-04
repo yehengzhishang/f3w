@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
 }
 
-print("rainrain setting")
+print("rainrain setting start")
 
 rootProject.name = "f3w"
 includeBuild( "buildParam")
@@ -22,3 +22,6 @@ include ':apt'
 include ":common"
 include ':up'
 include ':app', ':debug', ":topbook"
+
+
+print("rainrain setting end")

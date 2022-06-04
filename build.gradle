@@ -29,15 +29,15 @@ ext {
     version_androidx_recyclerview_selection = "1.1.0"
 
     androidx_map = [
-            "appcompat"             : "androidx.appcompat:appcompat:${version_androidx_appcompat}",
-            "livedata"             : "androidx.lifecycle:lifecycle-livedata:${version_androidx_lifecycle}",
-            "viewmodel"             : "androidx.lifecycle:lifecycle-viewmodel:${version_androidx_lifecycle}",
-            "lifecycle_common"      : "androidx.lifecycle:lifecycle-common:${version_andoridx_lefecycle_common}",
-            "viewpager2"            : "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}",
-            "swiperefreshlayout"    : "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}",
-            "constraintlayout"      : "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}",
-            "md"                    : "com.google.android.material:material:${version_androidx_material}",
-            "recyclerview"          : "androidx.recyclerview:recyclerview:${version_androidx_recyclerview}",
+            "appcompat"         : "androidx.appcompat:appcompat:${version_androidx_appcompat}",
+            "livedata"          : "androidx.lifecycle:lifecycle-livedata:${version_androidx_lifecycle}",
+            "viewmodel"         : "androidx.lifecycle:lifecycle-viewmodel:${version_androidx_lifecycle}",
+            "lifecycle_common"  : "androidx.lifecycle:lifecycle-common:${version_andoridx_lefecycle_common}",
+            "viewpager2"        : "androidx.viewpager2:viewpager2:${version_androidx_viewpager2}",
+            "swiperefreshlayout": "androidx.swiperefreshlayout:swiperefreshlayout:${version_androidx_swiperfreshlayout}",
+            "constraintlayout"  : "androidx.constraintlayout:constraintlayout:${version_androidx_constraintlayout}",
+            "md"                : "com.google.android.material:material:${version_androidx_material}",
+            "recyclerview"      : "androidx.recyclerview:recyclerview:${version_androidx_recyclerview}",
 
     ]
     androidx_lib = androidx_map.values()
@@ -104,60 +104,4 @@ ext {
             "dagger-compiler"         : "com.google.dagger:dagger-compiler:$version_dagger"
     ]
     dagger_kapt_lib = dagger_kapt.values()
-
-    koin_version = '2.1.6'
-    koin_map = [
-            // Koin AndroidX Scope features
-            "scope"    : "org.koin:koin-androidx-scope:$koin_version",
-            // Koin AndroidX ViewModel features
-            "viewModel": "org.koin:koin-androidx-viewmodel:$koin_version",
-            // Koin AndroidX Fragment features
-            "fragment" : "org.koin:koin-androidx-fragment:$koin_version",
-            // Koin AndroidX Experimental features
-            "ext"      : "org.koin:koin-androidx-ext:$koin_version"
-    ]
-    koin_lib = koin_map.values()
-
-    deafultAndroid = { projectTarget ->
-        projectTarget.android {
-            compileSdk sdk_version_base
-
-            defaultConfig {
-                minSdk sdk_min
-                targetSdk sdk_version_base
-                versionCode 1
-                versionName "1.0"
-
-                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-            }
-
-            buildTypes {
-                release {
-                    minifyEnabled false
-                    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-                }
-            }
-
-            compileOptions {
-                sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
-            }
-
-            kotlinOptions {
-                jvmTarget = '1.8'
-            }
-
-            buildFeatures {
-                viewBinding = true
-            }
-
-            sourceSets { main.java.srcDirs += 'src/main/kotlin' }
-        }
-    }
-
-    commonLib = { projectTarget ->
-        projectTarget.dependencies {
-            implementation project(":common")
-        }
-    }
 }

@@ -9,7 +9,6 @@ import com.yu.zz.param.AndroidParam
 import com.yu.zz.param.ThirdLibParam
 
 android {
-    print("rainrain android start")
     compileSdk AndroidParam.SDK_BASE
 
     defaultConfig {
@@ -19,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -35,6 +34,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     namespace 'com.yu.zz.fwww'
 }
 
