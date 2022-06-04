@@ -1,0 +1,68 @@
+// 一个没什么用的测试module
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'zz-import'
+}
+
+
+import com.yu.zz.help.LibraryHelper
+import com.yu.zz.param.AndroidXParam
+import com.yu.zz.param.KotlinParam
+import com.yu.zz.param.ThirdLibParam
+
+android {
+    namespace 'com.yu.zz.up.test_inventory'
+}
+LibraryHelper.android(this.project)
+
+
+dependencies {
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${KotlinParam.VERSION}"
+    implementation "androidx.core:core-ktx:${KotlinParam.VERSION_KTX}"
+
+    // Android X
+    implementation "androidx.appcompat:appcompat:${AndroidXParam.VERSION_APPCOMPAT}"
+    implementation "com.google.android.material:material:$AndroidXParam.VERSION_MATERIAL"
+    implementation "androidx.constraintlayout:constraintlayout:${AndroidXParam.VERSION_CONSTRAINT_LAYOUT}"
+    implementation "androidx.lifecycle:lifecycle-livedata:${AndroidXParam.VERSION_LIFECYCLE}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:${AndroidXParam.VERSION_LIFECYCLE}"
+    implementation "androidx.lifecycle:lifecycle-common:${AndroidXParam.VERSION_LIFECYCLE_COMMON}"
+    implementation "androidx.viewpager2:viewpager2:${AndroidXParam.VERSION_VIEWPAGER2}"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:${AndroidXParam.VERSION_SWIPE_REFRESH_LAYOUT}"
+
+    implementation "androidx.room:room-runtime:${AndroidXParam.VERSION_ROOM}"
+    kapt "androidx.room:room-compiler:${AndroidXParam.VERSION_ROOM}"
+    implementation "androidx.room:room-rxjava2:${AndroidXParam.VERSION_ROOM}"
+    implementation "androidx.room:room-ktx:${AndroidXParam.VERSION_ROOM}"
+
+    // net
+    implementation "com.squareup.retrofit2:retrofit:${ThirdLibParam.VERSION_RETROFIT}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${ThirdLibParam.VERSION_RETROFIT}"
+    implementation "com.squareup.retrofit2:converter-gson:${ThirdLibParam.VERSION_RETROFIT}"
+    implementation "com.squareup.okhttp3:okhttp:${ThirdLibParam.VERSION_OKHTTP}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${ThirdLibParam.VERSION_OKHTTP}"
+
+    // RX
+    implementation "io.reactivex.rxjava2:rxjava:${ThirdLibParam.VERSION_RX}"
+    implementation "io.reactivex.rxjava2:rxandroid:${ThirdLibParam.VERSION_RX_ANDROID}"
+
+    // image
+    implementation "com.github.bumptech.glide:glide:${ThirdLibParam.VERSION_GLIDE}"
+
+    // gif
+    implementation "pl.droidsonroids.gif:android-gif-drawable:${ThirdLibParam.VERSION_GIF}"
+
+    // lottie
+    implementation "com.airbnb.android:lottie:${ThirdLibParam.VERSION_LOTTIE}"
+
+    // dagger
+    implementation "com.google.dagger:dagger:${ThirdLibParam.VERSION_DAGGER}"
+    implementation "com.google.dagger:dagger-android:${ThirdLibParam.VERSION_DAGGER}"
+    implementation "com.google.dagger:dagger-android-support:${ThirdLibParam.VERSION_DAGGER}"
+
+}
+

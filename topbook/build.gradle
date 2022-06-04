@@ -7,6 +7,7 @@ plugins {
 
 import com.yu.zz.help.CommonHelper
 import com.yu.zz.help.LibraryHelper
+import com.yu.zz.param.ThirdLibParam
 
 LibraryHelper.android this.project
 
@@ -17,6 +18,7 @@ android {
 CommonHelper.importCommon(this.project)
 
 dependencies {
-    api gif_lib
-    kapt dagger_kapt_lib
+    implementation ThirdLibParam.GIF_LIB
+    implementation ThirdLibParam.DAGGER_LIB
+    kapt ThirdLibParam.DAGGER_KAPT_LIB
 }

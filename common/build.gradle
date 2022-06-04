@@ -1,4 +1,7 @@
 import com.yu.zz.help.LibraryHelper
+import com.yu.zz.param.AndroidXParam
+import com.yu.zz.param.KotlinParam
+import com.yu.zz.param.ThirdLibParam
 
 plugins {
     id 'com.android.library'
@@ -9,49 +12,26 @@ plugins {
 LibraryHelper.android(this.project)
 
 android {
-    compileSdkVersion sdk_version_base
-    defaultConfig {
-        minSdkVersion sdk_min
-        targetSdkVersion sdk_version_base
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
     sourceSets { main.java.srcDirs += 'src/main/kotlin' }
     namespace 'com.yu.zz.common'
 }
 
-
-LibraryHelper.android(this.project)
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // java lib
     api project(":lib")
     //kotlin
-    api kotlin_lib
-    // android x
-    api androidx_lib
+    api KotlinParam.KOTLIN_LIB
+    // android X
+    api AndroidXParam.ANDROID_LIB
     //rx
-    api rx_lib
+    api ThirdLibParam.RX_LIB
 
     //net
-    api net_lib
+    api ThirdLibParam.NET_LIB
 
     // image
-    api image_lib
-
-    api dagger_lib
+    api ThirdLibParam.IMAGE_LIB
 }
 

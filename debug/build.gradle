@@ -1,35 +1,17 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id "kotlin-android"
+    id "zz-import"
+}
 
-apply plugin: 'kotlin-android'
 
+import com.yu.zz.help.CommonHelper
+import com.yu.zz.help.LibraryHelper
 
+LibraryHelper.android(project)
 android {
-    compileSdkVersion sdk_version_base
-    buildFeatures{
-        viewBinding = true
-    }
-
-    defaultConfig {
-        minSdkVersion sdk_min
-        targetSdkVersion sdk_version_base
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
     namespace 'com.yu.zz.debug'
 }
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(":common")
-}
+CommonHelper.importCommon(project)
 

@@ -24,7 +24,14 @@ class TopicFragment : TopBookFragment() {
     private var mViewBinding: TopbookTopicFragmentBinding? = null
     private val mBinding get() = mViewBinding!!
     private val mViewModel: TopicViewModel by lazy {
-        createViewModel(TopicViewModel::class.java)
+        createViewModel(
+            viewModelStore,
+            TopicViewModelFactory(
+                requireActivity().application,
+                TopicRepository(createService(TopicService::class.java))
+            ),
+            TopicViewModel::class.java
+        )
     }
     private val mAdapter: TopicAdapter = TopicAdapter().apply {
         this.clickBean = this@TopicFragment::goToDetail
