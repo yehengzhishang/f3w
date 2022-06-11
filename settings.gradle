@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-start")
     repositories {
         gradlePluginPortal()
         google()
@@ -13,7 +14,7 @@ dependencyResolutionManagement {
     }
 }
 
-print("rainrain setting start")
+println("rainrain setting start")
 
 rootProject.name = "f3w"
 
@@ -24,5 +25,6 @@ include ':up'
 include ':app', ':debug', ":topbook"
 
 include ':test_inventory'
-includeBuild( "buildParam")
-print("rainrain setting end")
+includeBuild("buildParam")
+
+println("rainrain setting end")
