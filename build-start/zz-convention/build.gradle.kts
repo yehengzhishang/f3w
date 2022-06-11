@@ -9,8 +9,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+println("rainrain test  ${libs.versions.androidGradlePlugin.get()}")
+println("rainrain test  ${zhaozhe.versions}")
+
 dependencies {
-    implementation("com.android.tools.build:gradle:7.2.0")
+    implementation(libs.android.gradelPlugin)
 }
 
 gradlePlugin {
