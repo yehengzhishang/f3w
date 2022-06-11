@@ -64,6 +64,7 @@ class TopicFragment : TopBookFragment() {
             requireContext(),
             Intent(requireActivity(), DetailTopicActivity::class.java).apply {
                 this.putExtra(KEY_ID, topicId.toString())
+                putExtra("position_useless", position)
             },
             null
         )
@@ -84,14 +85,14 @@ class TopicFragment : TopBookFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mViewBinding = TopbookTopicFragmentBinding.inflate(inflater, container, false)
         initRecyclerView(mBinding.rv, mAdapter)
         return mBinding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mViewModel.loadList()
     }
 

@@ -57,8 +57,8 @@ class CategorySingleFragment : TopBookFragment() {
         return inflater.inflate(R.layout.topbook_fragment_category_single, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mAdapter.settingClick(requireActivity())
         mRv.adapter = mAdapter
         mRv.layoutManager = GridLayoutManager(requireActivity(), SPAN_COUNT)
