@@ -1,66 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp">
+        android:background="@android:color/white">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:orientation="vertical">
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/tb"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_scrollFlags="scroll|enterAlways" />-->
 
-            <View
-                android:id="@+id/change_match"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@android:color/holo_red_dark" />
-
-            <View
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@android:color/holo_red_dark" />
-
-
-            <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@android:color/holo_red_dark" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@android:color/holo_red_dark" />
-
-        <com.yu.zz.topbook.employ.ExpandFlowLayout
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray">
+            android:layout_height="48dp"
+            app:tabMode="scrollable" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <View
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@android:color/holo_blue_bright" />
-
-            <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@android:color/holo_green_dark" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="1233123123"
-                android:layout_height="wrap_content" />
-        </com.yu.zz.topbook.employ.ExpandFlowLayout>
-
-
-    </FrameLayout>
-</FrameLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
