@@ -37,6 +37,7 @@ android {
 
     namespace 'com.yu.zz.fwww'
 }
+println("rainrain androidGradlePlugin ${libs.versions.androidGradlePlugin.get()}")
 
 dependencies {
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])

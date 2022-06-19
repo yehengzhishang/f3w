@@ -10,10 +10,9 @@ java {
 }
 
 println("rainrain test  ${libs.versions.androidGradlePlugin.get()}")
-println("rainrain test  ${zhaozhe.versions}")
 
 dependencies {
-    implementation(libs.android.gradelPlugin)
+    implementation(libs.android.gradlePlugin)
 }
 
 gradlePlugin {
