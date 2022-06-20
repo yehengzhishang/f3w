@@ -7,8 +7,10 @@ import com.yu.zz.composite.compositeInit
 import com.yu.zz.debug.DebugManager
 import com.yu.zz.fwww.BuildConfig
 import com.yu.zz.fwww.R
+import dagger.hilt.android.HiltAndroidApp
 
-class App : Application() {
+@HiltAndroidApp
+open class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Log.e("rain", "app onCreate" + android.os.Process.myPid())

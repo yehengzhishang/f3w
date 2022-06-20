@@ -1,10 +1,10 @@
 package com.yu.zz.topbook.load
 
-interface LoadUseCase<Request, Response> {
-    fun load(request: Request): Response
+interface AnswerUseCase<Word, Result> {
+    fun ask(word: Word): Result
 }
 
-data class LoadRequestBean<Keyword>(val keyword: Keyword, val start: Int, val limit: Int)
+data class ListRequestBean<Keyword>(val keyword: Keyword, val start: Int, val limit: Int)
 
 
 interface ListUseCase<Bean> {
@@ -16,7 +16,8 @@ interface ListUseCase<Bean> {
     fun capture(): List<Bean>
 }
 
-class ListUseCaseImpl<Bean> : ListUseCase<Bean> {
+
+class ListUseCaseImpl<Bean> constructor() : ListUseCase<Bean> {
     private val mList = mutableListOf<Bean>()
 
     override fun stretch(list: List<Bean>): List<Bean> {
@@ -30,7 +31,7 @@ class ListUseCaseImpl<Bean> : ListUseCase<Bean> {
     }
 
     override fun capture(): List<Bean> {
-        return mList
+        return mList.toList()
     }
 
 }

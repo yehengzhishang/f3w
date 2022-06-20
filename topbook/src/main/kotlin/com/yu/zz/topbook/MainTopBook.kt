@@ -6,6 +6,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,7 @@ import com.yu.zz.topbook.category.CategoryActivity
 import com.yu.zz.topbook.category.KEY_ID_CATEGORY
 import com.yu.zz.topbook.databinding.TopbookActivityMainBinding
 import com.yu.zz.topbook.employ.*
+import com.yu.zz.topbook.search.SearchActivity
 import com.yu.zz.topbook.topic.TopicFragment
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -366,7 +368,8 @@ class FoundationTopBookActivity : TopBookActivity() {
     }
 
     private fun goSearch(): Boolean {
-        Snackbar.make(findViewById(R.id.fcv_tp), "搜索", Snackbar.LENGTH_SHORT).show()
+//        Snackbar.make(findViewById(R.id.fcv_tp), "搜索", Snackbar.LENGTH_SHORT).show()
+        ActivityCompat.startActivity(this, Intent(this, SearchActivity::class.java), null)
         return true
     }
 

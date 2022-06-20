@@ -25,6 +25,7 @@ import com.yu.zz.topbook.employ.*
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.migration.DisableInstallInCheck
 import io.reactivex.Observable
 import androidx.lifecycle.Observer as OB
 
@@ -150,6 +151,7 @@ private class TwoSpan(private val pxBorder: Int, private val pxMiddle: Int, priv
 }
 
 @Module
+@DisableInstallInCheck
 class CategoryModule constructor(private val fragment: Fragment) {
 
     @Provides
