@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'zz-import'
+    id 'dagger.hilt.android.plugin'
 }
 
 import com.yu.zz.help.CommonHelper
@@ -19,6 +20,16 @@ CommonHelper.importCommon(this.project)
 
 dependencies {
     implementation ThirdLibParam.GIF_LIB
-    implementation ThirdLibParam.DAGGER_LIB
-    kapt ThirdLibParam.DAGGER_KAPT_LIB
+
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+
+    implementation libs.androidx.core.ktx
+
+    implementation libs.androidx.fragment
+    implementation libs.androidx.fragment.ktx
+
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.lifecycle.livedata.ktx
+    implementation libs.androidx.lifecycle.viewmodel.ktx
 }

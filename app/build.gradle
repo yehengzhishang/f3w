@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'zz-import'
+    id 'dagger.hilt.android.plugin'
 }
 
 
@@ -47,4 +49,7 @@ dependencies {
     implementation project(":up")
     implementation ThirdLibParam.LOTTIE_LIB
 //    kapt project(":apt")
+
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 }
