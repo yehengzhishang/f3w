@@ -9,9 +9,9 @@ data class ListRequestBean<Keyword>(val keyword: Keyword, val start: Int, val li
 
 interface ListUseCase<Bean> {
 
-    fun stretch(list: List<Bean>): List<Bean>
+    fun stretch(list: List<Bean>?): List<Bean>
 
-    fun replace(list: List<Bean>): List<Bean>
+    fun replace(list: List<Bean>?): List<Bean>
 
     fun capture(): List<Bean>
 }
@@ -20,14 +20,14 @@ interface ListUseCase<Bean> {
 class ListUseCaseImpl<Bean> constructor() : ListUseCase<Bean> {
     private val mList = mutableListOf<Bean>()
 
-    override fun stretch(list: List<Bean>): List<Bean> {
-        mList.addAll(list)
+    override fun stretch(list: List<Bean>?): List<Bean> {
+        list?.let { mList.addAll(it) }
         return capture()
     }
 
-    override fun replace(list: List<Bean>): List<Bean> {
+    override fun replace(list: List<Bean>?): List<Bean> {
         mList.clear()
-        return capture();
+        return stretch(list)
     }
 
     override fun capture(): List<Bean> {

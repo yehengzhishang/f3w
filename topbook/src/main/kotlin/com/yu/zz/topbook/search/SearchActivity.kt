@@ -60,7 +60,7 @@ class SearchActivity : AppCompatActivity(), KeywordProvider {
         mBinding = SearchActivityBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         val vp: ViewPager2 = findViewById<ViewPager2>(R.id.vp).apply { };
-        vp.adapter = SearchPageAdapter(this, listOf(ArticleFragment(), ArticleFragment()))
+        vp.adapter = SearchPageAdapter(this, listOf(ArticleFragment(), TopicFragment()))
         mViewModel.livedataTab.observe(this, this::obTabs)
     }
 
@@ -169,14 +169,6 @@ class ArticleViewModel @Inject constructor(
                     Log.e("rainrain", it.message!!)
                 }
             ).add(mRcd)
-    }
-
-    fun refresh() {
-
-    }
-
-    fun loadMore() {
-
     }
 
     override fun onCleared() {
