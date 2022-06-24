@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -58,7 +57,7 @@ class TopicFragment : Fragment() {
         mBinding = TopbookFragmentCategorySingleBinding.inflate(inflater, container, false)
         mSrl.isEnabled = false
         mRv.adapter = mAdapter
-        val context = requireContext();
+        val context = requireContext()
         mRv.layoutManager = LinearLayoutManager(context)
 
         return mBinding.root
@@ -66,10 +65,10 @@ class TopicFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel.livedata.observe(this.viewLifecycleOwner, Observer {
+        mViewModel.livedata.observe(this.viewLifecycleOwner) {
             mAdapter.addList(it)
             mAdapter.notifyItemRangeChanged(0, it.size)
-        })
+        }
         mViewModel.request("时间")
     }
 

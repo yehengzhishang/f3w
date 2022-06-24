@@ -71,7 +71,7 @@ class CategorySingleFragment : TopBookFragment() {
                 context.dp2px(DP_TOP)
             )
         )
-        mViewModel.dateNew.observe(viewLifecycleOwner, OB {
+        mViewModel.dateNew.observe(viewLifecycleOwner) {
             srl.isRefreshing = false
             if (it == null || !it.isSuccess() || it.data == null) {
                 cleanAdapter()
@@ -82,7 +82,7 @@ class CategorySingleFragment : TopBookFragment() {
             }
             mAdapter.addBean(result.getList())
             mAdapter.notifyDataSetChanged()
-        })
+        }
         mViewModel.requestArticleWithCategoryId(
             mCategoryID,
             start = mAdapter.itemCount,
