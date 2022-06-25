@@ -21,12 +21,12 @@ CommonHelper.importCommon(this.project)
 dependencies {
     implementation ThirdLibParam.GIF_LIB
 
-    implementation libs.hilt.android
+    implementation libs.hilt.android.base
     kapt libs.hilt.compiler
 
     implementation libs.androidx.core.ktx
 
-    implementation libs.androidx.fragment
+    implementation libs.androidx.fragment.base
     implementation libs.androidx.fragment.ktx
 
     implementation libs.androidx.lifecycle.runtime.ktx

@@ -50,6 +50,6 @@ dependencies {
     implementation ThirdLibParam.LOTTIE_LIB
 //    kapt project(":apt")
 
-    implementation libs.hilt.android
+    implementation libs.hilt.android.base
     kapt libs.hilt.compiler
 }

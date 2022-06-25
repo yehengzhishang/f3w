@@ -14,6 +14,7 @@ println("rainrain test  ${libs.versions.androidGradlePlugin.get()}")
 dependencies {
     implementation(libs.android.gradlePlugin)
     implementation(libs.hilt.gradlePlugin)
+    implementation(libs.hilt.compiler)
 }
 
 gradlePlugin {
