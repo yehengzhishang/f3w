@@ -28,6 +28,7 @@ import com.yu.zz.common.arrange.createViewModel
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.topbook.R
 import com.yu.zz.topbook.category.CategorySingleAdapter
+import com.yu.zz.topbook.category.SingleCategoryFragment
 import com.yu.zz.topbook.databinding.SearchActivityBinding
 import com.yu.zz.topbook.databinding.TopbookFragmentCategorySingleBinding
 import com.yu.zz.topbook.employ.*
@@ -60,7 +61,7 @@ class SearchActivity : AppCompatActivity(), KeywordProvider {
         mBinding = SearchActivityBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         val vp: ViewPager2 = findViewById<ViewPager2>(R.id.vp).apply { };
-        vp.adapter = SearchPageAdapter(this, listOf(ArticleFragment(), TopicFragment()))
+        vp.adapter = SearchPageAdapter(this, listOf(TopicFragment(), TopicFragment()))
         mViewModel.livedataTab.observe(this, this::obTabs)
     }
 

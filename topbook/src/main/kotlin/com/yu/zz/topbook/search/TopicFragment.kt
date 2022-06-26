@@ -1,6 +1,7 @@
 package com.yu.zz.topbook.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.yu.zz.bypass.RxCompositeDisposable
 import com.yu.zz.bypass.add
 import com.yu.zz.bypass.goToThreadIO
+import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.topbook.databinding.TopbookFragmentCategorySingleBinding
 import com.yu.zz.topbook.employ.ListTopBookBean
 import com.yu.zz.topbook.employ.SingleTopBookService
@@ -32,7 +35,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Single
+import io.reactivex.functions.Consumer
 import io.reactivex.observers.DisposableSingleObserver
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -55,11 +60,25 @@ class TopicFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         mBinding = TopbookFragmentCategorySingleBinding.inflate(inflater, container, false)
-        mSrl.isEnabled = false
+        mSrl.setOnRefreshListener {
+            Single.timer(1, TimeUnit.SECONDS).goToThreadMain()
+                .subscribe(Consumer<Long> {
+                    val list: MutableList<TopicBean> = mViewModel.livedata.value!!.toMutableList()
+                    list.removeFirst()
+                    list.removeFirst()
+                    mAdapter.clearList()
+                    mAdapter.addList(list)
+                    mAdapter.notifyItemRangeRemoved(0,2)
+                    mSrl.isRefreshing = false
+                })
+        }
         mRv.adapter = mAdapter
         val context = requireContext()
         mRv.layoutManager = LinearLayoutManager(context)
-
+        mRv.itemAnimator = DefaultItemAnimator().apply {
+            addDuration = 4000
+            removeDuration = 2000
+        }
         return mBinding.root
     }
 
@@ -67,7 +86,7 @@ class TopicFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mViewModel.livedata.observe(this.viewLifecycleOwner) {
             mAdapter.addList(it)
-            mAdapter.notifyItemRangeChanged(0, it.size)
+            mAdapter.notifyItemRangeRemoved(0, 2)
         }
         mViewModel.request("时间")
     }

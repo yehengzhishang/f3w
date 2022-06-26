@@ -4,9 +4,11 @@ import android.os.Bundle
 import com.yu.zz.topbook.R
 import com.yu.zz.topbook.employ.CategoryTopBookBean
 import com.yu.zz.topbook.employ.TopBookActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 const val KEY_ID_CATEGORY = KEY_CATEGORY_ID
 
+@AndroidEntryPoint
 class CategoryActivity : TopBookActivity() {
     private val bean: CategoryTopBookBean by lazy {
         intent.getSerializableExtra(KEY_ID_CATEGORY)!! as CategoryTopBookBean

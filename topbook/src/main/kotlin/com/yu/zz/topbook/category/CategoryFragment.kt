@@ -1,38 +1,37 @@
 package com.yu.zz.topbook.category
 
 import android.app.Activity
-import android.app.Application
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.rcd
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.yu.zz.bypass.createViewModel
-import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.common.arrange.dp2px
 import com.yu.zz.topbook.R
 import com.yu.zz.topbook.article.ArticleViewHolder
 import com.yu.zz.topbook.article.articleClick
 import com.yu.zz.topbook.employ.*
-import dagger.Component
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.migration.DisableInstallInCheck
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
-import androidx.lifecycle.Observer as OB
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 const val KEY_CATEGORY_ID = "categoryId"
 private const val LIMIT = 20
 private const val SPAN_COUNT = 2
 
+@AndroidEntryPoint
 class CategorySingleFragment : TopBookFragment() {
     private val mRv: RecyclerView by lazy {
         requireView().findViewById<RecyclerView>(R.id.rv)
@@ -41,11 +40,7 @@ class CategorySingleFragment : TopBookFragment() {
         requireView().findViewById(R.id.srl)
     }
 
-
-    private val mViewModel: CategoryViewModel by lazy {
-        DaggerCategoryComponent.builder().categoryModule(CategoryModule(this))
-            .build().getViewModel()
-    }
+    private val mViewModel: CategoryViewModel by viewModels()
 
     private val mCategoryID: String by lazy { requireArguments().getString(KEY_CATEGORY_ID)!! }
     private val mAdapter: CategorySingleAdapter = CategorySingleAdapter()
@@ -71,6 +66,7 @@ class CategorySingleFragment : TopBookFragment() {
                 context.dp2px(DP_TOP)
             )
         )
+
         mViewModel.dateNew.observe(viewLifecycleOwner) {
             srl.isRefreshing = false
             if (it == null || !it.isSuccess() || it.data == null) {
@@ -150,69 +146,41 @@ private class TwoSpan(private val pxBorder: Int, private val pxMiddle: Int, priv
     }
 }
 
-@Module
-@DisableInstallInCheck
-class CategoryModule constructor(private val fragment: Fragment) {
 
-    @Provides
-    fun provideViewModel(factory: ViewModelProvider.Factory): CategoryViewModel {
-        return createViewModel(fragment.viewModelStore, factory, CategoryViewModel::class.java)
-    }
-
-    @Provides
-    fun provideService(): TopBookService {
-        return TopBookApi.INSTANCE.createService(TopBookService::class.java)
-    }
-
-    @Provides
-    fun provideRepository(service: TopBookService): CategoryRepository {
-        return CategoryRepository(service)
-    }
-
-    @Provides
-    fun provideFactory(repo: CategoryRepository): ViewModelProvider.Factory {
-        return CategoryViewModelFactory(fragment.requireActivity().application, repo)
-    }
-}
-
-@Component(modules = [CategoryModule::class])
-interface CategoryComponent {
-    fun getViewModel(): CategoryViewModel
-}
-
-class CategoryViewModelFactory constructor(
-    private val app: Application,
-    private val repo: CategoryRepository
-) : ViewModelProvider.AndroidViewModelFactory(app) {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CategoryViewModel::class.java)) {
-            return CategoryViewModel(app, repo) as T
-        }
-        return super.create(modelClass)
-    }
-}
-
-class CategoryViewModel(app: Application, private val repo: CategoryRepository) :
-    TopBookViewModel(app) {
+@HiltViewModel
+class CategoryViewModel @Inject constructor(private val repo: CategoryRepository) : ViewModel() {
     private val mDataNet: MutableLiveData<ArticleResponseTopBookBean> by lazy {
         MutableLiveData<ArticleResponseTopBookBean>()
     }
     val dateNew: LiveData<ArticleResponseTopBookBean> get() = mDataNet
 
     fun requestArticleWithCategoryId(categoryId: String, start: Int, limit: Int) {
-        repo.getArticleWithCategoryId(
-            categoryId,
-            start = start.toString(),
-            limit = limit.toString()
-        )
-            .goToThreadMain()
-            .subscribe(getNext { bean -> mDataNet.value = bean })
+        repo.getArticleWithCategoryId(categoryId, start.toString(), limit.toString())
+            .subscribeOn(Schedulers.io())
+            .subscribe(object : Observer<ArticleResponseTopBookBean> {
+                var d: Disposable? = null
+                override fun onSubscribe(d: Disposable) {
+                    this.d = d
+                    rcd.add(d)
+                }
+
+                override fun onNext(t: ArticleResponseTopBookBean) {
+                    mDataNet.postValue(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    rcd.remove(d!!)
+                }
+
+                override fun onComplete() {
+                    rcd.remove(d!!)
+                }
+
+            })
     }
 }
 
-class CategoryRepository(private val service: TopBookService) {
+class CategoryRepository @Inject constructor(private val service: TopBookService) {
     fun getArticleWithCategoryId(
         categoryId: String,
         start: String,

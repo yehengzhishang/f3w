@@ -16,8 +16,10 @@ import com.yu.zz.bypass.goToThreadMain
 import com.yu.zz.topbook.category.CategorySingleFragment
 import com.yu.zz.topbook.category.KEY_CATEGORY_ID
 import com.yu.zz.topbook.employ.*
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Single
 
+@AndroidEntryPoint
 class AssistTopBookActivity : TopBookActivity() {
     private val mViewModel: AssistViewModel by lazy {
         createViewModel<AssistViewModel>(
